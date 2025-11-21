@@ -50,7 +50,11 @@ As an example, let's use the following workflow:
         * Incoming: []
         * Outgoing: UT_SUMMARY_<TASK_ID>.md
 
-## Installation
+## Prerequisites for Task management - Beads
+
+Pied-Piper SDLC workflows use [beads](https://github.com/steveyegge/beads) for task management. Install beads by following the instructions at https://github.com/steveyegge/beads?tab=readme-ov-file#installation
+
+## Pied-Piper Installation
 
 ```bash
 go install github.com/sathish316/pied-piper
@@ -180,6 +184,7 @@ pied-piper subagent metaprompt
 ```
 
 5.2 Go to cursor or claudecode and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.subagents/unittest-programmer.md**
+Ensure you change the `ROLE-FILE` (using @ or # to refer to the file) and `ROLE-NAME` placeholder in metaprompt.
 
 ### 6. Modify SubAgent's role description from Claude Code or your editor
 

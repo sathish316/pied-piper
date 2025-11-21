@@ -1,7 +1,7 @@
 # Pied Piper - Dream Team of Planner/Coder/Reviewer using an Ensemble of the best Coding Models
 
-Create a dream team of Planner/Coder/Reviewer using an ensemble of the best Coding Models GPT-5.1 or 5.2 Codex, Claude Opus 4.5, Gemini Pro 3.0 or 2.5:
-* GPT Codex 5.1 for Planning
+Create a dream team of Planner/Coder/Reviewer using an ensemble of the best Coding Models - GPT-5.1 or 5.2 Codex, Claude Opus 4.5, Gemini Pro 3.0 or 2.5:
+* GPT-5.1 Codex or GPT-5.2 Codex for Planning
 * Claude Opus 4.5 for Coding
 * Gemini Pro 3.0 or 2.5 for Code, Performance, Security Reviews
 * Claude Haiku 4.5 for Orchestration
@@ -12,6 +12,8 @@ DreamTeam workflow in Pied-Piper is inspired by several AI developments that hap
 1. This LinkedIn post about using an Ensemble of the best Coding Models as a Dream Team: https://www.linkedin.com/feed/update/urn:li:activity:7405521740790992896/
 2. LLM Council by @karpathy : https://github.com/karpathy/llm-council
 3. Variant of LLM council and Ensemble models by @satyanadella - https://www.youtube.com/watch?v=SEZADIErqyw
+
+This playbook requires [Claude-Code-Router](https://github.com/musistudio/claude-code-router) and an [OpenRouter](https://openrouter.ai/) subscription.
 
 ## Custom Workflow for Dream Team of Planner/Coder/Reviewers using an Ensemble of the best Coding Models
 
@@ -51,9 +53,13 @@ This playbook demonstrates a systematic approach to create a dream team of Plann
         * Incoming: #dream-team-feature-code-review-approved
         * Outgoing: #dream-team-feature-performance-security-review-approved, #dream-team-feature-performance-security-review-rejected
 
+## Prerequisites for Task management - Beads
+
+Pied-Piper SDLC workflows use beads for task management. Install [beads](https://github.com/steveyegge/beads) by following the instructions at https://github.com/steveyegge/beads?tab=readme-ov-file#installation
+
 ## Prerequisites to make Claude Code work with OpenRouter
 
-Claude Code can only use the following models as of now - Sonnet, Opus, Haiku.
+Claude Code can only use the following models - Sonnet, Opus, Haiku.
 
 To make Claude Code work with the best of OpenAI GPT-5.2 Codex and Gemini Pro 3.0, we will be using OpenRouter as the backend and make Claude Code use OpenRouter by using Claude-code-router: https://github.com/musistudio/claude-code-router. Read claude-code-router docs to understand the next set of steps better: 
 
@@ -117,7 +123,7 @@ https://github.com/musistudio/claude-code-router?tab=readme-ov-file#subagent-rou
 <CCR-SUBAGENT-MODEL>openrouter,openai/gpt-5.2</CCR-SUBAGENT-MODEL>
 ```
 
-## Installation
+## Pied-Piper Installation
 
 ```bash
 go install github.com/sathish316/pied-piper
@@ -204,7 +210,7 @@ List all SubAgents to verify the team config is correct.
 pied-piper subagent list --team dream-team
 ```
 
-### 4. Select a different RouterModel per subagent
+### 4. Select different RouterModel per subagent
 
 Let's use different models per subagent to specialize their behaviour:
 * dream-team-planner: GPT-5.1 Codex or GPT-5.2 Codex
@@ -258,13 +264,13 @@ Metaprompts are used to enrich the prompt of Subagent using AI tools like Cursor
 
 In order to make sure the Subagent honors the workflow, Enrich the prompt of Subagent using AI tools like Cursor or Claude Code or LLM APIs by following the steps below:
 
-5.1 Generate or show metaprompt (applicable to all subagents):
+6.1 Generate or show metaprompt (applicable to all subagents):
 ```bash
 pied-piper subagent metaprompt
 ```
 
 Go to cursor or Claude Code and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.subagents/python-programmer.yml**
-Ensure you change the <ROLE-FILE> file (using @ or #) and <ROLE-NAME> placeholder in metaprompt.
+Ensure you change the `ROLE-FILE` (using @ or # to refer to the file) and `ROLE-NAME` placeholder in metaprompt.
 
 ### (Optional) 7. Modify Workflow and Regenerate Subagents
 
@@ -287,23 +293,26 @@ pied-piper subagent export --team "dream-team" --name "dream-team-code-reviewer"
 
 ### (Optional) 8. Modify SubAgent's role description from Claude Code or your editor
 
-Once the SubAgent is generated and exported to Coding CLI, you can generate detailed workflow description and modify its behaviour using AI.
+Once the SubAgent is generated and exported to Coding CLI, you can modify its behaviour directly from your project.
 
 ```bash
 vim /path/to/project/.claude/agents/dream-team-code-reviewer.md
 ```
 
 Modify the description to suit your project's needs.
-```yml
+```md
 ----ROLE_DESCRIPTION STARTS----
+
 <Generated Role Description>
-<Project-specific custom Role description>
+
+<Project-specific custom Role description goes here>
+
 ----ROLE_DESCRIPTION ENDS----
 ```
 
 There is no need to regenerate the SubAgent, since you are directly editing in .claude/agents folder. 
 
-### 9. Build feature X using the Dream Team of 3 best Coding Models
+### 9. Build feature X using the Dream Team of best Coding Models
 
 Initialize beads in project
 

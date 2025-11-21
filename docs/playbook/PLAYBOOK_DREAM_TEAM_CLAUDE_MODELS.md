@@ -50,7 +50,11 @@ This playbook demonstrates a systematic approach to creating a dream team of Pla
         * Incoming: #dream-team-feature
         * Outgoing: #closed
 
-## Installation
+## Prerequisites for Task management - Beads
+
+Pied-Piper SDLC workflows use beads for task management. Install [beads](https://github.com/steveyegge/beads) by following the instructions at https://github.com/steveyegge/beads?tab=readme-ov-file#installation
+
+## Pied-Piper Installation
 
 ```bash
 go install github.com/sathish316/pied-piper
@@ -140,7 +144,7 @@ List all SubAgents to verify the team config is correct.
 pied-piper subagent list --team dream-team
 ```
 
-### 4. Select a different Model per subagent
+### 4. Select different Model for each subagent
 
 Let's use different models per subagent to specialize their behaviour:
 * dream-team-planner: opus
@@ -194,13 +198,13 @@ Metaprompts are used to enrich the prompt of Subagent using AI tools like Cursor
 
 In order to make sure the Subagent honors the workflow, Enrich the prompt of Subagent using AI tools like Cursor or Claude Code or LLM APIs by following the steps below:
 
-5.1 Generate or show metaprompt (applicable to all subagents):
+6.1 Generate or show metaprompt (applicable to all subagents):
 ```bash
 pied-piper subagent metaprompt
 ```
 
 Go to cursor or Claude Code and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.claude/agents/dream-team-code-reviewer.md**
-Ensure you change the <ROLE-FILE> file (using @ or #) and <ROLE-NAME> placeholder in metaprompt.
+Ensure you change the `ROLE-FILE` (using @ or # to refer to the file) and `ROLE-NAME` placeholder in metaprompt.
 
 ### (Optional) 7. Modify Workflow and Regenerate Subagents
 

@@ -2,7 +2,7 @@
 
 ## SDLC Workflow 
 
-A typical SDLC workflow to implement a small feature or fix a bug consists of the following steps:
+Example of a typical SDLC Workflow:
 1. Requirement and Acceptance criteria
 2. High level design or architecture
 3. Low level design - Data model, API signatures etc
@@ -15,15 +15,13 @@ A typical SDLC workflow to implement a small feature or fix a bug consists of th
 10. Merge feature branch to main
 11. Rinse and repeat for the next feature or bug fix
 
-The creative work here occurs in both planning what to build and actually building it. Deciding what to build next requires a human. Verifying what is planned/built is what is needed requires a human to review the plan and code.
+The creative work here occurs in both planning what to build and actually building it. Deciding what to build next requires a human. Verifying what is planned/built is what is needed requires a human to review the plan and code. Pied-Piper has human-in-the-loop to involve humans at the right stage before approving the plan or before creating Pull requests.
 
-The role of Pied-Piper SubAgents is to automate the repetitive tasks like writing unit tests, integration tests etc or sometimes even coding small features or bug fixes.
+The role of Pied-Piper SubAgents is to automate long-running or repetitive tasks like improving test coverage, performing repetitive migrations etc or sometimes even coding full features or bug fixes. Check the playbooks for examples of different types of workflows.
 
 ## SubAgent Roles & Responsibilities
 
-<placeholder: image for roles>
-
-The default Roles in Pied-Piper are:
+Example of SubAgent Roles in Pied-Piper are:
 * microsprint-orchestrator (Orchestrator): starts microsprint, assigns tasks to subagents, runs the microsprint either autonomously or semi-autonomously, ends microsprint
 * product-manager (Planner): defines requirements and acceptance criteria
 * architect (Planner): creates plan with high level design and architecture
@@ -35,27 +33,24 @@ The default Roles in Pied-Piper are:
 
 ## SubAgent Task Management
 
-TODO: link to beads
-This project uses beads for Task management by both Agents and Humans.
+This project uses [beads](https://github.com/steveyegge/beads) as the Task management layer for both Agents and Humans.
 
-To know all about beads run:
+To know all about beads run (Agents also run the same command to know all about beads):
 ```
 $ bd quickstart
 ```
 
-SubAgents use git-flow method for every new feature
+SubAgents use git-flow for every new feature
 ```
 $ git-flow help
 ```
 
 ## SubAgent SDLC Workflow
 
-<placeholder: image for workflow>
-
 SDLC Workflow is executed in every microsprint.
 Microsprint is like an epoch in the SDLC Workflow.
 
-2 Issues are created for a task.
+Beads tasks and task labels are used to manage the lifecycle of the tasks.
 * feature-x: this task is created by human-engineer with the label @open
 * plan-feature-x: this task is created by microsprint-orchestrator with the label @ready-for-plan
 * build-feature-x: this task is created by microsprint-orchestrator with the label @ready-for-dev
@@ -65,7 +60,7 @@ Issues go through the following lifecycle (in auto-approve mode):
     * @open / @ready-for-plan -> @define-requirement
     * @define-requirement -> @ready-for-hld
     * @ready-for-hld -> @ready-for-lld
-    * @ready-for-lld -> @plan-complete -> @closed
+    * @ready-for-lld -> @plan-complete
 * making
     * @open / @ready-for-dev -> @coding-done -> @ready-for-code-review
     * @ready-for-code-review -> @code-review-done -> @ready-for-code-validation
@@ -73,15 +68,15 @@ Issues go through the following lifecycle (in auto-approve mode):
     * @ready-for-code-validation -> @code-validation-done -> @ready-for-merge
     * @ready-for-code-validation -> @code-validation-failed -> @ready-for-code-validation
 * shipping
-    * @ready-for-merge -> @closed
+    * @ready-for-merge
 
 
 Issues go through the following lifecycle (in human-approve mode):
 * planning
-    * @ready-for-lld -> @review-plan -> @approve-plan -> @closed
+    * @ready-for-lld -> @review-plan -> @approve-plan
     * @ready-for-lld -> @review-plan -> @reject-plan -> (@define-requirement | @ready-for-hld | @ready-for-lld)
 * making
-    * @ready-for-build -> @review-make -> @approve-make -> @closed
+    * @ready-for-build -> @review-make -> @approve-make
     * @ready-for-build -> @review-make -> @reject-make -> @ready-for-dev
 * shipping
     * @ready-for-merge -> @closed
@@ -90,7 +85,7 @@ Issues go through the following lifecycle (in human-approve mode):
 
 Subagents need an Issue/Task management system that acts as both Agent layer and Human layer for managing long-running tasks.
 
-Each Subagent responds to the following incoming and outgoing labels:
+Subagent are designed to respond to specific incoming and outgoing Task labels to participate in the SDLC Workflow. Example of Incoming/Outgoing Task labels:
 * microsprint-orchestrator
 incoming: @open, @ready-for-plan, @approve-plan, @reject-plan, @approve-make, @reject-make
 outgoing: @define-requirement
@@ -120,9 +115,9 @@ outgoing: @approve-plan, @approve-make, @reject-plan, @reject-make
 
 Subagents need a knowledge management system that acts as both Agent layer and Human layer for managing long-running tasks.
 
-Subagents have access to a wiki for markdown docs and knowledge management.
+Subagents have access to local markdown docs, which act as wikis for knowledge management.
 
-Each Subagent only reads and creates the following files in each microsprint. Other than docs, SubAgents also deal with a few other artifacts like Tasks, Code etc::
+Each Subagent only reads and creates the files it is allowed to in each microsprint. Other than docs, SubAgents also deal with few other artifacts like Tasks, Code etc. Example of Incoming/Outgoing files:
 * microsprint-orchestrator:
 incoming: plan-feature-x task
 outgoing: GOAL_foo.md (where foo is the feature id or task id), build-feature-x task
@@ -137,7 +132,7 @@ incoming: HLD_foo.md, LLD_foo.md, build-feature-x task
 outgoing: LLD_foo.md, Code
 * code-reviewer:
 incoming: git_sha..git_sha, Code,
-outgoing: Comments in build-feature-x task, Future: Comments in github commit
+outgoing: Comments in build-feature-x task
 * code-validator:
 incoming: git_sha
 outgoing: -
@@ -145,12 +140,12 @@ outgoing: -
 incoming: -
 outgoing: -
 * human-engineer:
-incoming: -
-outgoing: feature-x task for one or more tasks with specifications. Features can be configured to do plan + build, build only, plan only, bugfixes can be build + test only. By default do both plan + build.
+incoming: plan reviews, code reviews
+outgoing: feature-x task
 
 ## SubAgent Nicknames
 
-SubAgents have nicknames from the fictional PiedPiper company. You can change the nicknames after the SubAgents are generated. The SubAgents will respond to both roles and nicknames. In case you need to create multiple SubAgents of the same role, giving them different nicknames helps.
+SubAgents can have nicknames. You can change the nicknames after the SubAgents are generated. The SubAgents will respond to both roles and nicknames. In case you need to create multiple SubAgents of the same role, giving them different nicknames helps.
 
 * microsprint-orchestrator: "Pied-Piper"
 * product-manager: "Jared"

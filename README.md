@@ -2,7 +2,9 @@
 
 Pied Piper is a team of AI SubAgents that can autonomously or semi-autonomously work on long-running coding tasks with full End-to-end tracking and human-in-the-loop approvals. 
 
-These SubAgents run on Coding Agents (like Claude Code), Docker, Cloud Desktop etc, so they can work even while you're AFK or sleeping or on vacation.
+These SubAgents run on Coding Agents (like Claude Code CLI), Docker, Cloud Desktop etc, so they can work even while you're AFK or sleeping or on vacation.
+
+Pied-Piper uses the awesome [beads](https://github.com/steveyegge/beads) library by @steveyegge as Task management layer for both Agents and Humans.
 
 View Pied-Piper Subagents in action here: https://www.youtube.com/playlist?list=PLKWJ03cHcPr3OWiSBDghzh62AErndC5pm
 
@@ -13,13 +15,15 @@ View Pied-Piper Subagents in action here: https://www.youtube.com/playlist?list=
 3. Generate SubAgents for your Coding Agent
 4. Start assigning tasks to your SubAgents from Coding Agent (Claude Code)
 
-Go to [QUICKSTART_CUSTOM_WORKFLOW.md](docs/QUICKSTART_CUSTOM_WORKFLOW.md) or [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md) to run a custom SDLC worfklow for Test coverage improvement using Pied-Piper.
+Go to [QUICKSTART.md](docs/QUICKSTART.md) or [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md) to run a custom SDLC worfklow for Test coverage improvement using Pied-Piper.
 
 Go to [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION.md) to run a custom SDLC worfklow for Language Migration from TypeScript to Python using Pied-Piper.
 
-Go to Pied-Piper Commands section for docs on how to use Pied-Piper.
+Go to [PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md](docs/playbook/PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md) to use an ensemble of the best Coding Models for a generic Plan/Code/Review/Security-Review/Performance-Review Workflow.
 
-For an overview of Pied-Piper SDLC Workflow features like Subagents, Roles, Task workflows, Wiki workflows, Role Nicknames, go to [PIEDPIPER_SDLC_WORKFLOW_CONCEPTS.md](docs/PIEDPIPER_SDLC_WORKFLOW_CONCEPTS.md)
+Go to [Pied-Piper Commands section](https://github.com/sathish316/pied-piper?tab=readme-ov-file#pied-piper-commands) for docs on how to use Pied-Piper.
+
+For an overview of Pied-Piper SDLC Workflow features like Subagents, Roles, Task workflows, Wiki workflows etc, go to [PIEDPIPER_SDLC_WORKFLOW_CONCEPTS.md](docs/PIEDPIPER_SDLC_WORKFLOW_CONCEPTS.md)
 
 # Development
 
@@ -66,7 +70,7 @@ pied-piper
 
 # Playbooks
 
-Playbooks are repeatable workflows for different kinds of long-running or continuous-coding or boring tasks in software engineering, that can be executed by a team of Pied-Piper SubAgents:
+Playbooks are repeatable workflows for different kinds of long-running or repeatable or complex tasks in software engineering, that can be executed by a team of Pied-Piper SubAgents:
 1. Migration from library version x to version y - Rails 5 to Rails 8
 2. Migration from language x to language y - Typescript to Python
 4. Ensure Unit Test coverage is > 80%
@@ -170,11 +174,11 @@ TODO
 
 TODO
 
-## Techstack migration playbook
+## Tech stack migration playbook
 
 TODO
 
-## Static code analysis violation fix playbook
+## Static code analysis improvements playbook
 
 TODO
 
@@ -287,7 +291,7 @@ To generate all SubAgents for a team to target Claude Code:
 $ pied-piper subagent generate --team-name "pied-piper" --all --target claude-code
 ```
 
-#### Export SubAgents for a Coding CLI
+#### Export SubAgents to a target Coding CLI and a target directory
 
 Subagents can be exported in *.md format to the User directory (~/.claude) or Project directory (/path/to/project/.claude) for a target Coding CLI.
 
@@ -303,7 +307,21 @@ To export an individual subagent to target Claude Code Project directory:
 $ pied-piper subagent export subagent --team-name "pied-piper" --name "architect" --target claude-code --project-dir /path/to/project
 ```
 
-### How to use SubAgents workflow from Claude Code?
+#### Enrich Subagent Description
+
+Metaprompts are used to enrich the prompt of Subagent using AI tools like Cursor or Claude Code or by directly calling LLM APIs.
+
+In order to make sure the Subagent honors the workflow, Enrich the prompt of Subagent using AI tools like Cursor or Claude Code or LLM APIs by following the steps below:
+
+Generate or show metaprompt (applicable to all subagents):
+```bash
+pied-piper subagent metaprompt
+```
+
+Go to cursor or Claude Code and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.claude/agents/unittest-programmer.md**
+Ensure you change the `ROLE-FILE` (using @ or # to refer to the file) and `ROLE-NAME` placeholder in metaprompt.
+
+#### Using Pied-Piper Team's workflow from Claude Code
 
 Go to Claude Code:
 1. > Onboard to beads task management using "bd quickstart"
@@ -311,10 +329,12 @@ Go to Claude Code:
 3. > Ask microsprint-orchestrator to work on beads open tasks
 
 For more detailed steps, refer to the playbooks:
-1. [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md)
-2. [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION.md)
+1. [PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md](docs/playbook/PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md)
+2. [PLAYBOOK_DREAM_TEAM_CLAUDE_MODELS.md](docs/playbook/PLAYBOOK_DREAM_TEAM_CLAUDE_MODELS.md)
+3. [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md)
+4. [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION.md)
 
-### How to use SubAgents from other Coding CLIs for SDLC Workflow?
+#### Using Pied-Piper Team's workflow from other Coding CLIs
 
 Follow the same steps as above. While generating the subagents, change --target to your Coding CLI. 
 
