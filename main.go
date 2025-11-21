@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"github.com/sathish316/pied-piper/cli"
 )
 
 func main() {
-	fmt.Println("Hello, Pied-Piper!")
+	cli.Execute()
 }

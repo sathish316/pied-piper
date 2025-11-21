@@ -6,6 +6,37 @@ These SubAgents run on Coding Agents, Temporal, Docker, Cloud Desktop etc, so th
 
 Pied-Piper is meant to be used from within your favourite Coding CLIs like Claude Code etc.
 
+# Getting started
+
+-[ ] Install Pied-Piper
+
+# Development
+
+Pied-piper is built using Go.
+
+To get started with development, you can use the following commands:
+
+```bash
+cd $GOPATH/src/github.com/sathish316/pied-piper
+git clone https://github.com/sathish316/pied-piper.git
+go run main.go
+```
+
+To run tests:
+```bash
+go test
+```
+
+To build the project:
+```bash
+go build
+```
+
+To install the project:
+```bash
+go install github.com/sathish316/pied-piper
+```
+
 # SDLC Workflow 
 
 A typical SDLC workflow to implement a small feature or fix a bug consists of the following steps:

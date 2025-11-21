@@ -6,6 +6,7 @@
   - [ ] Sync with claude code
   - [ ] Workflow state machine library?
   - [ ] Workflow state machine visualization
+  - [ ] Subagents generator from Metaprompt
 - [ ] CLI command and handler
   - [ ] Team handler
   - [ ] Subagent handler
