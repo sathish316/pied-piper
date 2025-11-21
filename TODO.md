@@ -1,0 +1,21 @@
+- [ ] Project structure and features
+  - [X] Go skeleton project
+  - [ ] CLI init
+  - [ ] Templating language
+  - [ ] YML config manager
+  - [ ] Sync with claude code
+  - [ ] Workflow state machine library?
+  - [ ] Workflow state machine visualization
+- [ ] CLI command and handler
+  - [ ] Team handler
+  - [ ] Subagent handler
+- [ ] Package management
+  - [ ] Github release version manager
+  - [ ] Curl installer
+- [ ] Docs
+  - [ ] Getting started
+  - [ ] Using standard playbook
+  - [ ] Creating your own playbook
+  - [ ] State machine illustration
+- [ ] Advanced features
+  - [ ] Budgeting and Rate limiting
