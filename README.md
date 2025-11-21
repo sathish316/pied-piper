@@ -24,7 +24,7 @@ go run main.go
 
 To run tests:
 ```bash
-go test
+go test -v ./...
 ```
 
 To build the project:

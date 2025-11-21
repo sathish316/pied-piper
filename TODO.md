@@ -1,22 +1,26 @@
 - [ ] Project structure and features
-  - [X] Go skeleton project
-  - [ ] CLI init
-  - [ ] Templating language
-  - [ ] YML config manager
-  - [ ] Sync with claude code
-  - [ ] Workflow state machine library?
-  - [ ] Workflow state machine visualization
-  - [ ] Subagents generator from Metaprompt
+    - [X] Go skeleton project
+    - [ ] CLI init
+    - [ ] Templating language
+    - [ ] YML config manager
+    - [ ] Sync with claude code
+    - [ ] Workflow state machine library?
+    - [ ] Workflow state machine visualization
+    - [ ] Subagents generator from Metaprompt
 - [ ] CLI command and handler
-  - [ ] Team handler
-  - [ ] Subagent handler
+    - [ ] Team handler
+    - [ ] Subagent handler
 - [ ] Package management
-  - [ ] Github release version manager
-  - [ ] Curl installer
+    - [ ] Github release version manager
+    - [ ] Curl installer
 - [ ] Docs
-  - [ ] Getting started
-  - [ ] Using standard playbook
-  - [ ] Creating your own playbook
-  - [ ] State machine illustration
+    - [ ] Getting started
+    - [ ] Using standard playbook
+    - [ ] Creating your own playbook
+    - [ ] State machine illustration
+- [ ] Development
+    - [ ] Unit tests
+    - [ ] Logging setup
+    - [ ] Git commit hooks for formatter and linter
 - [ ] Advanced features
-  - [ ] Budgeting and Rate limiting
+    - [ ] Budgeting and Rate limiting

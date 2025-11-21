@@ -1,0 +1,12 @@
+name: "pied-piper"
+subagents:
+  - role: "architect"
+    nickname: "Richard"
+  - role: "software-engineer"
+    nickname: "Gilfoyle"
+  - role: "code-reviewer"
+    nickname: "Dinesh"
+  - role: "code-validator"
+    nickname: "Erlich"
+  - role: "build-engineer"
+    nickname: "Jian Yang"

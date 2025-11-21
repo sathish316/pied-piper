@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/sathish316/pied-piper/config"
 )
 
 var configCmd = &cobra.Command{
@@ -20,8 +21,11 @@ var configInitCmd = &cobra.Command{
 	Short: "Initialize config",
 	Long:  `Initialize config`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Initializing config...")
-		// Add your initialization logic here
+		config := config.Config{
+			Path: config.DEFAULT_CONFIG_DIR,
+			File: config.DEFAULT_CONFIG_FILE,
+		}
+		config.Init()
 	},
 }
 
