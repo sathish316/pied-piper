@@ -53,13 +53,13 @@ SubAgents use git-flow method for every new feature
 $ git-flow help
 ```
 
-## SDLC Workflow
+## SubAgent SDLC Workflow
 
 SDLC Workflow is executed in every microsprint.
 Microsprint is an epoch in the SDLC Workflow.
 
 2 Issues are created for a task.
-* implement-feature-x: this task is created by human-engineer with the label @open
+* feature-x: this task is created by human-engineer with the label @open
 * plan-feature-x: this task is created by microsprint-orchestrator with the label @ready-for-plan
 * build-feature-x: this task is created by microsprint-orchestrator with the label @ready-for-dev
 
@@ -119,7 +119,48 @@ outgoing: @approve-plan, @approve-make, @reject-plan, @reject-make
 
 ## SubAgent Knowledge Management
 
+Subagents have access to a wiki for markdown docs and knowledge management.
+Subagents will create separate commits for code and docs.
+
+Each Subagent only reads and creates the following files in each microsprint. Other than docs, SubAgents also deal with a few other artifacts like Tasks, Code etc::
+* microsprint-orchestrator:
+incoming: plan-feature-x task
+outgoing: GOAL_foo.md (where foo is the feature id or task id), build-feature-x task
+* product-manager:
+incoming: -
+outgoing: REQUIREMENT_foo.md (where foo is the feature id or task id)
+* architect:
+incoming: REQUIREMENT_foo.md
+outgoing: HLD_foo.md
+* software-engineer:
+incoming: HLD_foo.md, LLD_foo.md, build-feature-x task
+outgoing: LLD_foo.md, Code
+* code-reviewer:
+incoming: git_sha..git_sha, Code,
+outgoing: Comments in build-feature-x task, Future: Comments in github commit
+* code-validator:
+incoming: git_sha
+outgoing: -
+* build-engineer:
+incoming: -
+outgoing: -
+* human-engineer:
+incoming: -
+outgoing: feature-x task for one or more tasks with specifications. Features can be configured to do plan + build, build only, plan only, bugfixes can be build + test only. By default do both plan + build.
+
+
 ## SubAgent Nicknames
+
+SubAgents have nicknames from the fictional PiedPiper company. You can change the nicknames after the SubAgents are generated. The SubAgents will both respond to roles and nicknames. In case you need to create multiple SubAgents of the same role, giving them different nicknames helps.
+
+* microsprint-orchestrator: "Pied-Piper"
+* product-manager: "Jared"
+* architect: "Richard"
+* software-engineer: "Gilfoyle"
+* code-reviewer: "Dinesh"
+* code-validator: "Erlich"
+* build-engineer: "Jian Yang"
+* human-engineer: <Your name>
 
 ## Cookbook
 
@@ -127,21 +168,138 @@ outgoing: @approve-plan, @approve-make, @reject-plan, @reject-make
 
 ### How to use SubAgents from Claude Code for SDLC Workflow?
 
-Pied-piper as a CLI
+Pied-Piper is not directly used by your Coding Agent. It gets out of the way after the SubAgents are created and configured in your coding agents.
 
-Pied-piper as an MCP server
+**Pied-piper CLI**
+
+#### help
+```bash
+$ pied-piper help
+```
+
+#### create-team
+To create a default SDLC team with the name pied-piper
+```bash
+$ pied-piper team create --default
+```
+
+Create your custom team with the name pied-piper
+#### create-team
+```bash
+$ pied-piper team create --name "pied-piper"
+```
+
+To create team for a given playbook, you can use the following command:
+```bash
+$ pied-piper team create --name "pied-piper" --playbook "microservice-to-monolith"
+```
+
+#### configure-team
+```bash
+$ pied-piper team configure --name "pied-piper"
+```
+
+teams/pied-piper/team-config.yml
+
+```yml
+name: "pied-piper"
+subagents:
+  - role: "architect"
+    nickname: "Richard"
+  - role: "software-engineer"
+    nickname: "Gilfoyle"
+  - role: "code-reviewer"
+    nickname: "Dinesh"
+  - role: "code-validator"
+    nickname: "Erlich"
+  - role: "build-engineer"
+    nickname: "Jian Yang"
+task_workflow:
+
+```
+
+#### add-subagent
+If you've already updated subagents in team-config.yml, you can skip this step. Adding a subagent through CLI will update the config file.
+
+```bash
+$ pied-piper subagent create --team-name "pied-piper" --role "architect" --nickname "Richard"
+```
+
+#### configure-subagents
+```bash
+$ pied-piper subagent configure --team-name "pied-piper" --role "architect"
+$ pied-piper subagent configure --team-name "pied-piper" --role "architect" --nickname "Richard"
+```
+
+teams/pied-piper/subagents/architect.yml
+```yml
+name: "architect"
+role: "architect"
+nickname: "Richard"
+description: "..."
+system_prompt: "..."
+tools: default # configure in coding CLI
+task_labels:
+  incoming:
+  - @ready-for-hld
+  outgoing:
+  - @ready-for-lld
+wiki_labels:
+  incoming:
+  - GOAL_foo.md
+  outgoing:
+  - @ready-for-hld
+  - @ready-for-lld
+  - @plan-complete
+  - @closed
+```
+
+#### customize an individual subagent
+
+You can customize subagents either before they are created or after they are created.
+
+To change subagent before generation, edit **teams/<team-name>/subagents/<subagent-name>.yml** file ex: **teams/pied-piper/subagents/architect.yml** file
+
+To change subagent after generation, directly update the Subagents in Claude or Coding CLI.
+
+#### Generate SubAgents
+
+To generate all SubAgents for a team:
+
+```bash
+$ pied-piper subagent generate --team-name "pied-piper" --all --for claude-code
+```
+
+To generate or update an individual subagent:
+
+```bash
+$ pied-piper subagent generate --team-name "pied-piper" --role "architect" --for claude-code
+```
+
+**Pied-piper as an MCP server**
+Coming Soon...
 
 ### How to use SubAgents from other Coding CLIs for SDLC Workflow?
 
-Pied-piper as a CLI
+Follow the same steps as above. While generating the subagents, change --for to your Coding CLI. 
 
-Pied-piper as an MCP server
+Supported Coding CLIs are:
+* Claude Code
+
+**Pied-piper CLI**
+
+**Pied-piper as an MCP server**
+Coming Soon...
 
 ### How to assign a task to SubAgents?
 
 ### How to run the SubAgents in Autonomous mode?
 
 ### I like the way SubAgents work, but How can I customize them further?
+
+Option 1 - Change the system prompt of SubAgents to suit your requirements
+
+Option 2 - Add instructions to SubAgent memory to follow in the future
 
 ### I don't like the way SubAgents work, How can I generate my own set of SubAgents?
 
