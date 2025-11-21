@@ -44,23 +44,26 @@ func TestConfigHandler_Init(t *testing.T) {
 	assert.FileExists(t, config.GetFilePath())
 }
 
-// func TestConfigHandler_Load(t *testing.T) {
-// 	config, _ := setup(t)
-// 	config.Init()
+func TestConfigHandler_Load(t *testing.T) {
+	config, _ := setup(t)
+	config.Init()
 
-// 	data, err := config.Load()
-// 	assert.NoError(t, err)
+	data, err := config.Load()
+	assert.NoError(t, err)
 
-// 	assert.Equal(t, "pied-piper", data["name"])
-// }
+	assert.Equal(t, "pied-piper", data["name"])
+}
 
-// func TestConfigHandler_PrettyPrint(t *testing.T) {
-// 	config, _ := setup(t)
-// 	configStr, err := config.PrettyPrint()
+func TestConfigHandler_PrettyPrint(t *testing.T) {
+	config, _ := setup(t)
+	config.Init()
 
-// 	assert.NoError(t, err)
-// 	assert.Contains(t, configStr, `name: "pied-piper"`)
-// }
+	config.Load()
+	configStr, err := config.PrettyPrint()
+
+	assert.NoError(t, err)
+	assert.Contains(t, configStr, `name: pied-piper`)
+}
 
 func add(a, b int) int {
 	return a + b
