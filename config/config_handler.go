@@ -1,44 +1,63 @@
 package config
 
 import (
+	_ "embed"
 	"fmt"
 	"os"
 	"path/filepath"
-	"io"
+	"gopkg.in/yaml.v3"
 )
 
-const SAMPLE_CONFIG_FILE_PATH = "./config/config.sample.yml"
+//go:embed config.sample.yml
+var sampleConfigContent []byte
+
 const DEFAULT_CONFIG_DIR = ".pied-piper"
 const DEFAULT_CONFIG_FILE = "config.yml"
 
 type Config struct {
 	Path string
 	File string
+	Data map[string]interface{}
 }
 
 func (c *Config) GetFilePath() string {
-	return filepath.Join(os.Getenv("HOME"), DEFAULT_CONFIG_DIR, c.File)
+	return filepath.Join(c.Path, c.File)
 }
 
-func (c *Config) Init() {
+func (c *Config) Init() error {
+	os.MkdirAll(c.Path, 0755)
 	fmt.Println("Initializing config file at ", c.GetFilePath())
-	os.MkdirAll(os.Getenv("HOME") + "/" + DEFAULT_CONFIG_DIR, 0755)
-	c.copyFileContents(SAMPLE_CONFIG_FILE_PATH, c.GetFilePath())
+
+	err := os.WriteFile(c.GetFilePath(), sampleConfigContent, 0644)
+	if err != nil {
+		return fmt.Errorf("error writing config file: %w", err)
+	}
+
+	return nil
 }
 
-func (c *Config) copyFileContents(src, dst string) error {
-	srcFile, err := os.Open(src)
+func (c *Config) Load() (map[string]interface{}, error) {
+	data, err := os.ReadFile(c.GetFilePath())
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error opening src file: %v", err)
-		return err
+		return nil, fmt.Errorf("error reading config file: %w", err)
 	}
-	defer srcFile.Close()
-	dstFile, err := os.Create(dst)
+
+	var result map[string]interface{}
+	err = yaml.Unmarshal(data, &result)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error creating dst file: %v", err)
-		return err
+		return nil, fmt.Errorf("error parsing config file: %w", err)
 	}
-	defer dstFile.Close()
-	io.Copy(dstFile, srcFile)
-	return nil
+
+	c.Data = result
+	return result, nil
+}
+
+func (c *Config) PrettyPrint() (string, error) {
+	output, err := yaml.Marshal(c.Data)
+	if err != nil {
+		return "", fmt.Errorf("error marshaling YAML: %w", err)
+	}
+
+	fmt.Println(string(output))
+	return string(output), nil
 }
