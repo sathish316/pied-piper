@@ -1,5 +1,7 @@
 name: "pied-piper"
 subagents:
+  - role: "product-manager"
+    nickname: "Jared"
   - role: "architect"
     nickname: "Richard"
   - role: "software-engineer"

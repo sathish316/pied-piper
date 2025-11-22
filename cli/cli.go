@@ -26,7 +26,6 @@ func Execute() {
 
 func init() {
 	// Add all commands to root
-	rootCmd.AddCommand(configCmd)
 	rootCmd.AddCommand(teamCmd)
 	rootCmd.AddCommand(subagentCmd)
 }

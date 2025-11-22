@@ -1,4 +1,4 @@
-package config
+package team
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -16,7 +16,7 @@ func TestConfigHandler_Add(t *testing.T) {
 	assert.Equal(t, expected, result)
 }
 
-func setup(t *testing.T) (*Config, string) {
+func setup(t *testing.T) (TeamConfigHandler, *Team, string) {
 	t.Helper()
 
 	tmpDir, err := os.MkdirTemp("", "config-test-*")
@@ -28,38 +28,45 @@ func setup(t *testing.T) (*Config, string) {
 		os.RemoveAll(tmpDir)
 	})
 
-	config := &Config{
+	config := &TeamConfig{
 		Path: tmpDir,
 		File: DEFAULT_CONFIG_FILE,
 	}
 
-	return config, tmpDir
+	team := &Team{
+		TeamConfig: config,
+	}
+
+	teamConfigHandler := TeamConfigYamlHandler{
+		Team: team,
+	}
+	return &teamConfigHandler, team, tmpDir
 }
 
 func TestConfigHandler_Init(t *testing.T) {
-	config, tmpDir := setup(t)
-	err := config.Init()
+	configHandler, team, tmpDir := setup(t)
+	err := configHandler.Init()
 	assert.NoError(t, err)
-	assert.Equal(t, filepath.Join(tmpDir, DEFAULT_CONFIG_FILE), config.GetFilePath())
-	assert.FileExists(t, config.GetFilePath())
+	assert.Equal(t, filepath.Join(tmpDir, DEFAULT_CONFIG_FILE), team.GetConfigFilePath())
+	assert.FileExists(t, team.GetConfigFilePath())
 }
 
 func TestConfigHandler_Load(t *testing.T) {
-	config, _ := setup(t)
-	config.Init()
+	configHandler, _, _ := setup(t)
+	configHandler.Init()
 
-	data, err := config.Load()
+	data, err := configHandler.Load()
 	assert.NoError(t, err)
 
 	assert.Equal(t, "pied-piper", data["name"])
 }
 
 func TestConfigHandler_PrettyPrint(t *testing.T) {
-	config, _ := setup(t)
-	config.Init()
+	configHandler, _, _ := setup(t)
+	configHandler.Init()
 
-	config.Load()
-	configStr, err := config.PrettyPrint()
+	configHandler.Load()
+	configStr, err := configHandler.PrettyPrint()
 
 	assert.NoError(t, err)
 	assert.Contains(t, configStr, `name: pied-piper`)

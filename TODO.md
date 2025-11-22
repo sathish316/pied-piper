@@ -1,8 +1,8 @@
 - [ ] Project structure and features
     - [X] Go skeleton project
-    - [ ] CLI init
+    - [X] CLI init
+    - [X] YML config manager
     - [ ] Templating language
-    - [ ] YML config manager
     - [ ] Sync with claude code
     - [ ] Workflow state machine library?
     - [ ] Workflow state machine visualization
