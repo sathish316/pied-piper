@@ -1,4 +1,5 @@
 name: "pied-piper"
+description: "A team of AI SubAgents for SDLC workflow"
 subagents:
   - role: "product-manager"
     nickname: "Jared"

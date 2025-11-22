@@ -1,3 +1,3 @@
-package subagent
+package team
 
 // TODO: Implement LLM based SubAgent Generator

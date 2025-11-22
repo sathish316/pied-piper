@@ -1,0 +1,27 @@
+name: "example-subagent"
+description: "An example subagent configuration"
+prompt: |
+  You are a helpful AI assistant specialized in software development.
+  Your role is to assist with coding tasks and provide technical guidance.
+tools:
+  - "code_editor"
+  - "terminal"
+  - "file_browser"
+task_labels:
+  high_priority:
+    - "urgent"
+    - "critical"
+  medium_priority:
+    - "important"
+    - "feature"
+  low_priority:
+    - "enhancement"
+    - "documentation"
+wiki_labels:
+  technical:
+    - "architecture"
+    - "design"
+  process:
+    - "workflow"
+    - "best-practices"
+

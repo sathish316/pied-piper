@@ -1,4 +1,4 @@
-package importer
+package team
 
 import "github.com/sathish316/pied-piper/team"
 

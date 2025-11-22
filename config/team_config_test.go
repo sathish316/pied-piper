@@ -1,10 +1,11 @@
-package team
+package config
 
 import (
-	"github.com/stretchr/testify/assert"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestConfigHandler_Add(t *testing.T) {
@@ -16,7 +17,7 @@ func TestConfigHandler_Add(t *testing.T) {
 	assert.Equal(t, expected, result)
 }
 
-func setup(t *testing.T) (TeamConfigHandler, *Team, string) {
+func setup(t *testing.T) (*TeamConfigYamlHandler, string) {
 	t.Helper()
 
 	tmpDir, err := os.MkdirTemp("", "config-test-*")
@@ -28,41 +29,41 @@ func setup(t *testing.T) (TeamConfigHandler, *Team, string) {
 		os.RemoveAll(tmpDir)
 	})
 
-	config := &TeamConfig{
+	configPath := TeamConfigPath{
 		Path: tmpDir,
 		File: DEFAULT_CONFIG_FILE,
 	}
 
-	team := &Team{
-		TeamConfig: config,
-	}
-
 	teamConfigHandler := TeamConfigYamlHandler{
-		Team: team,
+		ConfigPath: configPath,
 	}
-	return &teamConfigHandler, team, tmpDir
+	return &teamConfigHandler, tmpDir
 }
 
 func TestConfigHandler_Init(t *testing.T) {
-	configHandler, team, tmpDir := setup(t)
+	configHandler, tmpDir := setup(t)
 	err := configHandler.Init()
 	assert.NoError(t, err)
-	assert.Equal(t, filepath.Join(tmpDir, DEFAULT_CONFIG_FILE), team.GetConfigFilePath())
-	assert.FileExists(t, team.GetConfigFilePath())
+	assert.Equal(t, filepath.Join(tmpDir, DEFAULT_CONFIG_FILE), configHandler.ConfigPath.GetConfigFilePath())
+	assert.FileExists(t, configHandler.ConfigPath.GetConfigFilePath())
 }
 
 func TestConfigHandler_Load(t *testing.T) {
-	configHandler, _, _ := setup(t)
+	configHandler, _ := setup(t)
 	configHandler.Init()
 
 	data, err := configHandler.Load()
 	assert.NoError(t, err)
 
-	assert.Equal(t, "pied-piper", data["name"])
+	assert.Equal(t, "pied-piper", data.Name)
+	assert.Equal(t, "A team of AI SubAgents for SDLC workflow", data.Description)
+	assert.Len(t, data.SubAgents, 6)
+	assert.Equal(t, "product-manager", data.SubAgents[0].Role)
+	assert.Equal(t, "Jared", data.SubAgents[0].Nickname)
 }
 
 func TestConfigHandler_PrettyPrint(t *testing.T) {
-	configHandler, _, _ := setup(t)
+	configHandler, _ := setup(t)
 	configHandler.Init()
 
 	configHandler.Load()

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/cobra"
-	team "github.com/sathish316/pied-piper/team"
+	config "github.com/sathish316/pied-piper/config"
 )
 
 var teamCmd = &cobra.Command{
@@ -23,15 +23,12 @@ var teamCreateCmd = &cobra.Command{
 	Short: "Create team and initialize config",
 	Long:  `Create team and initialize config`,
 	Run: func(cmd *cobra.Command, args []string) {
-		teamConfig := team.TeamConfig{
-			Path: filepath.Join(os.Getenv("HOME"), team.DEFAULT_CONFIG_DIR),
-			File: team.DEFAULT_CONFIG_FILE,
+		configPath := config.TeamConfigPath{
+			Path: filepath.Join(os.Getenv("HOME"), config.DEFAULT_CONFIG_DIR),
+			File: config.DEFAULT_CONFIG_FILE,
 		}
-		teamObj := team.Team{
-			TeamConfig: &teamConfig,
-		}
-		configHandler := &team.TeamConfigYamlHandler{
-			Team: &teamObj,
+		configHandler := &config.TeamConfigYamlHandler{
+			ConfigPath: configPath,
 		}
 		configHandler.Init()
 	},
@@ -42,19 +39,25 @@ var teamShowCmd = &cobra.Command{
 	Short: "Show team config",
 	Long:  `Show team config`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Showing team config...")
-		teamConfig := team.TeamConfig{
-			Path: filepath.Join(os.Getenv("HOME"), team.DEFAULT_CONFIG_DIR),
-			File: team.DEFAULT_CONFIG_FILE,
+		configPath := config.TeamConfigPath{
+			Path: filepath.Join(os.Getenv("HOME"), config.DEFAULT_CONFIG_DIR),
+			File: config.DEFAULT_CONFIG_FILE,
 		}
-		teamObj := team.Team{
-			TeamConfig: &teamConfig,
+		fmt.Println("Showing team config from file ", configPath.GetConfigFilePath())
+		configHandler := config.TeamConfigYamlHandler{
+			ConfigPath: configPath,
 		}
-		configHandler := team.TeamConfigYamlHandler{
-			Team: &teamObj,
+		_, err := configHandler.Load()
+		if err != nil {
+			fmt.Println("Error loading team config: ", err)
+			return
 		}
-		configHandler.Load()
-		configHandler.PrettyPrint()
+		configStr, err := configHandler.PrettyPrint()
+		if err != nil {
+			fmt.Println("Error pretty printing team config: ", err)
+			return
+		}
+		fmt.Println(configStr)
 	},
 }
 
