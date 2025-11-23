@@ -201,13 +201,15 @@ func init() {
 	subagentGenerateCmd.Flags().StringP("team", "t", "pied-piper", "Team name")
 	subagentGenerateCmd.Flags().StringP("name", "s", "", "Subagent name")
 	subagentGenerateCmd.Flags().StringP("target", "f", "", "Target coding agent (claude-code, cursor, etc.). Only claude-code is supported currently.")
-	subagentGenerateCmd.Flags().StringP("projectDir", "p", "", "Subagents are generated for a specific project directory. If not provided, subagents are generated in User directory for target.")
+	subagentGenerateCmd.Flags().StringP("project-dir", "p", "", "Subagents are generated for a specific project directory. If not provided, subagents are generated in User directory for target.")
+	subagentGenerateCmd.Flags().BoolP("skip-llm", "l", false, "Skip LLM API keys for subagent generation. Get prompts that you can run from Cursor or Claude Code instead.")
 	subagentGenerateCmd.MarkFlagRequired("name")
 	subagentGenerateCmd.MarkFlagRequired("target")
 	// Generate all config - flags, default, required
 	subagentGenerateAllCmd.Flags().StringP("team", "t", "pied-piper", "Team name")
 	subagentGenerateAllCmd.Flags().StringP("target", "f", "", "Target coding agent (claude-code, cursor, etc.). Only claude-code is supported currently.")
-	subagentGenerateAllCmd.Flags().StringP("projectDir", "p", "", "Subagents are generated for a specific project directory. If not provided, subagents are generated in User directory for target.")
+	subagentGenerateAllCmd.Flags().StringP("project-dir", "p", "", "Subagents are generated for a specific project directory. If not provided, subagents are generated in User directory for target.")
+	subagentGenerateAllCmd.Flags().BoolP("skip-llm", "l", false, "Skip LLM API keys for subagent generation. Get prompts that you can run from Cursor or Claude Code instead.")
 	subagentGenerateAllCmd.MarkFlagRequired("target")
 	// Add sub-commands
 	subagentCmd.AddCommand(subagentListCmd)
