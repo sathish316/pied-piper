@@ -52,6 +52,14 @@ type SubagentConfigHandler interface {
 	UpdateSpecYaml(teamName string, subagentName string, yamlStr []byte) (string, error)
 }
 
+func GetSubagentSpecFilePath(teamConfig *TeamConfig, subagentName string) string {
+	return filepath.Join(teamConfig.ConfigPath.Path, "subagents", subagentName+".yml")
+}
+
+func GetSubagentSpecDir(teamConfig *TeamConfig) string {
+	return filepath.Join(teamConfig.ConfigPath.Path, "subagents")
+}
+
 type SubagentConfigYamlHandler struct {
 	Config *TeamConfig
 }
@@ -78,8 +86,7 @@ func (c *SubagentConfigYamlHandler) GetSpec(teamName string, subagentName string
 	//FIXME: Make this work for multiple subagents with same role
 	// Go to <team-config-dir>/subagents/<subagent-name>.yml
 	// Read YAML file
-	teamConfigPath := c.Config.ConfigPath.Path
-	subagentSpecConfigPath := filepath.Join(teamConfigPath, "subagents", subagentName+".yml")
+	subagentSpecConfigPath := GetSubagentSpecFilePath(c.Config, subagentName)
 	yamlFile, err := os.ReadFile(subagentSpecConfigPath)
 	if err != nil {
 		return nil, fmt.Errorf("error reading subagent spec config file: %w", err)
@@ -112,8 +119,7 @@ func (c *SubagentConfigYamlHandler) UpdateSpecYaml(teamName string, subagentName
 	//FIXME: Make this work for multiple subagents with same role
 	// Go to <team-config-dir>/subagents/<subagent-name>.yml
 	// Write YAML file
-	teamConfigPath := c.Config.ConfigPath.Path
-	subagentSpecConfigPath := filepath.Join(teamConfigPath, "subagents", subagentName+".yml")
+	subagentSpecConfigPath := GetSubagentSpecFilePath(c.Config, subagentName)
 	fmt.Println("Updating subagent-spec config file at ", subagentSpecConfigPath)
 	err := os.WriteFile(subagentSpecConfigPath, yamlStr, 0644)
 	if err != nil {
