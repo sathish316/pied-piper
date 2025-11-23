@@ -5,8 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/spf13/cobra"
 	config "github.com/sathish316/pied-piper/config"
+	"github.com/spf13/cobra"
 )
 
 var teamCmd = &cobra.Command{
@@ -23,14 +23,20 @@ var teamCreateCmd = &cobra.Command{
 	Short: "Create team and initialize config",
 	Long:  `Create team and initialize config`,
 	Run: func(cmd *cobra.Command, args []string) {
+		teamName, _ := cmd.Flags().GetString("name")
 		configPath := config.TeamConfigPath{
-			Path: filepath.Join(os.Getenv("HOME"), config.DEFAULT_CONFIG_DIR),
+			Path: filepath.Join(os.Getenv("HOME"), config.DEFAULT_CONFIG_DIR, teamName),
 			File: config.DEFAULT_CONFIG_FILE,
 		}
 		configHandler := &config.TeamConfigYamlHandler{
 			ConfigPath: configPath,
 		}
-		configHandler.Init()
+		err := configHandler.Init()
+		if err != nil {
+			fmt.Println("Error initializing team config: ", err)
+			return
+		}
+		fmt.Printf("Team config initialized at %s\n", configPath.GetConfigFilePath())
 	},
 }
 
@@ -39,8 +45,9 @@ var teamShowCmd = &cobra.Command{
 	Short: "Show team config",
 	Long:  `Show team config`,
 	Run: func(cmd *cobra.Command, args []string) {
+		teamName, _ := cmd.Flags().GetString("name")
 		configPath := config.TeamConfigPath{
-			Path: filepath.Join(os.Getenv("HOME"), config.DEFAULT_CONFIG_DIR),
+			Path: filepath.Join(os.Getenv("HOME"), config.DEFAULT_CONFIG_DIR, teamName),
 			File: config.DEFAULT_CONFIG_FILE,
 		}
 		fmt.Println("Showing team config from file ", configPath.GetConfigFilePath())
@@ -62,8 +69,11 @@ var teamShowCmd = &cobra.Command{
 }
 
 func init() {
+	// Create command flags
+	teamCreateCmd.Flags().StringP("name", "n", "pied-piper", "Team name")
+	// Show command flags
+	teamShowCmd.Flags().StringP("name", "n", "pied-piper", "Team name")
 	// Add subcommands to config
 	teamCmd.AddCommand(teamCreateCmd)
 	teamCmd.AddCommand(teamShowCmd)
 }
-

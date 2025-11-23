@@ -3,11 +3,12 @@ package cli
 import (
 	"fmt"
 
-	config "github.com/sathish316/pied-piper/config"
-	"github.com/spf13/cobra"
 	"os"
 	"path/filepath"
+
+	config "github.com/sathish316/pied-piper/config"
 	"github.com/sathish316/pied-piper/generator"
+	"github.com/spf13/cobra"
 )
 
 var subagentCmd = &cobra.Command{
@@ -27,7 +28,7 @@ var subagentListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		teamName, _ := cmd.Flags().GetString("team")
 		fmt.Printf("Listing subagents of team %s...\n", teamName)
-		teamConfig, err := getTeamConfig()
+		teamConfig, err := getTeamConfig(teamName)
 		if err != nil {
 			fmt.Println("Error getting team config: ", err)
 			return
@@ -54,7 +55,7 @@ var subagentShowCmd = &cobra.Command{
 		teamName, _ := cmd.Flags().GetString("team")
 		subagentName, _ := cmd.Flags().GetString("name")
 		fmt.Printf("Showing subagent %s of team %s...\n", subagentName, teamName)
-		teamConfig, err := getTeamConfig()
+		teamConfig, err := getTeamConfig(teamName)
 		if err != nil {
 			fmt.Println("Error getting team config: ", err)
 			return
@@ -87,7 +88,7 @@ var subagentGenerateCmd = &cobra.Command{
 		}
 		fmt.Printf("Generating subagent %s for team %s and Coding Agent target: %s...\n", subagentName, teamName, codingAgentTarget.ToString())
 		// Get team config
-		teamConfig, err := getTeamConfig()
+		teamConfig, err := getTeamConfig(teamName)
 		if err != nil {
 			fmt.Println("Error getting team config: ", err)
 			return
@@ -104,7 +105,7 @@ var subagentGenerateCmd = &cobra.Command{
 		}
 		subagentYamlFilePath, err := subagentGenerator.GenerateSubagentYamlForCodingAgent(subagentConfig, codingAgentTarget)
 		if err != nil {
-			fmt.Println("Error generating Subagent for %s:", err, codingAgentTarget.ToString())
+			fmt.Printf("Error generating Subagent for %s: %s\n", codingAgentTarget.ToString(), err)
 			return
 		}
 		fmt.Printf("Subagent yaml file generated at %s\n", subagentYamlFilePath)
@@ -126,7 +127,7 @@ var subagentGenerateAllCmd = &cobra.Command{
 		}
 		fmt.Printf("Generating all subagents for team %s and Coding Agent target: %s...\n", teamName, codingAgentTarget.ToString())
 		// Get team config
-		teamConfig, err := getTeamConfig()
+		teamConfig, err := getTeamConfig(teamName)
 		if err != nil {
 			fmt.Println("Error getting team config: ", err)
 			return
@@ -139,7 +140,7 @@ var subagentGenerateAllCmd = &cobra.Command{
 			}
 			subagentYamlFilePath, err := subagentGenerator.GenerateSubagentYamlForCodingAgent(&subagentConfig, codingAgentTarget)
 			if err != nil {
-				fmt.Println("Error generating Subagent for %s:", err, codingAgentTarget.ToString())
+				fmt.Printf("Error generating Subagent for %s: %s\n", codingAgentTarget.ToString(), err)
 				return
 			}
 			fmt.Printf("Subagent yaml file generated at %s\n", subagentYamlFilePath)
@@ -148,9 +149,9 @@ var subagentGenerateAllCmd = &cobra.Command{
 }
 
 // FIXME: Make this work for multiple teams
-func getTeamConfig() (*config.TeamConfig, error) {
+func getTeamConfig(teamName string) (*config.TeamConfig, error) {
 	configPath := config.TeamConfigPath{
-		Path: filepath.Join(os.Getenv("HOME"), config.DEFAULT_CONFIG_DIR),
+		Path: filepath.Join(os.Getenv("HOME"), config.DEFAULT_CONFIG_DIR, teamName),
 		File: config.DEFAULT_CONFIG_FILE,
 	}
 	configHandler := config.TeamConfigYamlHandler{
@@ -171,22 +172,22 @@ func getCodingAgentTarget(codingAgent string, projectDir string) (*config.Coding
 		if projectDir == "" {
 			targetDir := claudeCodingAgent.GetUserSubagentConfigDir()
 			codingAgentTarget := &config.CodingAgentConfig{
-				Target: config.ClaudeCode,
-				TargetDir: targetDir,
+				Target:        config.ClaudeCode,
+				TargetDir:     targetDir,
 				TargetDirType: config.TargetDirTypeUser,
 			}
 			return codingAgentTarget, nil
 		} else {
 			targetDir := claudeCodingAgent.GetProjectSubagentConfigDir(projectDir)
 			codingAgentTarget := &config.CodingAgentConfig{
-				Target: config.ClaudeCode,
-				TargetDir: targetDir,
+				Target:        config.ClaudeCode,
+				TargetDir:     targetDir,
 				TargetDirType: config.TargetDirTypeProject,
 			}
 			return codingAgentTarget, nil
 		}
 	} else {
-		return nil, fmt.Errorf("Target %s is not supported. Only claude-code is supported currently.\n", codingAgent)
+		return nil, fmt.Errorf("target %s is not supported, only claude-code is supported currently", codingAgent)
 	}
 }
 func init() {
