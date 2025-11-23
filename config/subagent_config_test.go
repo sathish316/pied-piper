@@ -5,8 +5,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"path/filepath"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func setupSubagentTest(t *testing.T) (*TeamConfigYamlHandler, string) {
@@ -33,7 +34,7 @@ func setupSubagentTest(t *testing.T) (*TeamConfigYamlHandler, string) {
 	return &teamConfigHandler, tmpDir
 }
 
-func setupSubagentSpecTest(t *testing.T, teamConfigDir string) (string) {
+func setupSubagentSpecTest(t *testing.T, teamConfigDir string) string {
 	t.Helper()
 	subagentSpecConfigPath := filepath.Join(teamConfigDir, "subagents", "software-engineer.yml")
 	subagentSpecConfigContent := `
@@ -137,7 +138,7 @@ func TestSubagentConfigHandler_UpdateSpec(t *testing.T) {
 	}
 
 	architectSpec := SubagentSpecConfig{
-		Role: "architect",
+		Role:     "architect",
 		Nickname: "Richard",
 		TaskLabels: TaskLabelsConfig{
 			Incoming: []string{"@ready-for-hld"},

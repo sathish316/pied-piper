@@ -11,6 +11,7 @@ import (
 
 func TestClaudeCodingAgent(t *testing.T) {
 	claudeCodingAgent := &ClaudeCodingAgent{}
+
 	assert.Equal(t, "claude-code", claudeCodingAgent.GetName())
 	assert.Equal(t, filepath.Join(os.Getenv("HOME"), ".claude", "agents"), claudeCodingAgent.GetUserSubagentConfigDir())
 

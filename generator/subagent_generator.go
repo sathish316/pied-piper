@@ -56,3 +56,17 @@ func (g *SDLCSubAgentGenerator) GenerateSubagentYaml(subagentSpec *subagent.Suba
 	}
 	return subagentConfigFilePath, nil
 }
+
+func (g *SDLCSubAgentGenerator) GenerateSubagentYamlForCodingAgent(subagentConfig *config.SubagentConfig, codingAgentConfig config.CodingAgentConfig) (string, error) {
+	// Convert SubagentConfig to SubagentSpec
+	subagentSpec, err := g.GenerateSubagentSpec(subagentConfig.Role)
+	if err != nil {
+		return "", err
+	}
+	//TODO: use codingAgent to generate subagent yaml specific to claude-code
+	subagentYamlFilePath, err := g.GenerateSubagentYaml(subagentSpec)
+	if err != nil {
+		return "", err
+	}
+	return subagentYamlFilePath, nil
+}
