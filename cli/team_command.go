@@ -2,8 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 
 	config "github.com/sathish316/pied-piper/config"
 	"github.com/spf13/cobra"
@@ -25,10 +23,10 @@ var teamCreateCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		teamName, _ := cmd.Flags().GetString("name")
 		configPath := config.TeamConfigPath{
-			Path: filepath.Join(os.Getenv("HOME"), config.DEFAULT_CONFIG_DIR, teamName),
+			Path: config.GetTeamConfigDir(teamName),
 			File: config.DEFAULT_CONFIG_FILE,
 		}
-		configHandler := &config.TeamConfigYamlHandler{
+		configHandler := config.TeamConfigYamlHandler{
 			ConfigPath: configPath,
 		}
 		err := configHandler.Init()
@@ -47,7 +45,7 @@ var teamShowCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		teamName, _ := cmd.Flags().GetString("name")
 		configPath := config.TeamConfigPath{
-			Path: filepath.Join(os.Getenv("HOME"), config.DEFAULT_CONFIG_DIR, teamName),
+			Path: config.GetTeamConfigDir(teamName),
 			File: config.DEFAULT_CONFIG_FILE,
 		}
 		fmt.Println("Showing team config from file ", configPath.GetConfigFilePath())

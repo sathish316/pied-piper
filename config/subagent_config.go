@@ -48,6 +48,8 @@ type SubagentConfigHandler interface {
 	List(teamName string) ([]SubagentConfig, error)
 	Show(teamName string, subagentName string) (*SubagentConfig, error)
 	GetSpec(teamName string, subagentName string) (*SubagentSpecConfig, error)
+	UpdateSpec(teamName string, subagentName string, subagentSpec *SubagentSpecConfig) (string, error)
+	UpdateSpecYaml(teamName string, subagentName string, yamlStr []byte) (string, error)
 }
 
 type SubagentConfigYamlHandler struct {
@@ -97,16 +99,23 @@ func (c *SubagentConfigYamlHandler) GetSpec(teamName string, subagentName string
 func (c *SubagentConfigYamlHandler) UpdateSpec(teamName string, subagentName string, subagentSpec *SubagentSpecConfig) (string, error) {
 	//FIXME: Make this work for multiple teams
 	//FIXME: Make this work for multiple subagents with same role
+	// Marshal subagentSpec to YAML
+	yamlStr, err := yaml.Marshal(subagentSpec)
+	if err != nil {
+		return "", fmt.Errorf("error marshalling subagent spec config: %w", err)
+	}
+	return c.UpdateSpecYaml(teamName, subagentName, yamlStr)
+}
+
+func (c *SubagentConfigYamlHandler) UpdateSpecYaml(teamName string, subagentName string, yamlStr []byte) (string, error) {
+	//FIXME: Make this work for multiple teams
+	//FIXME: Make this work for multiple subagents with same role
 	// Go to <team-config-dir>/subagents/<subagent-name>.yml
 	// Write YAML file
 	teamConfigPath := c.Config.ConfigPath.Path
 	subagentSpecConfigPath := filepath.Join(teamConfigPath, "subagents", subagentName+".yml")
 	fmt.Println("Updating subagent-spec config file at ", subagentSpecConfigPath)
-	yamlStr, err := yaml.Marshal(subagentSpec)
-	if err != nil {
-		return "", fmt.Errorf("error marshalling subagent spec config: %w", err)
-	}
-	err = os.WriteFile(subagentSpecConfigPath, yamlStr, 0644)
+	err := os.WriteFile(subagentSpecConfigPath, yamlStr, 0644)
 	if err != nil {
 		return "", fmt.Errorf("error writing subagent spec config file: %w", err)
 	}

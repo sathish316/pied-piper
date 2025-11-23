@@ -23,6 +23,7 @@ type TeamConfig struct {
 	ConfigPath	TeamConfigPath
 }
 
+
 func (t *TeamConfig) FindSubagentByRole(role string) (*SubagentConfig, error) {
 	for _, subagent := range t.SubAgents {
 		if subagent.Role == role {
@@ -35,6 +36,10 @@ func (t *TeamConfig) FindSubagentByRole(role string) (*SubagentConfig, error) {
 type TeamConfigPath struct {
 	Path string
 	File string
+}
+
+func GetTeamConfigDir(teamName string) string {
+	return filepath.Join(os.Getenv("HOME"), DEFAULT_CONFIG_DIR, teamName)
 }
 
 func (t *TeamConfigPath) GetConfigFilePath() string {
@@ -66,10 +71,39 @@ func (c *TeamConfigYamlHandler) Init() error {
 		return fmt.Errorf("error writing config file: %w", err)
 	}
 
+	// Load the config so we can access team name and other data
+	_, err = c.Load()
+	if err != nil {
+		return fmt.Errorf("error loading config after init: %w", err)
+	}
+
 	// Ensure subagents dir exists
-	err = os.MkdirAll(filepath.Join(c.ConfigPath.Path, "subagents"), 0755)
+	subagentsDir := filepath.Join(c.ConfigPath.Path, "subagents")
+	fmt.Println("Initializing subagents dir at ", subagentsDir)
+	err = os.MkdirAll(subagentsDir, 0755)
 	if err != nil {
 		return fmt.Errorf("error creating subagents directory: %w", err)
+	}
+	// Ensure templates dir exists and initialize required templates
+	templatesDir := filepath.Join(c.ConfigPath.Path, "templates")
+	fmt.Println("Initializing templates dir at ", templatesDir)
+	err = os.MkdirAll(templatesDir, 0755)
+	if err != nil {
+		return fmt.Errorf("error creating templates directory: %w", err)
+	}
+	// Initialize required templates
+	templatesConfig := TemplatesConfig{
+		TeamName: c.Config.Name,
+	}
+	subagentTemplateClaudeCodePath := templatesConfig.GetSubagentTemplatePath(c.ConfigPath.Path, ClaudeCode)
+	subagentTemplateClaudeCodeContent, err := templatesConfig.GetSubagentTemplateContent(ClaudeCode)
+	if err != nil {
+		return fmt.Errorf("error getting subagent template for claude-code: %w", err)
+	}
+	err = os.WriteFile(subagentTemplateClaudeCodePath, subagentTemplateClaudeCodeContent, 0644)
+	fmt.Println("Initializing claude-code subagent template at ", subagentTemplateClaudeCodePath)
+	if err != nil {
+		return fmt.Errorf("error writing subagent template for claude-code: %w", err)
 	}
 	return nil
 }
