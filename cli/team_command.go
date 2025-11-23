@@ -71,7 +71,7 @@ func init() {
 	teamCreateCmd.Flags().StringP("name", "n", "pied-piper", "Team name")
 	// Show command flags
 	teamShowCmd.Flags().StringP("name", "n", "pied-piper", "Team name")
-	// Add subcommands to config
+	// Add sub-commands
 	teamCmd.AddCommand(teamCreateCmd)
 	teamCmd.AddCommand(teamShowCmd)
 }

@@ -28,4 +28,6 @@ func init() {
 	// Add all commands to root
 	rootCmd.AddCommand(teamCmd)
 	rootCmd.AddCommand(subagentCmd)
+	rootCmd.AddCommand(exportCmd)
+	rootCmd.AddCommand(importCmd)
 }
