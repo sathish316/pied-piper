@@ -1,3 +1,4 @@
-package team
+package generator
 
-// TODO: Implement Claude Code SubAgent Prompt Generator
+type ClaudeCodeSubAgentPromptGenerator struct {
+}

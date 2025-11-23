@@ -1,15 +1,25 @@
 - [ ] Project structure and features
     - [X] Go skeleton project
     - [X] CLI init
+        - [ ] CLI create, get for default team
+        - [ ] CLI list, get for subagent
+        - [ ] CLI list, create, get for multiple teams
     - [X] YML config manager
     - [ ] Templating language
-    - [ ] Sync with claude code
-    - [ ] Workflow state machine library?
+    - [ ] Subagents yml generator from config
+    - [ ] Subagent workflow description using Claude code or LLM
+    - [ ] Subagent role description using Claude code or LLM
+    - [ ] Exporter for claude code
+    - [ ] Importer for claude code
     - [ ] Workflow state machine visualization
-    - [ ] Subagents generator from Metaprompt
+    - [ ] Externalize config file and template files in ~/.pied-piper/ directory
 - [ ] CLI command and handler
-    - [ ] Team handler
-    - [ ] Subagent handler
+    - [X] Team handler
+    - [X] Subagent handler
+    - [ ] Subagent generate, export, import handlers for all subagents
+    - [ ] Subagent generate, export, import handlers for one subagent
+    - [ ] Subagent prompt template handlers - get or edit or show for a coding CLI
+    - [ ] Subagent prompt generation using coding CLI
 - [ ] Package management
     - [ ] Github release version manager
     - [ ] Curl installer

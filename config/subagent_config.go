@@ -2,18 +2,38 @@ package config
 
 import (
 	"fmt"
-
 	"gopkg.in/yaml.v3"
+	"os"
+	"path/filepath"
 )
 
+type TaskLabelsConfig struct {
+	Incoming []string `yaml:"incoming"`
+	Outgoing []string `yaml:"outgoing"`
+}
+
+type WikiLabelsConfig struct {
+	Incoming []string `yaml:"incoming"`
+	Outgoing []string `yaml:"outgoing"`
+}
+
 type SubagentConfig struct {
-	Role		string				`yaml:"role"`
-	Description string              `yaml:"description"`
-	Nickname	string				`yaml:"nickname"`
-	Prompt      string              `yaml:"prompt"`
-	Tools       []string            `yaml:"tools"`
-	TaskLabels  map[string][]string `yaml:"task_labels"`
-	WikiLabels  map[string][]string `yaml:"wiki_labels"`
+	Role        string           `yaml:"role"`
+	Description string           `yaml:"description"`
+	Nickname    string           `yaml:"nickname"`
+	TaskLabels  TaskLabelsConfig `yaml:"task_labels"`
+	WikiLabels  WikiLabelsConfig `yaml:"wiki_labels"`
+}
+
+type SubagentSpecConfig struct {
+	Role                string           `yaml:"role"`
+	Description         string           `yaml:"description"`
+	Nickname            string           `yaml:"nickname"`
+	TaskLabels          TaskLabelsConfig `yaml:"task_labels"`
+	WikiLabels          WikiLabelsConfig `yaml:"wiki_labels"`
+	WorkflowDescription string           `yaml:"workflow_description"`
+	RoleDescription     string           `yaml:"role_description"`
+	Memory              string           `yaml:"memory"`
 }
 
 func (s *SubagentConfig) ToString() string {
@@ -27,6 +47,7 @@ func (s *SubagentConfig) ToString() string {
 type SubagentConfigHandler interface {
 	List(teamName string) ([]SubagentConfig, error)
 	Show(teamName string, subagentName string) (*SubagentConfig, error)
+	GetSpec(teamName string, subagentName string) (*SubagentSpecConfig, error)
 }
 
 type SubagentConfigYamlHandler struct {
@@ -47,5 +68,47 @@ func (c *SubagentConfigYamlHandler) Show(teamName string, subagentName string) (
 			return &subagent, nil
 		}
 	}
-	return nil, fmt.Errorf("Subagent %s not found", subagentName)
+	return nil, fmt.Errorf("subagent %s not found", subagentName)
+}
+
+func (c *SubagentConfigYamlHandler) GetSpec(teamName string, subagentName string) (*SubagentSpecConfig, error) {
+	//FIXME: Make this work for multiple teams
+	//FIXME: Make this work for multiple subagents with same role
+	// Go to <team-config-dir>/subagents/<subagent-name>.yml
+	// Read YAML file
+	teamConfigPath := c.Config.ConfigPath.Path
+	subagentSpecConfigPath := filepath.Join(teamConfigPath, "subagents", subagentName+".yml")
+	yamlFile, err := os.ReadFile(subagentSpecConfigPath)
+	if err != nil {
+		return nil, fmt.Errorf("error reading subagent spec config file: %w", err)
+	}
+
+	// Initialize struct
+	var subagentSpecConfig SubagentSpecConfig
+
+	// Unmarshal YAML data into the struct
+	err = yaml.Unmarshal(yamlFile, &subagentSpecConfig)
+	if err != nil {
+		return nil, fmt.Errorf("error parsing subagent spec config file: %w", err)
+	}
+	return &subagentSpecConfig, nil
+}
+
+func (c *SubagentConfigYamlHandler) UpdateSpec(teamName string, subagentName string, subagentSpec *SubagentSpecConfig) (string, error) {
+	//FIXME: Make this work for multiple teams
+	//FIXME: Make this work for multiple subagents with same role
+	// Go to <team-config-dir>/subagents/<subagent-name>.yml
+	// Write YAML file
+	teamConfigPath := c.Config.ConfigPath.Path
+	subagentSpecConfigPath := filepath.Join(teamConfigPath, "subagents", subagentName+".yml")
+	fmt.Println("Updating subagent-spec config file at ", subagentSpecConfigPath)
+	yamlStr, err := yaml.Marshal(subagentSpec)
+	if err != nil {
+		return "", fmt.Errorf("error marshalling subagent spec config: %w", err)
+	}
+	err = os.WriteFile(subagentSpecConfigPath, yamlStr, 0644)
+	if err != nil {
+		return "", fmt.Errorf("error writing subagent spec config file: %w", err)
+	}
+	return subagentSpecConfigPath, nil
 }

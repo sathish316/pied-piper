@@ -1,15 +1,97 @@
 name: "pied-piper"
 description: "A team of AI SubAgents for SDLC workflow"
 subagents:
+  - role: "microsprint-orchestrator"
+    description: ""
+    nickname: "Monica"
+    task_labels:
+      incoming:
+      - "@open"
+      - "@ready-for-plan"
+      - "@approve-plan"
+      - "@reject-plan"
+      - "@approve-make"
+      - "@reject-make"
+      outgoing:
+      - "@define-requirement"
+    wiki_labels:
+      incoming:
+      - "plan-feature-x task"
+      outgoing:
+      - "GOAL_<TASK_ID>.md"
   - role: "product-manager"
+    description: ""
     nickname: "Jared"
+    task_labels:
+      incoming:
+      - "@define-requirement"
+      outgoing:
+      - "@ready-for-hld"
+    wiki_labels:
+      incoming: []
+      outgoing:
+      - "REQUIREMENT_<TASK_ID>.md"
   - role: "architect"
+    description: ""
     nickname: "Richard"
+    task_labels:
+      incoming:
+      - "@ready-for-hld"
+      outgoing:
+      - "@ready-for-lld"
+    wiki_labels:
+      incoming:
+      - "REQUIREMENT_<TASK_ID>.md"
+      outgoing:
+      - "HLD_<TASK_ID>.md"
   - role: "software-engineer"
+    description: ""
     nickname: "Gilfoyle"
+    task_labels:
+      incoming:
+      - "@ready-for-lld"
+      - "@ready-for-dev"
+      - "@code-review-rejected"
+      outgoing:
+      - "@ready-for-code-review"
+    wiki_labels:
+      incoming:
+      - "HLD_<TASK_ID>.md"
+      - "LLD_<TASK_ID>.md"
+      outgoing:
+      - "LLD_<TASK_ID>.md"
   - role: "code-reviewer"
+    description: ""
     nickname: "Dinesh"
+    task_labels:
+      incoming:
+      - "@ready-for-code-review"
+      outgoing:
+      - "@code-review-done"
+      - "@code-review-rejected"
+    wiki_labels:
+      incoming: []
+      outgoing: []
   - role: "code-validator"
+    description: ""
     nickname: "Erlich"
+    task_labels:
+      incoming:
+      - "@ready-for-code-validation"
+      - "@code-validation-failed"
+      outgoing:
+      - "@code-validation-done"
+    wiki_labels:
+      incoming:
+      outgoing: []
   - role: "build-engineer"
+    description: ""
     nickname: "Jian Yang"
+    task_labels:
+      incoming:
+      - "@ready-for-merge"
+      outgoing:
+      - "@closed"
+    wiki_labels:
+      incoming: []
+      outgoing: []

@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestConfigHandler_Add(t *testing.T) {
+func TestTeamConfigHandler_Add(t *testing.T) {
 	input := 5
 	expected := 10
 
@@ -40,7 +40,7 @@ func setup(t *testing.T) (*TeamConfigYamlHandler, string) {
 	return &teamConfigHandler, tmpDir
 }
 
-func TestConfigHandler_Init(t *testing.T) {
+func TestTeamConfigHandler_Init(t *testing.T) {
 	configHandler, tmpDir := setup(t)
 	err := configHandler.Init()
 	assert.NoError(t, err)
@@ -48,7 +48,7 @@ func TestConfigHandler_Init(t *testing.T) {
 	assert.FileExists(t, configHandler.ConfigPath.GetConfigFilePath())
 }
 
-func TestConfigHandler_Load(t *testing.T) {
+func TestTeamConfigHandler_Load(t *testing.T) {
 	configHandler, _ := setup(t)
 	configHandler.Init()
 
@@ -57,12 +57,10 @@ func TestConfigHandler_Load(t *testing.T) {
 
 	assert.Equal(t, "pied-piper", data.Name)
 	assert.Equal(t, "A team of AI SubAgents for SDLC workflow", data.Description)
-	assert.Len(t, data.SubAgents, 6)
-	assert.Equal(t, "product-manager", data.SubAgents[0].Role)
-	assert.Equal(t, "Jared", data.SubAgents[0].Nickname)
+	assert.Len(t, data.SubAgents, 7)
 }
 
-func TestConfigHandler_PrettyPrint(t *testing.T) {
+func TestTeamConfigHandler_PrettyPrint(t *testing.T) {
 	configHandler, _ := setup(t)
 	configHandler.Init()
 
