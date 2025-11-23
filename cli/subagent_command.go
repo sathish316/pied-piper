@@ -80,31 +80,12 @@ var subagentGenerateCmd = &cobra.Command{
 		subagentName, _ := cmd.Flags().GetString("name")
 		target, _ := cmd.Flags().GetString("target")
 		projectDir, _ := cmd.Flags().GetString("projectDir")
-		var codingAgentTarget config.CodingAgentConfig
-		// Initialize Coding Agent (Claude Code) specific config
-		if target == "claude-code" {
-			claudeCodingAgent := &config.ClaudeCodingAgent{}
-			if projectDir == "" {
-				targetDir := claudeCodingAgent.GetUserSubagentConfigDir()
-				fmt.Printf("Generating subagent %s for team %s and target %s in User directory %s...\n", subagentName, teamName, target, targetDir)
-				codingAgentTarget = config.CodingAgentConfig{
-					Target: config.ClaudeCode,
-					TargetDir: targetDir,
-					TargetDirType: config.TargetDirTypeUser,
-				}
-			} else {
-				targetDir := claudeCodingAgent.GetProjectSubagentConfigDir(projectDir)
-				fmt.Printf("Generating subagent %s for team %s and target %s in Project directory %s...\n", subagentName, teamName, target, targetDir)
-				codingAgentTarget = config.CodingAgentConfig{
-					Target: config.ClaudeCode,
-					TargetDir: targetDir,
-					TargetDirType: config.TargetDirTypeProject,
-				}
-			}
-		} else {
-			fmt.Printf("Target %s is not supported. Only claude-code is supported currently.\n", target)
+		codingAgentTarget, err := getCodingAgentTarget(target, projectDir)
+		if err != nil {
+			fmt.Println("CodingAgentConfig Error: ", err)
 			return
 		}
+		fmt.Printf("Generating subagent %s for team %s and Coding Agent target: %s...\n", subagentName, teamName, codingAgentTarget.ToString())
 		// Get team config
 		teamConfig, err := getTeamConfig()
 		if err != nil {
@@ -147,6 +128,31 @@ func getTeamConfig() (*config.TeamConfig, error) {
 	return teamConfig, nil
 }
 
+func getCodingAgentTarget(codingAgent string, projectDir string) (*config.CodingAgentConfig, error) {
+	// Initialize Coding Agent (Claude Code) specific config
+	if codingAgent == string(config.ClaudeCode) {
+		claudeCodingAgent := &config.ClaudeCodingAgent{}
+		if projectDir == "" {
+			targetDir := claudeCodingAgent.GetUserSubagentConfigDir()
+			codingAgentTarget := &config.CodingAgentConfig{
+				Target: config.ClaudeCode,
+				TargetDir: targetDir,
+				TargetDirType: config.TargetDirTypeUser,
+			}
+			return codingAgentTarget, nil
+		} else {
+			targetDir := claudeCodingAgent.GetProjectSubagentConfigDir(projectDir)
+			codingAgentTarget := &config.CodingAgentConfig{
+				Target: config.ClaudeCode,
+				TargetDir: targetDir,
+				TargetDirType: config.TargetDirTypeProject,
+			}
+			return codingAgentTarget, nil
+		}
+	} else {
+		return nil, fmt.Errorf("Target %s is not supported. Only claude-code is supported currently.\n", codingAgent)
+	}
+}
 func init() {
 	// List config - flags, default,required
 	subagentListCmd.Flags().StringP("team", "t", "pied-piper", "Team name")

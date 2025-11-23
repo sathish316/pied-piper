@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -36,7 +37,7 @@ type CodingAgentConfig struct {
 }
 
 func (c *CodingAgentConfig) ToString() string {
-	return "Agent: " + string(c.Target) + ", TargetDir: " + c.TargetDir + ", TargetDirType: " + string(c.TargetDirType)
+	return fmt.Sprintf("%s (TargetDir(%s): %s)", string(c.Target), string(c.TargetDirType), c.TargetDir)
 }
 
 type Target string

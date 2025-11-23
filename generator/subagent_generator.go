@@ -57,7 +57,7 @@ func (g *SDLCSubAgentGenerator) GenerateSubagentYaml(subagentSpec *subagent.Suba
 	return subagentConfigFilePath, nil
 }
 
-func (g *SDLCSubAgentGenerator) GenerateSubagentYamlForCodingAgent(subagentConfig *config.SubagentConfig, codingAgentConfig config.CodingAgentConfig) (string, error) {
+func (g *SDLCSubAgentGenerator) GenerateSubagentYamlForCodingAgent(subagentConfig *config.SubagentConfig, codingAgentConfig *config.CodingAgentConfig) (string, error) {
 	// Convert SubagentConfig to SubagentSpec
 	subagentSpec, err := g.GenerateSubagentSpec(subagentConfig.Role)
 	if err != nil {
