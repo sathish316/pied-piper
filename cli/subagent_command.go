@@ -111,6 +111,42 @@ var subagentGenerateCmd = &cobra.Command{
 	},
 }
 
+var subagentGenerateAllCmd = &cobra.Command{
+	Use:   "generate-all",
+	Short: "Generate all subagents for a team and Coding Agent (Claude Code, Cursor, etc.)",
+	Long:  `Generate all subagents for a team and Coding Agent (Claude Code, Cursor, etc.)`,
+	Run: func(cmd *cobra.Command, args []string) {
+		teamName, _ := cmd.Flags().GetString("team")
+		target, _ := cmd.Flags().GetString("target")
+		projectDir, _ := cmd.Flags().GetString("projectDir")
+		codingAgentTarget, err := getCodingAgentTarget(target, projectDir)
+		if err != nil {
+			fmt.Println("CodingAgentConfig Error: ", err)
+			return
+		}
+		fmt.Printf("Generating all subagents for team %s and Coding Agent target: %s...\n", teamName, codingAgentTarget.ToString())
+		// Get team config
+		teamConfig, err := getTeamConfig()
+		if err != nil {
+			fmt.Println("Error getting team config: ", err)
+			return
+		}
+		// Get all subagents config
+		for _, subagentConfig := range teamConfig.SubAgents {
+			// Generate subagent yaml for coding agent
+			subagentGenerator := &generator.SDLCSubAgentGenerator{
+				TeamConfig: teamConfig,
+			}
+			subagentYamlFilePath, err := subagentGenerator.GenerateSubagentYamlForCodingAgent(&subagentConfig, codingAgentTarget)
+			if err != nil {
+				fmt.Println("Error generating Subagent for %s:", err, codingAgentTarget.ToString())
+				return
+			}
+			fmt.Printf("Subagent yaml file generated at %s\n", subagentYamlFilePath)
+		}
+	},
+}
+
 // FIXME: Make this work for multiple teams
 func getTeamConfig() (*config.TeamConfig, error) {
 	configPath := config.TeamConfigPath{
@@ -167,8 +203,14 @@ func init() {
 	subagentGenerateCmd.Flags().StringP("projectDir", "p", "", "Subagents are generated for a specific project directory. If not provided, subagents are generated in User directory for target.")
 	subagentGenerateCmd.MarkFlagRequired("name")
 	subagentGenerateCmd.MarkFlagRequired("target")
+	// Generate all config - flags, default, required
+	subagentGenerateAllCmd.Flags().StringP("team", "t", "pied-piper", "Team name")
+	subagentGenerateAllCmd.Flags().StringP("target", "f", "", "Target coding agent (claude-code, cursor, etc.). Only claude-code is supported currently.")
+	subagentGenerateAllCmd.Flags().StringP("projectDir", "p", "", "Subagents are generated for a specific project directory. If not provided, subagents are generated in User directory for target.")
+	subagentGenerateAllCmd.MarkFlagRequired("target")
 	// Add sub-commands
 	subagentCmd.AddCommand(subagentListCmd)
 	subagentCmd.AddCommand(subagentShowCmd)
 	subagentCmd.AddCommand(subagentGenerateCmd)
+	subagentCmd.AddCommand(subagentGenerateAllCmd)
 }
