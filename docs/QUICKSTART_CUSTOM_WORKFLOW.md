@@ -82,7 +82,7 @@ pied-piper subagent show --team "test-titans" --name "unittest-programmer"
 ### 3. Edit your team's workflow
 
 ```bash
-vim ~/.pied-piper/teams/test-titans/team-config.yml
+vim ~/.pied-piper/test-titans/team-config.yml
 ``` 
 
 ```yml
@@ -152,6 +152,12 @@ subagents:
       outgoing:
       - "UT_SUMMARY_<TASK_ID>.md"
 ```
+
+List all SubAgents to verify the team config is correct.
+```bash
+pied-piper subagent list --team "test-titans"
+```
+
 
 ### 3. Generate SubAgents for Claude Code
 

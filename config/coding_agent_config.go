@@ -30,6 +30,14 @@ func (c *ClaudeCodingAgent) GetProjectSubagentConfigDir(projectDir string) strin
 	return filepath.Join(projectDir, CLAUDE_CONFIG_DIR, CLAUDE_AGENTS_DIR)
 }
 
+func (c *ClaudeCodingAgent) GetUserSubagentConfigFilePath(subagentName string) string {
+	return filepath.Join(c.GetUserSubagentConfigDir(), subagentName+".md")
+}
+
+func (c *ClaudeCodingAgent) GetProjectSubagentConfigFilePath(projectDir string, subagentName string) string {
+	return filepath.Join(c.GetProjectSubagentConfigDir(projectDir), subagentName+".md")
+}
+
 type CodingAgentConfig struct {
 	Target Target
 	TargetDir string

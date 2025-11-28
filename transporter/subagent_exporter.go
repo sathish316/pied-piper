@@ -14,7 +14,7 @@ type SubAgentExporter interface {
 
 type ClaudeCodeSubAgentExporter struct {
 	TeamConfig *config.TeamConfig
-	CodingAgent config.CodingAgent
+	CodingAgent *config.ClaudeCodingAgent
 	*FileUtils
 }
 
@@ -32,9 +32,9 @@ func (e *ClaudeCodeSubAgentExporter) ExportAll() error {
 
 func (e *ClaudeCodeSubAgentExporter) Export(subagentName string) error {
 	// Export single subagent config file to user directory
-	fmt.Printf("Exporting subagent (%s) to %s user directory\n", subagentName, e.CodingAgent.GetName())
 	srcFile := config.GetSubagentSpecFilePath(e.TeamConfig, subagentName)
-	destDir := e.CodingAgent.GetUserSubagentConfigDir()
+	destDir := e.CodingAgent.GetUserSubagentConfigFilePath(subagentName)
+	fmt.Printf("Exporting subagent (%s) to %s user directory - %s\n", subagentName, e.CodingAgent.GetName(), destDir)
 	return e.CopyFile(srcFile, destDir)
 }
 
@@ -42,7 +42,13 @@ func (e *ClaudeCodeSubAgentExporter) ExportAllToProject(projectDir string) error
 	// Export all subagent config files to project directory
 	subagents := e.TeamConfig.SubAgents
 	for _, subagent := range subagents {
-		err := e.ExportToProject(subagent.Role, projectDir)
+		claude_code_exporter := &ClaudeCodeSubAgentExporter{
+			TeamConfig: e.TeamConfig,
+			CodingAgent: &config.ClaudeCodingAgent{},
+			FileUtils: &FileUtils{},
+		}
+		exporter := claude_code_exporter
+		err := exporter.ExportToProject(subagent.Role, projectDir)
 		if err != nil {
 			return err
 		}
@@ -52,8 +58,8 @@ func (e *ClaudeCodeSubAgentExporter) ExportAllToProject(projectDir string) error
 
 func (e *ClaudeCodeSubAgentExporter) ExportToProject(subagentName string, projectDir string) error {
 	// Export single subagent config file to project directory
-	fmt.Printf("Exporting subagent (%s) to %s project directory\n", subagentName, e.CodingAgent.GetName())
 	srcFile := config.GetSubagentSpecFilePath(e.TeamConfig, subagentName)
-	destDir := e.CodingAgent.GetProjectSubagentConfigDir(projectDir)
+	destDir := e.CodingAgent.GetProjectSubagentConfigFilePath(projectDir, subagentName)
+	fmt.Printf("Exporting subagent (%s) to %s project directory - %s\n", subagentName, e.CodingAgent.GetName(), projectDir)
 	return e.CopyFile(srcFile, destDir)
 }

@@ -53,7 +53,7 @@ type SubagentConfigHandler interface {
 }
 
 func GetSubagentSpecFilePath(teamConfig *TeamConfig, subagentName string) string {
-	return filepath.Join(teamConfig.ConfigPath.Path, "subagents", subagentName+".yml")
+	return filepath.Join(teamConfig.ConfigPath.Path, "subagents", subagentName+".md")
 }
 
 func GetSubagentSpecDir(teamConfig *TeamConfig) string {
@@ -111,13 +111,13 @@ func (c *SubagentConfigYamlHandler) UpdateSpec(teamName string, subagentName str
 	if err != nil {
 		return "", fmt.Errorf("error marshalling subagent spec config: %w", err)
 	}
-	return c.UpdateSpecYaml(teamName, subagentName, yamlStr)
+	return c.UpdateSpecMD(teamName, subagentName, yamlStr)
 }
 
-func (c *SubagentConfigYamlHandler) UpdateSpecYaml(teamName string, subagentName string, yamlStr []byte) (string, error) {
+func (c *SubagentConfigYamlHandler) UpdateSpecMD(teamName string, subagentName string, yamlStr []byte) (string, error) {
 	//FIXME: Make this work for multiple teams
 	//FIXME: Make this work for multiple subagents with same role
-	// Go to <team-config-dir>/subagents/<subagent-name>.yml
+	// Go to <team-config-dir>/subagents/<subagent-name>.md
 	// Write YAML file
 	subagentSpecConfigPath := GetSubagentSpecFilePath(c.Config, subagentName)
 	fmt.Println("Updating subagent-spec config file at ", subagentSpecConfigPath)

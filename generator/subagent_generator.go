@@ -17,6 +17,8 @@ type SubAgentGenerator interface {
 	GenerateRoleSpec(subagentSpec subagent.SubagentSpec) (subagent.SubagentSpec, error)
 
 	GenerateSubagentYaml(subagentSpec subagent.SubagentSpec) (string, error)
+
+	GenerateSubagentSpecForCodingAgent(subagentSpec subagent.SubagentSpec, codingAgentConfig *config.CodingAgentConfig) (string, error)
 }
 
 type SDLCSubAgentGenerator struct {
@@ -73,19 +75,19 @@ func (g *SDLCSubAgentGenerator) GenerateSubagentYamlForCodingAgent(subagentConfi
 		return "", err
 	}
 	// Generate subagent yaml specific to coding agent
-	subagentYaml, err := g.generateSubagentYaml(subagentSpec, codingAgentConfig)
+	subagentMD, err := g.generateSubagentMDSpec(subagentSpec, codingAgentConfig)
 	if err != nil {
 		return "", err
 	}
 	//TODO: use codingAgent or LLM to generate other parts of the subagent yaml
-	subagentYmlFilePath, err := subagentConfigHandler.UpdateSpecYaml(g.TeamConfig.Name, subagentSpec.Role, []byte(subagentYaml))
+	subagentYmlFilePath, err := subagentConfigHandler.UpdateSpecMD(g.TeamConfig.Name, subagentSpec.Role, []byte(subagentMD))
 	if err != nil {
 		return "", err
 	}
 	return subagentYmlFilePath, nil
 }
 
-func (g *SDLCSubAgentGenerator) generateSubagentYaml(subagentSpec *subagent.SubagentSpec, codingAgentConfig *config.CodingAgentConfig) (string, error) {
+func (g *SDLCSubAgentGenerator) generateSubagentMDSpec(subagentSpec *subagent.SubagentSpec, codingAgentConfig *config.CodingAgentConfig) (string, error) {
 	// Load subagent template for Coding Agent
 	templatesConfig := config.TemplatesConfig{
 		TeamName: g.TeamConfig.Name,

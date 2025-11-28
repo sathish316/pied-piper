@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-//go:embed subagent_template_claude-code.yml
+//go:embed subagent_template_claude-code.md
 var subagentTemplateClaudeCodeContent []byte
 
 const TEMPLATES_DIR = "templates"
@@ -19,7 +19,7 @@ func (t *TemplatesConfig) GetSubagentTemplatePath(teamConfigPath string, codingA
 	return filepath.Join(
 		teamConfigPath,
 		TEMPLATES_DIR,
-		fmt.Sprintf("subagent_template_%s.yml", string(codingAgentTarget)),
+		fmt.Sprintf("subagent_template_%s.md", string(codingAgentTarget)),
 	)
 }
 
