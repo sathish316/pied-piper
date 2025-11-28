@@ -1,6 +1,6 @@
 # Pied Piper - Quick Start Guide
 
-Get your team of AI SubAgents up and running in minutes in ClaudeCode or your favourite Coding CLI..
+Get your team of AI SubAgents up and running in minutes in ClaudeCode or your favourite Coding CLI.
 
 ## Installation
 
