@@ -205,7 +205,17 @@ Keep the tests short and precise.
 
 There is no need to regenerate the SubAgent, since you are directly editing in Claude folder.
 
-### 6. Start improving Test coverage for your project in Claude Code using SubAgents
+
+### 6. Refine the prompt of subagents as required.
+
+Generate metaprompt for each Subagent:
+```bash
+pied-piper subagent metaprompt
+```
+
+Go to cursor and use the prompt to update each agent:
+
+### 7. Start improving Test coverage for your project in Claude Code using SubAgents
 
 Once generated, use SubAgents in Claude Code with role or nickname or `@` mentions:
 - `@unittest-orchestrator` or `@Mike`
@@ -217,7 +227,7 @@ $ bd create "test all go files in package foo"
 > Run "bd quickstart". List ready tasks
 > Ask unittest-orchestrator to start task abc
 
-### 7. Update memory of SubAgents
+### 8. Update memory of SubAgents
 
 > Tell unittest-planner to keep the UT_PLAN_<TASK_ID>.md brief and concise with one line per file and public method to be tested. add a list of bullet points, one line per scenario. Update its memory in "MEMORY" section.
 

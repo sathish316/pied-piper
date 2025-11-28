@@ -9,6 +9,9 @@ import (
 //go:embed subagent_template_claude-code.md
 var subagentTemplateClaudeCodeContent []byte
 
+//go:embed subagent_metaprompt.md
+var subagentMetapromptContent []byte
+
 const TEMPLATES_DIR = "templates"
 
 type TemplatesConfig struct {
@@ -28,4 +31,8 @@ func (t *TemplatesConfig) GetSubagentTemplateContent(codingAgentTarget Target) (
 		return subagentTemplateClaudeCodeContent, nil
 	}
 	return nil, fmt.Errorf("subagent template for %s is not found", codingAgentTarget)
+}
+
+func GetSubagentMetapromptContent() []byte {
+	return subagentMetapromptContent
 }

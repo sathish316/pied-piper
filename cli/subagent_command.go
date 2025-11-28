@@ -148,6 +148,16 @@ var subagentGenerateAllCmd = &cobra.Command{
 	},
 }
 
+var subagentGenerateMetapromptCmd = &cobra.Command{
+	Use:   "metaprompt",
+	Short: "Show metaprompt for a subagent",
+	Long:  `Show metaprompt for a subagent`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("Use the below prompt from cursor or Claude-code\n")
+		fmt.Printf("Prompt: %s\n", config.GetSubagentMetapromptContent())
+	},
+}
+
 // FIXME: Make this work for multiple teams
 func getTeamConfig(teamName string) (*config.TeamConfig, error) {
 	configPath := config.TeamConfigPath{
@@ -190,6 +200,7 @@ func getCodingAgentTarget(codingAgent string, projectDir string) (*config.Coding
 		return nil, fmt.Errorf("target %s is not supported, only claude-code is supported currently", codingAgent)
 	}
 }
+
 func init() {
 	// List config - flags, default,required
 	subagentListCmd.Flags().StringP("team", "t", "pied-piper", "Team name")
@@ -216,4 +227,5 @@ func init() {
 	subagentCmd.AddCommand(subagentShowCmd)
 	subagentCmd.AddCommand(subagentGenerateCmd)
 	subagentCmd.AddCommand(subagentGenerateAllCmd)
+	subagentCmd.AddCommand(subagentGenerateMetapromptCmd)
 }

@@ -37,11 +37,7 @@ pied-piper subagent show --team "pied-piper" --name "architect"
 **Generate all SubAgents (global):**
 ```bash
 pied-piper subagent generate-all --team "pied-piper" --target claude-code
-```
-
-**Generate all SubAgents (project-specific):**
-```bash
-pied-piper subagent generate-all --team "pied-piper" --target claude-code --target-dir /path/to/project
+pied-piper subagent generate-all --team "pied-piper" --target claude-code --project-dir /path/to/project
 ```
 
 **Generate single SubAgent:**
@@ -61,7 +57,21 @@ vi ~/.pied-piper/teams/pied-piper/team-config.yml
 pied-piper subagent generate --team "pied-piper" --name "architect" --target claude-code
 ```
 
-### 5. Start hacking in Claude Code using SubAgents
+### 5. Export SubAgents to Coding CLI
+
+**Export all SubAgents to ClaudeCode User directory or Project directory:**
+```bash
+pied-piper subagent export --team "pied-piper" --target claude-code
+pied-piper subagent export --team "pied-piper" --target claude-code --project-dir /path/to/project
+```
+
+**Export single SubAgent to ClaudeCode User directory or Project directory:**
+```bash
+pied-piper subagent export --team "pied-piper" --target claude-code --name "architect"
+pied-piper subagent export --team "pied-piper" --target claude-code --name "architect" --project-dir /path/to/project
+```
+
+### 6. Start hacking in Claude Code using SubAgents
 
 Once generated, use SubAgents in Claude Code with role or nickname or `@` mentions:
 - `@architect` or `@Richard`
