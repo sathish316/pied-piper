@@ -6,14 +6,14 @@ These SubAgents run on Coding Agents (like Claude Code), Docker, Cloud Desktop e
 
 # Getting started
 
-Go to [QUICKSTART.md](QUICKSTART.md) for detailed steps to configure your team of SubAgents.
+Go to [QUICKSTART.md](docs/QUICKSTART.md) for detailed steps to configure your team of SubAgents.
 
 1. Install Pied-Piper
 2. Create or configure a team
 3. Generate SubAgents for your Coding Agent
 4. Start assigning tasks to your SubAgents from Coding Agent (Claude Code)
 
-Go to [QUICKSTART_CUSTOM_WORKFLOW.md](QUICKSTART_CUSTOM_WORKFLOW.md) to run a custom SDLC worfklow
+Go to [QUICKSTART_CUSTOM_WORKFLOW.md](docs/QUICKSTART_CUSTOM_WORKFLOW.md) to run a custom SDLC worfklow
 
 # Development
 
