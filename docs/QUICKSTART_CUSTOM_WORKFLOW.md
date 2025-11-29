@@ -53,10 +53,10 @@ pied-piper help
 ```bash
 pied-piper team create --name "test-titans"
 #TODO: add subagents to team config
-pied-piper subagent create --team-name "test-titans" --role "unittest-planner" --nickname "Peter"
-pied-piper subagent create --team-name "test-titans" --role "unittest-programmer" --nickname "Tim"
-pied-piper subagent create --team-name "test-titans" --role "unittest-reviewer" --nickname "Richard"
-pied-piper subagent create --team-name "test-titans" --role "unittest-summarizer" --nickname "Sam"
+pied-piper subagent create --team "test-titans" --role "unittest-planner" --nickname "Peter"
+pied-piper subagent create --team "test-titans" --role "unittest-programmer" --nickname "Tim"
+pied-piper subagent create --team "test-titans" --role "unittest-reviewer" --nickname "Richard"
+pied-piper subagent create --team "test-titans" --role "unittest-summarizer" --nickname "Sam"
 ```
 
 ### 2. View Your Team
@@ -187,14 +187,11 @@ pied-piper subagent list --team "test-titans"
 
 ### 3. Generate SubAgents for Claude Code
 
+SubAgents are generated for a target CodingAgent in ~/.pied-piper/test-titans/subagents directory.
+
 **Generate all SubAgents (global):**
 ```bash
 pied-piper subagent generate-all --team "test-titans" --target claude-code
-```
-
-**Generate all SubAgents (project-specific):**
-```bash
-pied-piper subagent generate-all --team "test-titans" --target claude-code --project-dir /path/to/project
 ```
 
 **Generate single SubAgent:**
@@ -202,7 +199,17 @@ pied-piper subagent generate-all --team "test-titans" --target claude-code --pro
 pied-piper subagent generate --team "test-titans" --name "unittest-programmer" --target claude-code
 ```
 
-### 4. Modify and Regenerate
+**Export SubAgents to Coding CLI:**
+```bash
+pied-piper subagent export --team "test-titans" --target claude-code
+```
+
+**Export single SubAgent to Coding CLI:**
+```bash
+pied-piper subagent export --team "test-titans" --name "unittest-programmer" --target claude-code
+```
+
+### 4. If you need to change the team workflow, Modify and Regenerate the Subagents
 
 **Edit team config:**
 ```bash
@@ -214,7 +221,14 @@ vim ~/.pied-piper/teams/test-titans/team-config.yml
 pied-piper subagent generate --team "test-titans" --name "unittest-programmer" --target claude-code
 ```
 
+**Export single SubAgent to Coding CLI:**
+```bash
+pied-piper subagent export --team "test-titans" --name "unittest-programmer" --target claude-code
+```
+
 ### 5. Modify SubAgent's role description from Claude Code or your editor
+
+Once the SubAgent is generated and exported to Coding CLI, you can generate detailed workflow description and modify its behaviour using AI.
 
 ```bash
 vim /path/to/project/.subagents/unittest-programmer.yml
@@ -229,34 +243,24 @@ Keep the tests short and precise.
 ----ROLE_DESCRIPTION ENDS----
 ```
 
-There is no need to regenerate the SubAgent, since you are directly editing in .claude folder.
+There is no need to regenerate the SubAgent, since you are directly editing in .claude folder. 
 
-
-### 6. Refine the prompt of subagents as required.
+In order to make sure the Subagent honors the workflow, Refine the prompt of Subagent using AI tools like Cursor or Claude Code or by directly calling LLM APIs.
 
 Generate metaprompt for each Subagent:
 ```bash
 pied-piper subagent metaprompt
 ```
 
-Go to cursor and use the prompt to update each Subagent.
+Go to cursor and use the prompt to update each Subagent file in **/path/to/project/.subagents/unittest-programmer.yml**
 
-### 7. Start improving Test coverage for your project in Claude Code using SubAgents
+### 6. Start assigning work to your team of SubAgents
 
 Once generated, use SubAgents in Claude Code with role or nickname or `@` mentions:
-- `@unittest-orchestrator` or `@Mike`
+- `@unittest-planner` or `@Peter`
 
-$ bd create "test file foo.go"
-$ bd create "test all go files in package foo"
+$ bd create "add unit tests for file foo.go"
 
-> Ask unittest-orchestrator to start a microsprint
-> Run "bd quickstart". List ready tasks
-> Ask unittest-orchestrator to start task abc
+> Ask unittest-planner to plan and write unit tests for open tasks in beads
 
-### 8. Update memory of SubAgents
-
-> Tell unittest-planner to keep the UT_PLAN_<TASK_ID>.md brief and concise with one line per file and public method to be tested. add a list of bullet points, one line per scenario. Update its memory in "MEMORY" section.
-
-```bash
-vim /path/to/project/.subagents/unittest-planner.yml
-```
+If the subagent is not satisfactory, update the Role description or memory to finetune the behaviour of Subagents further.

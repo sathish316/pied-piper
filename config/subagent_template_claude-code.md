@@ -20,13 +20,15 @@ Read DOCUMENTATION_WORKFLOW_DESCRIPTION section to:
 
 Read MEMORY description section to understand your Project-specific customized instructions.
 
-High level Task workflow: {{.TaskLabels.TaskWorkflowDescription}}
+High level Task workflow:
+{{.TaskLabels.TaskWorkflowDescription}}
 
 ----TASK_WORKFLOW_DESCRIPTION STARTS----
 {{.GeneratedTaskWorkflowDescription}}
 ----TASK_WORKFLOW_DESCRIPTION ENDS----
 
-High level Documentation workflow: {{.WikiLabels.WikiWorkflowDescription}}
+High level Documentation workflow:
+{{.WikiLabels.WikiWorkflowDescription}}
 
 ----DOCUMENTATION_WORKFLOW_DESCRIPTION STARTS----
 {{.GeneratedWikiWorkflowDescription}}
@@ -38,4 +40,4 @@ High level Documentation workflow: {{.WikiLabels.WikiWorkflowDescription}}
 
 ----MEMORY STARTS----
 {{.Memory}}
-  ----MEMORY ENDS----
+----MEMORY ENDS----
