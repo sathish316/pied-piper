@@ -11,6 +11,9 @@ Go to [QUICKSTART.md](QUICKSTART.md) for detailed steps to configure your team o
 1. Install Pied-Piper
 2. Create or configure a team
 3. Generate SubAgents for your Coding Agent
+4. Start assigning tasks to your SubAgents from Coding Agent (Claude Code)
+
+Go to [QUICKSTART_CUSTOM_WORKFLOW.md](QUICKSTART_CUSTOM_WORKFLOW.md) to run a custom SDLC worfklow
 
 # Development
 
