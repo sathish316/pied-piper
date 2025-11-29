@@ -15,6 +15,9 @@ const DEFAULT_CONFIG_FILE = "config.yml"
 //go:embed config.sample.yml
 var sampleConfigContent []byte
 
+//go:embed config.blank.yml
+var blankConfigContent []byte
+
 // TeamConfigData represents the structured YAML data for team configuration
 type TeamConfig struct {
 	Name        string              `yaml:"name"`
@@ -66,7 +69,13 @@ func (c *TeamConfigYamlHandler) Init() error {
 	}
 
 	// Ensure team config file exists
-	err = os.WriteFile(c.ConfigPath.GetConfigFilePath(), sampleConfigContent, 0644)
+	var configContent []byte
+	if c.Config != nil && c.Config.Name == "pied-piper" {
+		configContent = sampleConfigContent
+	} else {
+		configContent = blankConfigContent
+	}
+	err = os.WriteFile(c.ConfigPath.GetConfigFilePath(), configContent, 0644)
 	if err != nil {
 		return fmt.Errorf("error writing config file: %w", err)
 	}
@@ -91,19 +100,22 @@ func (c *TeamConfigYamlHandler) Init() error {
 	if err != nil {
 		return fmt.Errorf("error creating templates directory: %w", err)
 	}
-	// Initialize required templates
+	// Initialize subagent templates
 	templatesConfig := TemplatesConfig{
 		TeamName: c.Config.Name,
 	}
-	subagentTemplateClaudeCodePath := templatesConfig.GetSubagentTemplatePath(c.ConfigPath.Path, ClaudeCode)
-	subagentTemplateClaudeCodeContent, err := templatesConfig.GetSubagentTemplateContent(ClaudeCode)
-	if err != nil {
-		return fmt.Errorf("error getting subagent template for claude-code: %w", err)
-	}
-	err = os.WriteFile(subagentTemplateClaudeCodePath, subagentTemplateClaudeCodeContent, 0644)
-	fmt.Println("Initializing claude-code subagent template at ", subagentTemplateClaudeCodePath)
-	if err != nil {
-		return fmt.Errorf("error writing subagent template for claude-code: %w", err)
+	allCodingAgents := []Target{ClaudeCode, Rovodev}
+	for _, codingAgent := range allCodingAgents {
+		subagentTemplatePath := templatesConfig.GetSubagentTemplatePath(c.ConfigPath.Path, codingAgent)
+		subagentTemplateContent, err := templatesConfig.GetSubagentTemplateContent(codingAgent)
+		if err != nil {
+			return fmt.Errorf("error getting subagent template for %s: %w", codingAgent, err)
+		}
+		err = os.WriteFile(subagentTemplatePath, subagentTemplateContent, 0644)
+		fmt.Printf("Initializing subagent template for %s at %s\n", codingAgent, subagentTemplatePath)
+		if err != nil {
+			return fmt.Errorf("error writing subagent template for %s: %w", codingAgent, err)
+		}
 	}
 	return nil
 }

@@ -52,6 +52,7 @@ pied-piper help
 
 ```bash
 pied-piper team create --name "test-titans"
+#TODO: add subagents to team config
 pied-piper subagent create --team-name "test-titans" --role "unittest-planner" --nickname "Peter"
 pied-piper subagent create --team-name "test-titans" --role "unittest-programmer" --nickname "Tim"
 pied-piper subagent create --team-name "test-titans" --role "unittest-reviewer" --nickname "Richard"

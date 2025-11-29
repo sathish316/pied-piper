@@ -1,0 +1,14 @@
+name: "your-team-name"
+description: "A team of AI SubAgents"
+subagents:
+  - role: "your-subagent-role"
+    description: "your-subagent-description"
+    nickname: "your-subagent-nickname"
+    task_labels:
+      incoming:
+      - "@todo"
+      outgoing:
+      - "@done"
+    wiki_labels:
+      incoming: []
+      outgoing: []

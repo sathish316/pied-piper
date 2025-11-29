@@ -36,7 +36,8 @@ func (g *SDLCSubAgentGenerator) GenerateSubagentSpec(role string) (*subagent.Sub
 		Description: subagentConfig.Description,
 		TaskLabels: subagentConfig.TaskLabels,
 		WikiLabels: subagentConfig.WikiLabels,
-		WorkflowDescription: "",
+		GeneratedTaskWorkflowDescription: "",
+		GeneratedWikiWorkflowDescription: "",
 		RoleDescription: "",
 		Memory: "",
 	}
