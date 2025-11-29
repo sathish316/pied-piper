@@ -1,6 +1,5 @@
 ---
 name: {{.Role}}
-nickname: {{.Nickname}}
 description: {{.Description}}
 tools: null
 model: null

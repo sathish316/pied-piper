@@ -256,11 +256,13 @@ Go to cursor and use the prompt to update each Subagent file in **/path/to/proje
 
 ### 6. Start assigning work to your team of SubAgents
 
-Once generated, use SubAgents in Claude Code with role or nickname or `@` mentions:
-- `@unittest-planner` or `@Peter`
+If this is the first time you are using SubAgents and beads, run the following prompts in Claude-code:
+> Run bash command "bd quickstart" to onboard to beads task management system
 
-$ bd create "add unit tests for file foo.go"
+```bash
+$ bd create "add unit tests for file foo.go" --label "#unittest"
+```
 
 > Ask unittest-planner to plan and write unit tests for open tasks in beads
 
-If the subagent is not satisfactory, update the Role description or memory to finetune the behaviour of Subagents further.
+Update Role description or Memory of each SubAgent to finetune its behaviour.

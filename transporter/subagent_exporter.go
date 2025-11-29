@@ -12,13 +12,13 @@ type SubAgentExporter interface {
 	ExportToProject(subagentName string, projectDir string) error
 }
 
-type ClaudeCodeSubAgentExporter struct {
+type SubAgentExporterImpl struct {
 	TeamConfig *config.TeamConfig
-	CodingAgent *config.ClaudeCodingAgent
+	CodingAgent config.CodingAgent
 	*FileUtils
 }
 
-func (e *ClaudeCodeSubAgentExporter) ExportAll() error {
+func (e *SubAgentExporterImpl) ExportAll() error {
 	// Export all subagent config files to user directory
 	subagents := e.TeamConfig.SubAgents
 	for _, subagent := range subagents {
@@ -30,7 +30,7 @@ func (e *ClaudeCodeSubAgentExporter) ExportAll() error {
 	return nil
 }
 
-func (e *ClaudeCodeSubAgentExporter) Export(subagentName string) error {
+func (e *SubAgentExporterImpl) Export(subagentName string) error {
 	// Export single subagent config file to user directory
 	srcFile := config.GetSubagentSpecFilePath(e.TeamConfig, subagentName)
 	destDir := e.CodingAgent.GetUserSubagentConfigFilePath(subagentName)
@@ -38,13 +38,13 @@ func (e *ClaudeCodeSubAgentExporter) Export(subagentName string) error {
 	return e.CopyFile(srcFile, destDir)
 }
 
-func (e *ClaudeCodeSubAgentExporter) ExportAllToProject(projectDir string) error {
+func (e *SubAgentExporterImpl) ExportAllToProject(projectDir string) error {
 	// Export all subagent config files to project directory
 	subagents := e.TeamConfig.SubAgents
 	for _, subagent := range subagents {
-		claude_code_exporter := &ClaudeCodeSubAgentExporter{
+		claude_code_exporter := &SubAgentExporterImpl{
 			TeamConfig: e.TeamConfig,
-			CodingAgent: &config.ClaudeCodingAgent{},
+			CodingAgent: e.CodingAgent,
 			FileUtils: &FileUtils{},
 		}
 		exporter := claude_code_exporter
@@ -56,7 +56,7 @@ func (e *ClaudeCodeSubAgentExporter) ExportAllToProject(projectDir string) error
 	return nil
 }
 
-func (e *ClaudeCodeSubAgentExporter) ExportToProject(subagentName string, projectDir string) error {
+func (e *SubAgentExporterImpl) ExportToProject(subagentName string, projectDir string) error {
 	// Export single subagent config file to project directory
 	srcFile := config.GetSubagentSpecFilePath(e.TeamConfig, subagentName)
 	destDir := e.CodingAgent.GetProjectSubagentConfigFilePath(projectDir, subagentName)

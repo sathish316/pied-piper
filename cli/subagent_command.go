@@ -216,7 +216,7 @@ func getCodingAgentTarget(codingAgent string, projectDir string) (*config.Coding
 				return codingAgentTarget, nil
 			}
 	} else {
-		return nil, fmt.Errorf("target %s is not supported, only claude-code is supported currently", codingAgent)
+		return nil, fmt.Errorf("target %s is not supported", codingAgent)
 	}
 }
 

@@ -3,9 +3,9 @@ package cli
 import (
 	"fmt"
 
-	"github.com/spf13/cobra"
 	"github.com/sathish316/pied-piper/config"
 	"github.com/sathish316/pied-piper/transporter"
+	"github.com/spf13/cobra"
 )
 
 var exportCmd = &cobra.Command{
@@ -25,8 +25,13 @@ var exportAllCmd = &cobra.Command{
 		teamName, _ := cmd.Flags().GetString("team")
 		projectDir, _ := cmd.Flags().GetString("project-dir")
 		target, _ := cmd.Flags().GetString("target")
-		if target != "claude-code" {
-			fmt.Printf("Error: unsupported target '%s'. Only 'claude-code' is currently supported.\n", target)
+		var codingAgent config.CodingAgent
+		if target == "claude-code" {
+			codingAgent = &config.ClaudeCodingAgent{}
+		} else if target == "rovodev" {
+			codingAgent = &config.RovodevCodingAgent{}
+		} else {
+			fmt.Printf("Error: unsupported CodingAgent target '%s'.\n", target)
 			return
 		}
 		teamConfig, err := getTeamConfig(teamName)
@@ -34,11 +39,13 @@ var exportAllCmd = &cobra.Command{
 			fmt.Printf("Error getting team config: %s\n", err)
 			return
 		}
-		exporter := &transporter.ClaudeCodeSubAgentExporter{
-			TeamConfig: teamConfig,
-			CodingAgent: &config.ClaudeCodingAgent{},
-			FileUtils: &transporter.FileUtils{},
+
+		exporter := &transporter.SubAgentExporterImpl{
+			TeamConfig:  teamConfig,
+			CodingAgent: codingAgent,
+			FileUtils:   &transporter.FileUtils{},
 		}
+
 		if projectDir == "" {
 			fmt.Printf("Exporting all %s subagent config files to user directory\n", teamName)
 			err := exporter.ExportAll()
@@ -66,8 +73,13 @@ var exportSubagentCmd = &cobra.Command{
 		subagentName, _ := cmd.Flags().GetString("name")
 		projectDir, _ := cmd.Flags().GetString("project-dir")
 		target, _ := cmd.Flags().GetString("target")
-		if target != "claude-code" {
-			fmt.Printf("Error: unsupported target '%s'. Only 'claude-code' is currently supported.\n", target)
+		var codingAgent config.CodingAgent
+		if target == "claude-code" {
+			codingAgent = &config.ClaudeCodingAgent{}
+		} else if target == "rovodev" {
+			codingAgent = &config.RovodevCodingAgent{}
+		} else {
+			fmt.Printf("Error: unsupported CodingAgent target '%s'.\n", target)
 			return
 		}
 		teamConfig, err := getTeamConfig(teamName)
@@ -75,10 +87,10 @@ var exportSubagentCmd = &cobra.Command{
 			fmt.Printf("Error getting team config: %s\n", err)
 			return
 		}
-		exporter := &transporter.ClaudeCodeSubAgentExporter{
-			TeamConfig: teamConfig,
-			CodingAgent: &config.ClaudeCodingAgent{},
-			FileUtils: &transporter.FileUtils{},
+		exporter := &transporter.SubAgentExporterImpl{
+			TeamConfig:  teamConfig,
+			CodingAgent: codingAgent,
+			FileUtils:   &transporter.FileUtils{},
 		}
 		if projectDir == "" {
 			fmt.Printf("Exporting subagent (%s) config file to user directory\n", subagentName)
