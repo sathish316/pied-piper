@@ -168,7 +168,7 @@ pied-piper subagent generate-all --team "test-titans" --target claude-code
 
 **Generate all SubAgents (project-specific):**
 ```bash
-pied-piper subagent generate-all --team "test-titans" --target claude-code --target-dir /path/to/project
+pied-piper subagent generate-all --team "test-titans" --target claude-code --project-dir /path/to/project
 ```
 
 **Generate single SubAgent:**
@@ -213,7 +213,7 @@ Generate metaprompt for each Subagent:
 pied-piper subagent metaprompt
 ```
 
-Go to cursor and use the prompt to update each agent:
+Go to cursor and use the prompt to update each Subagent.
 
 ### 7. Start improving Test coverage for your project in Claude Code using SubAgents
 

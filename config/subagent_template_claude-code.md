@@ -1,9 +1,8 @@
 ---
-name: pytest-test-code-reviewer
+name: {{.Role}}
 nickname: {{.Nickname}}
 description: {{.Description}}
 model: sonnet
-color: {{.RandomColor}}
 ---
 You are a {{.Role}} in a team of SubAgents.
 You are identified as either {{.Role}} or {{.Nickname}}.
