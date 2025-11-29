@@ -10,11 +10,13 @@ import (
 type TaskLabelsConfig struct {
 	Incoming []string `yaml:"incoming"`
 	Outgoing []string `yaml:"outgoing"`
+	TaskWorkflowDescription string `yaml:"task_workflow_description"`
 }
 
 type WikiLabelsConfig struct {
 	Incoming []string `yaml:"incoming"`
 	Outgoing []string `yaml:"outgoing"`
+	WikiWorkflowDescription string `yaml:"wiki_workflow_description"`
 }
 
 type SubagentConfig struct {
@@ -31,7 +33,8 @@ type SubagentSpecConfig struct {
 	Nickname            string           `yaml:"nickname"`
 	TaskLabels          TaskLabelsConfig `yaml:"task_labels"`
 	WikiLabels          WikiLabelsConfig `yaml:"wiki_labels"`
-	WorkflowDescription string           `yaml:"workflow_description"`
+	GeneratedTaskWorkflowDescription string           `yaml:"generated_task_workflow_description"`
+	GeneratedWikiWorkflowDescription string           `yaml:"generated_wiki_workflow_description"`
 	RoleDescription     string           `yaml:"role_description"`
 	Memory              string           `yaml:"memory"`
 }

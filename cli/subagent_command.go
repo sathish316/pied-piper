@@ -74,8 +74,8 @@ var subagentShowCmd = &cobra.Command{
 
 var subagentGenerateCmd = &cobra.Command{
 	Use:   "generate",
-	Short: "Generate subagent for a team and Coding Agent (Claude Code, Cursor, etc.)",
-	Long:  `Generate subagent for a team and Coding Agent (Claude Code, Cursor, etc.)`,
+	Short: "Generate subagent for a team and Coding Agent (Claude Code, Rovodev, Cursor, etc.)",
+	Long:  `Generate subagent for a team and Coding Agent (Claude Code, Rovodev, Cursor, etc.)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		teamName, _ := cmd.Flags().GetString("team")
 		subagentName, _ := cmd.Flags().GetString("name")
@@ -196,6 +196,25 @@ func getCodingAgentTarget(codingAgent string, projectDir string) (*config.Coding
 			}
 			return codingAgentTarget, nil
 		}
+	} else if codingAgent == string(config.Rovodev) {
+			rovodevCodingAgent := &config.RovodevCodingAgent{}
+			if projectDir == "" {
+				targetDir := rovodevCodingAgent.GetUserSubagentConfigDir()
+				codingAgentTarget := &config.CodingAgentConfig{
+					Target:        config.Rovodev,
+					TargetDir:     targetDir,
+					TargetDirType: config.TargetDirTypeUser,
+				}
+				return codingAgentTarget, nil
+			} else {
+				targetDir := rovodevCodingAgent.GetProjectSubagentConfigDir(projectDir)
+				codingAgentTarget := &config.CodingAgentConfig{
+					Target:        config.Rovodev,
+					TargetDir:     targetDir,
+					TargetDirType: config.TargetDirTypeProject,
+				}
+				return codingAgentTarget, nil
+			}
 	} else {
 		return nil, fmt.Errorf("target %s is not supported, only claude-code is supported currently", codingAgent)
 	}
@@ -211,14 +230,14 @@ func init() {
 	// Generate config - flags, default, required
 	subagentGenerateCmd.Flags().StringP("team", "t", "pied-piper", "Team name")
 	subagentGenerateCmd.Flags().StringP("name", "s", "", "Subagent name")
-	subagentGenerateCmd.Flags().StringP("target", "f", "", "Target coding agent (claude-code, cursor, etc.). Only claude-code is supported currently.")
+	subagentGenerateCmd.Flags().StringP("target", "f", "", "Target coding agent (claude-code, rovodev, cursor, etc.). Only claude-code is supported currently.")
 	subagentGenerateCmd.Flags().StringP("project-dir", "p", "", "Subagents are generated for a specific project directory. If not provided, subagents are generated in User directory for target.")
 	subagentGenerateCmd.Flags().BoolP("skip-llm", "l", false, "Skip LLM API keys for subagent generation. Get prompts that you can run from Cursor or Claude Code instead.")
 	subagentGenerateCmd.MarkFlagRequired("name")
 	subagentGenerateCmd.MarkFlagRequired("target")
 	// Generate all config - flags, default, required
 	subagentGenerateAllCmd.Flags().StringP("team", "t", "pied-piper", "Team name")
-	subagentGenerateAllCmd.Flags().StringP("target", "f", "", "Target coding agent (claude-code, cursor, etc.). Only claude-code is supported currently.")
+	subagentGenerateAllCmd.Flags().StringP("target", "f", "", "Target coding agent (claude-code, rovodev, cursor, etc.). Only claude-code is supported currently.")
 	subagentGenerateAllCmd.Flags().StringP("project-dir", "p", "", "Subagents are generated for a specific project directory. If not provided, subagents are generated in User directory for target.")
 	subagentGenerateAllCmd.Flags().BoolP("skip-llm", "l", false, "Skip LLM API keys for subagent generation. Get prompts that you can run from Cursor or Claude Code instead.")
 	subagentGenerateAllCmd.MarkFlagRequired("target")

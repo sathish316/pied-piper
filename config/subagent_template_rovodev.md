@@ -2,7 +2,9 @@
 name: {{.Role}}
 nickname: {{.Nickname}}
 description: {{.Description}}
-model: sonnet
+tools: null
+model: null
+load_memory: false
 ---
 You are a {{.Role}} in a team of SubAgents.
 You are identified as either {{.Role}} or {{.Nickname}}.

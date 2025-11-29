@@ -8,42 +8,35 @@ Get your team of AI SubAgents up and running in minutes in ClaudeCode or your fa
 
 As an example, let's use the following workflow:
 * Roles & Responsibilities
-    * unittest-orchestrator: start a unittest microsprint, end the microsprint, defines goal of microsprint
     * unittest-planner: The goal is to write unit tests for a file or a package. Unittest-planner breaks down the goal into smaller tasks, one per file.
-    * unittest-programmer: Unittest-tester writes the unit tests for the files or packages. Unlike AI coding tools generating a mountain of unit tests and markdown files, unittest-programmer writes only 1 happy path test case and one or more edge cases per public function. This is enough for side-projects. Unittest-programmer also does not annoyingly modify/remove your code to make the tests pass.
+    * unittest-programmer: Unittest-programmer writes the unit tests for the files or packages. Unlike AI coding tools generating a mountain of unit tests and markdown files, unittest-programmer writes only 1 happy path test case and one or more edge cases per public function. Unittest-programmer also does not annoyingly modify/remove your code to make the tests pass.
     * unittest-reviewer: unittest-reviewer reviews the unit tests for the files or packages. If it finds issues, it rejects the test. If the test fails, it fixes the test. If both the code and tests are good, it approves the test.
     * unittest-summarizer: Generate a summary of tests implemented, concisely.
 * Task management workflow
-    * unittest-orchestrator
-        * Incoming: #unittest
-        * Outgoing: #unittest-plan
     * unittest-planner
-        * Incoming: #unittest-plan
-        * Outgoing: #unittest-ready-for-dev
+        * Incoming: #unittest
+        * Outgoing: #unittest-plan-complete
     * unittest-programmer
-        * Incoming: #unittest-ready-for-dev
+        * Incoming: #unittest-ready-for-dev, #unittest-rejected
         * Outgoing: #unittest-ready-for-review
     * unittest-reviewer
-        * Incoming: #unittest-ready-for-review, #unittest-rejected
+        * Incoming: #unittest-ready-for-review
         * Outgoing: #unittest-approved, #unittest-rejected
     * unittest-summarizer
         * Incoming: #unittest-approved
-        * Outgoing: #closed
+        * Outgoing: closed
 * Wiki workflow
-    * unittest-orchestrator
-        * Incoming: -
-        * Outgoing: UT_GOAL_<TASK_ID>.md
     * unittest-planner
-        * Incoming: UT_GOAL_<TASK_ID>.md
-        * Outgoing: UT_PLAN_<TASK_ID>.md
+        * Incoming: []
+        * Outgoing: UT_GOAL_<TASK_ID>.md
     * unittest-programmer
         * Incoming: UT_PLAN_<TASK_ID>.md
-        * Outgoing: -
+        * Outgoing: []
     * unittest-reviewer
-        * Incoming: -
-        * Outgoing: -
+        * Incoming: UT_PLAN_<TASK_ID>.md
+        * Outgoing: []
     * unittest-summarizer
-        * Incoming: -
+        * Incoming: []
         * Outgoing: UT_SUMMARY_<TASK_ID>.md
 
 ## Installation
@@ -59,7 +52,6 @@ pied-piper help
 
 ```bash
 pied-piper team create --name "test-titans"
-pied-piper subagent create --team-name "test-titans" --role "unittest-orchestrator" --nickname "Mike"
 pied-piper subagent create --team-name "test-titans" --role "unittest-planner" --nickname "Peter"
 pied-piper subagent create --team-name "test-titans" --role "unittest-programmer" --nickname "Tim"
 pied-piper subagent create --team-name "test-titans" --role "unittest-reviewer" --nickname "Richard"
@@ -170,7 +162,7 @@ subagents:
       incoming:
       - "#unittest-approved"
       outgoing:
-      - "#closed"
+      - "closed"
       task_workflow_description: |
         1. Unittest-summarizer receives beads tasks with #unittest-approved label.
         It generates a summary of the tests implemented, concisely in a local wiki doc.
@@ -236,7 +228,7 @@ Keep the tests short and precise.
 ----ROLE_DESCRIPTION ENDS----
 ```
 
-There is no need to regenerate the SubAgent, since you are directly editing in Claude folder.
+There is no need to regenerate the SubAgent, since you are directly editing in .claude folder.
 
 
 ### 6. Refine the prompt of subagents as required.

@@ -8,7 +8,8 @@ type SubagentSpec struct {
 	Nickname	string
 	TaskLabels  config.TaskLabelsConfig
 	WikiLabels  config.WikiLabelsConfig
-	WorkflowDescription string
+	GeneratedTaskWorkflowDescription string
+	GeneratedWikiWorkflowDescription string
 	RoleDescription string
 	Memory string
 }
@@ -21,7 +22,8 @@ func (s *SubagentSpec) ToConfig() *config.SubagentSpecConfig {
 		Nickname: s.Nickname,
 		TaskLabels: s.TaskLabels,
 		WikiLabels: s.WikiLabels,
-		WorkflowDescription: s.WorkflowDescription,
+		GeneratedTaskWorkflowDescription: "",
+		GeneratedWikiWorkflowDescription: "",
 		RoleDescription: s.RoleDescription,
 		Memory: s.Memory,
 	}
