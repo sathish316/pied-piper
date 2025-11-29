@@ -96,7 +96,8 @@ subagents:
         1. Unittest-planner receives beads tasks with #unittest label.
         It breaks down the goal into smaller tasks, one per file or one per 5 public functions.
         After the plan is complete, it comments the plan on beads task and updates the label of the task to #unittest-plan-complete.
-        It creates beads tasks that are linked to the original task with #unittest-ready-for-dev label.
+        If the task is ready for implementation, update the label of the task to #unittest-ready-for-dev.
+        If there are multiple complex testing tasks needed, create beads tasks that are linked to the original task with #unittest-ready-for-dev label.
         Tasks with $unittest-ready-for-dev label will be picked up by unittest-programmer.
         2. Unittest-planner receives beads tasks with #unittest-approved label.
         It's job is to close the beads task. It updates the label of the task to #closed.
@@ -264,5 +265,13 @@ $ bd create "add unit tests for file foo.go" --label "#unittest"
 ```
 
 > Ask unittest-planner to plan and write unit tests for open tasks in beads
+
+OR
+
+> Use the subagents unittest-planner, unittest-programmer, unittest-reviewer, unittest-summarizer to run a complete unit testing workflow for the open task in beads
+
+OR 
+
+> Work on the open unit testing task in beads. Use the Subagents available for unit testing
 
 Update Role description or Memory of each SubAgent to finetune its behaviour.

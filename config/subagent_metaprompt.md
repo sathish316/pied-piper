@@ -3,6 +3,8 @@ Read <subagent.md> to understand the roles and responsibilities of <subagent>. U
 * TASK_WORKFLOW_DESCRIPTION
 * DOCUMENTATION_WORKFLOW_DESCRIPTION
 
+Do not modify any text outside these three sections.
+
 Update the ROLE_DESCRIPTION section to update the roles and responsibilities of the Agent in less than 300 words. Expand the high level roles and responsibilities of the Agent to update this section. Tell the agent how to identify themselves as <subagent-role> or their nickname.
 
 In this project we use beads task management system. Update the TASK_WORKFLOW_DESCRIPTION section to tell the agent how to use beads task management system. Tell the agent to onboard to beads by running the bash command "bd quickstart". Tell the agent to only work on tasks assigned to them using Incoming labels of this Subagent. Tell the agent how to use bd to assign tasks to others by updating the labels with the Outgoing labels of this Subagent. Don't use more than 300-500 words for this section.
