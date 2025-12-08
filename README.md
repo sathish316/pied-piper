@@ -81,8 +81,9 @@ This is a sample Language migration playbook from Typescript to Python, using a 
 
 Go to [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION.md) for detailed steps to run the language migration playbook using Pied-Piper.
 
-Demo video (Claude Code):
-TODO: LINK
+Claude Code Demo (Youtube):
+
+https://www.youtube.com/watch?v=FnLVNE9kpUw
 
 ## Unit test coverage playbook
 
@@ -92,9 +93,9 @@ This is a sample Unit test coverage improvement playbook, using a team of Pied-P
 
 Go to [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md) for detailed steps to run the unit test coverage improvement playbook using Pied-Piper.
 
-Demo video (Claude Code):
+Claude Code Demo (Youtube):
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tKwj30EFDew?si=vW13JK4MkRUdxXnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+https://www.youtube.com/watch?v=tKwj30EFDew
 
 ## Library version migration playbook
 
