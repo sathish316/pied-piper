@@ -73,7 +73,7 @@ Playbooks are repeatable workflows for different kinds of long-running or contin
 7. Change Tech Stack from x to y
 8. Fix static code analysis violations in the codebase
 
-### Language migration playbook
+## Language migration playbook
 
 <img src="docs/assets/pied_piper_language_migration_workflow.png" alt="Language Migration Playbook"/>
 
@@ -84,7 +84,7 @@ Go to [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION
 Demo video (Claude Code):
 TODO: LINK
 
-### Unit test coverage playbook
+## Unit test coverage playbook
 
 <img src="docs/assets/pied_piper_unittest_coverage_workflow.png" alt="Unit Test Coverage Playbook"/>
 
@@ -93,25 +93,26 @@ This is a sample Unit test coverage improvement playbook, using a team of Pied-P
 Go to [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md) for detailed steps to run the unit test coverage improvement playbook using Pied-Piper.
 
 Demo video (Claude Code):
-TODO: LINK
 
-### Library version migration playbook
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tKwj30EFDew?si=vW13JK4MkRUdxXnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-TODO
-
-### Integration/Behavioural test coverage playbook
+## Library version migration playbook
 
 TODO
 
-### Microservices to Monolith consolidation playbook
+## Integration/Behavioural test coverage playbook
 
 TODO
 
-### Techstack migration playbook
+## Microservices to Monolith consolidation playbook
 
 TODO
 
-### Static code analysis violation fix playbook
+## Techstack migration playbook
+
+TODO
+
+## Static code analysis violation fix playbook
 
 TODO
 
