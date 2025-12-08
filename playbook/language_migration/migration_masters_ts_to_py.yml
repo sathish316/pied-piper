@@ -1,0 +1,136 @@
+name: "migration-masters"
+subagents:
+  - role: "migration-planner"
+    description: |
+        Analyzes the TypeScript codebase and creates a migration plan with proper dependency ordering. Creates one beads task per file, ensuring dependencies are migrated first. Keep the plan concise in less than 20 lines and 100 words per file.
+    nickname: "Tony"
+    task_labels:
+      incoming:
+      - "#lang-migration-start"
+      outgoing:
+      - "#lang-migration-plan-complete"
+      task_workflow_description: |
+        1. Migration-planner receives beads tasks with #migration-start label containing the folder/directory to migrate.
+        The task contains the source typescript folder/directory to migrate.
+        The task contains the target python folder/directory to migrate to.
+        It analyzes all TypeScript files in the specified folder, identifies dependencies between files, and creates a dependency-ordered migration plan.
+        For each file to be migrated, it creates a linked beads task with details about the file, its dependencies, and migration priority. Each linked beads task is labeled with #lang-migration-ready-for-plan.
+        After the plan is complete, it creates a wiki file with the complete migration plan and updates the main task label to #migration-plan-ready-for-review.
+        The migration-orchestrator will pick up tasks with #lang-migration-ready-for-plan label.
+    wiki_labels:
+      incoming: []
+      outgoing:
+      - "LANG_MIGRATION_PLAN.md"
+      wiki_workflow_description: |
+        Wikis are created as local markdown files in "wiki" directory.
+        1. Migration-planner receives beads tasks with #migration-start label.
+        Once it has analyzed the codebase and created a migration plan, it creates a local wiki file called "LANG_MIGRATION_PLAN.md" with:
+        - List of all files to migrate in dependency order
+        - Dependency graph showing which files depend on which
+        - Estimated complexity for each file
+        - Recommended migration sequence
+  - role: "migration-orchestrator"
+    description: |
+        Orchestrates the migration process one task at a time, ensuring sequential execution and proper handoffs between SubAgents. Prevents parallel execution to maintain consistency.
+    nickname: "Steve"
+    task_labels:
+      incoming:
+      - "#lang-migration-ready-for-plan"
+      outgoing:
+      - "#closed"
+      task_workflow_description: |
+        Migration-orchestrator ensures only one file is migrated at a time to maintain consistency and proper dependency handling.
+        1. Migration-orchestrator receives beads tasks with #lang-migration-ready-for-plan label. It assigns the task to typescript-to-python-planner.
+        2. Migration-orchestrator closes the task after the human-reviewer has approved a task with label #lang-migration-file-approved and asks the orchestrator to mark it as closed.
+        3. Once a Migration task is closed, the orchestrator assigns the next task with label #lang-migration-ready-for-plan to typescript-to-python-planner.
+    wiki_labels:
+      incoming: []
+      outgoing: []
+      wiki_workflow_description: |
+        Migration-orchestrator does not create or read any wiki files.
+  - role: "typescript-to-python-planner"
+    description: |
+        Deep dives into a single TypeScript file, analyzes its structure, dependencies, and creates a detailed conversion plan with Python equivalents. This is the only role that creates file-specific wiki documentation. Each plan does not exceed 20 lines.
+    nickname: "Bruce"
+    task_labels:
+      incoming:
+      - "#lang-migration-ready-for-plan"
+      outgoing:
+      - "#lang-migration-file-plan-complete"
+      task_workflow_description: |
+        1. Typescript-to-python-planner receives beads tasks with #lang-migration-ready-for-plan label for a specific file.
+        It analyzes the TypeScript file in detail:
+        - Identifies all imports and dependencies
+        - Maps TypeScript types to Python equivalents
+        - Identifies classes, functions, interfaces, and their signatures
+        - Notes any TypeScript-specific features that need special handling (decorators, generics, etc.)
+        - Creates a detailed conversion plan with Python package requirements
+        Once the analysis is complete, it creates a wiki file with the conversion plan and updates the task label to #lang-migration-file-plan-complete.
+    wiki_labels:
+      incoming:
+      - "LANG_MIGRATION_PLAN.md"
+      outgoing:
+      - "LANG_MIGRATION_PLAN_<TASK_ID>.md"
+      wiki_workflow_description: |
+        Wikis are created as local markdown files in "wiki" directory.
+        1. Typescript-to-python-planner receives beads tasks with #lang-migration-ready-for-plan label.
+        It creates a detailed wiki file called "LANG_MIGRATION_PLAN_<TASK_ID>.md" containing:
+        - Original TypeScript file structure
+        - Mapping of TypeScript constructs to Python equivalents
+        - Required Python packages and imports
+        - Special considerations and edge cases
+        - Suggested Python file structure
+  - role: "python-programmer"
+    description: |
+        Implements the Python version of the TypeScript file, writes unit tests, and ensures the code is functional and follows Python best practices. Does not modify the original TypeScript files.
+    nickname: "Peter"
+    task_labels:
+      incoming:
+      - "#lang-migration-file-plan-complete"
+      - "#lang-migration-file-rejected"
+      outgoing:
+      - "#lang-migration-file-code-complete"
+      task_workflow_description: |
+        Python-programmer follows a boomerang workflow pattern with python-reviewer. They can exchange tasks for a maximum of 3 times.
+        This follows a Maker-Checker pattern where python-programmer is the maker and python-reviewer is the checker. Once the migration is approved, human reviewer is the final Checker.
+        1. Python-programmer receives beads tasks with #lang-migration-file-plan-complete label. It reads the conversion plan wiki, implements the Python version of the file, writes unit tests to verify functionality, runs the tests to ensure they pass, and updates the task label to #lang-migration-file-code-complete.
+        2. Python-programmer receives beads tasks with #lang-migration-file-rejected label. It reads the comments in beads task to understand reason for rejection and makes the corresponding changes. These tasks are rejected by python-reviewer with review comments. Python-programmer addresses the comments, modifies the Python code and tests accordingly, verifies tests pass, and updates the task label to #lang-migration-file-code-complete.
+        Important: Python-programmer NEVER modifies the original TypeScript files. It only creates new Python files.
+    wiki_labels:
+      incoming:
+      - "LANG_MIGRATION_PLAN_<TASK_ID>.md"
+      outgoing: []
+      wiki_workflow_description: |
+        Wikis are created as local markdown files in "wiki" directory.
+        Python-programmer does not generate any wiki or markdown docs.
+        1. Before starting on a task with #lang-migration-file-plan-complete label, python-programmer reads the local wiki file "LANG_MIGRATION_PLAN_<TASK_ID>.md" to understand the conversion plan and then proceeds to implement the Python version.
+        Python-programmer does not generate any wiki or markdown docs.
+  - role: "python-reviewer"
+    description: |
+        Reviews the migrated Python code, runs tests, checks for correctness, and either approves or rejects the implementation. Verifies that the Python code maintains the same functionality as the TypeScript original.
+    nickname: "Natasha"
+    task_labels:
+      incoming:
+      - "#lang-migration-file-code-complete"
+      outgoing:
+      - "#lang-migration-file-approved"
+      - "#lang-migration-file-rejected"
+      task_workflow_description: |
+        Python-reviewer follows a boomerang workflow pattern with python-programmer. They can exchange tasks for a maximum of 3 times.
+        This follows a Maker-Checker pattern where python-programmer is the maker and python-reviewer is the checker. Once the migration is approved, human reviewer is the final Checker.
+        1. Python-reviewer receives beads tasks with #lang-migration-file-code-complete label. It reviews the migrated Python code:
+            a. Verifies the Python code follows best practices and PEP 8 style guide
+            b. Checks that all functionality from the TypeScript file is preserved
+            c. Runs the unit tests and verifies they pass
+            d. Checks for proper error handling and edge cases
+            e. Verifies that dependencies are correctly imported
+            If issues are found, it adds review comments to the beads task and updates the label to #lang-migration-file-rejected.
+            If the code and tests are good, it updates the label to #lang-migration-file-approved for human review.
+    wiki_labels:
+      incoming:
+      - "LANG_MIGRATION_PLAN_<TASK_ID>.md"
+      outgoing: []
+      wiki_workflow_description: |
+        Wikis are created as local markdown files in "wiki" directory.
+        Python-reviewer does not generate any wiki or markdown docs.
+        1. Before starting on a task with #migration-ready-for-review label, python-reviewer reads the local wiki file "TS_TO_PY_<FILE_NAME>_<TASK_ID>.md" to understand the conversion plan and then proceeds to review the Python implementation against the original TypeScript file.
