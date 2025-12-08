@@ -6,14 +6,18 @@ These SubAgents run on Coding Agents (like Claude Code), Docker, Cloud Desktop e
 
 # Getting started
 
-Go to [QUICKSTART.md](docs/QUICKSTART.md) for detailed steps to configure your team of SubAgents.
-
 1. Install Pied-Piper
 2. Create or configure a team
 3. Generate SubAgents for your Coding Agent
 4. Start assigning tasks to your SubAgents from Coding Agent (Claude Code)
 
-Go to [QUICKSTART_CUSTOM_WORKFLOW.md](docs/QUICKSTART_CUSTOM_WORKFLOW.md) to run a custom SDLC worfklow
+Go to [QUICKSTART_CUSTOM_WORKFLOW.md](docs/QUICKSTART_CUSTOM_WORKFLOW.md) or [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md) to run a custom SDLC worfklow for Test coverage improvement using Pied-Piper.
+
+Go to [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION.md) to run a custom SDLC worfklow for Language Migration from TypeScript to Python using Pied-Piper.
+
+Go to Pied-Piper Commands section for docs on how to use Pied-Piper.
+
+For an overview of Pied-Piper SDLC Workflow features like Subagents, Roles, Task workflows, Wiki workflows, Role Nicknames, go to [PIEDPIPER_SDLC_WORKFLOW_CONCEPTS.md](docs/PIEDPIPER_SDLC_WORKFLOW_CONCEPTS.md)
 
 # Development
 
@@ -58,170 +62,68 @@ go install github.com/sathish316/pied-piper
 pied-piper
 ```
 
-# SDLC Workflow 
+# Playbooks
 
-A typical SDLC workflow to implement a small feature or fix a bug consists of the following steps:
-1. Requirement and Acceptance criteria
-2. High level design or architecture
-3. Low level design - Data model, API signatures etc
-4. Write code (in a feature branch)
-5. Write tests
-6. Run unit tests to validate the implementation
-7. Review code
-8. Run unit and integration tests to validate the implementation
-9. Create a Pull request for review
-10. Merge feature branch to main
-11. Rinse and repeat for the next feature or bug fix
+Playbooks are repeatable workflows for different kinds of long-running or continuous-coding or boring tasks in software engineering, that can be executed by a team of Pied-Piper SubAgents:
+1. Migration from library version x to version y - Rails 5 to Rails 8
+2. Migration from language x to language y - Typescript to Python
+4. Ensure Unit Test coverage is > 80%
+5. Ensure Integration and Behavioural Test coverage is > 80%
+6. Consolidate Microservices to Monolith
+7. Change Tech Stack from x to y
+8. Fix static code analysis violations in the codebase
 
-The creative work here occurs in both planning what to build and actually building it. Deciding what to build next requires a human. Verifying what is planned/built is what is needed requires a human to review the plan and code.
+You can find these playbooks in the [docs/PLAYBOOKS.MD](docs/PLAYBOOKS.MD)
 
-The role of Pied-Piper SubAgents is to automate the repetitive tasks like writing unit tests, integration tests etc or sometimes even coding small features or bug fixes.
+### Language migration playbook
 
-## SubAgent Roles & Responsibilities
+<img src="docs/assets/language_migration_playbook.png"/>
 
-<placeholder: image for roles>
+This is a sample Language migration playbook from Typescript to Python, using a team of Pied-Piper SubAgents.
 
-The default Roles in Pied-Piper are:
-* microsprint-orchestrator (Orchestrator): starts microsprint, assigns tasks to subagents, runs the microsprint either autonomously or semi-autonomously, ends microsprint
-* product-manager (Planner): defines requirements and acceptance criteria
-* architect (Planner): creates plan with high level design and architecture
-* software-engineer (Maker): creates plan with low level design and data model, create feature branch,write code, write unit tests, run unit tests
-* code-reviewer (Checker): review code in a git commmit, review code in a pull request
-* code-validator (Checker): run unit and integration tests to validate the implementation, run quick-check or property based tests if required to validate the implementation
-* build-engineer: creates pull request for review, merge feature branch to main if human-engineer approves
-* human-engineer (Reviewer): reviews the plan, code, pull-request
+Go to [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION.md) for detailed steps to run the language migration playbook using Pied-Piper.
 
-## SubAgent Task Management
+Demo video (Claude Code):
+TODO: LINK
 
-TODO: link to beads
-This project uses beads for Task management by both Agents and Humans.
+### Unit test coverage playbook
 
-To know all about beads run:
-```
-$ bd quickstart
-```
+<img src="docs/assets/unit_test_coverage_playbook.png"/>
 
-SubAgents use git-flow method for every new feature
-```
-$ git-flow help
-```
+This is a sample Unit test coverage improvement playbook, using a team of Pied-Piper SubAgents.
 
-## SubAgent SDLC Workflow
+Go to [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md) for detailed steps to run the unit test coverage improvement playbook using Pied-Piper.
 
-<placeholder: image for workflow>
+Demo video (Claude Code):
+TODO: LINK
 
-SDLC Workflow is executed in every microsprint.
-Microsprint is like an epoch in the SDLC Workflow.
+### Library version migration playbook
 
-2 Issues are created for a task.
-* feature-x: this task is created by human-engineer with the label @open
-* plan-feature-x: this task is created by microsprint-orchestrator with the label @ready-for-plan
-* build-feature-x: this task is created by microsprint-orchestrator with the label @ready-for-dev
+<TODO>
 
-Issues go through the following lifecycle (in auto-approve mode):
-* planning
-    * @open / @ready-for-plan -> @define-requirement
-    * @define-requirement -> @ready-for-hld
-    * @ready-for-hld -> @ready-for-lld
-    * @ready-for-lld -> @plan-complete -> @closed
-* making
-    * @open / @ready-for-dev -> @coding-done -> @ready-for-code-review
-    * @ready-for-code-review -> @code-review-done -> @ready-for-code-validation
-    * @ready-for-code-review -> @code-review-rejected -> @ready-for-code-review
-    * @ready-for-code-validation -> @code-validation-done -> @ready-for-merge
-    * @ready-for-code-validation -> @code-validation-failed -> @ready-for-code-validation
-* shipping
-    * @ready-for-merge -> @closed
+### Integration/Behavioural test coverage playbook
 
+<TODO>
 
-Issues go through the following lifecycle (in human-approve mode):
-* planning
-    * @ready-for-lld -> @review-plan -> @approve-plan -> @closed
-    * @ready-for-lld -> @review-plan -> @reject-plan -> (@define-requirement | @ready-for-hld | @ready-for-lld)
-* making
-    * @ready-for-build -> @review-make -> @approve-make -> @closed
-    * @ready-for-build -> @review-make -> @reject-make -> @ready-for-dev
-* shipping
-    * @ready-for-merge -> @closed
+### Microservices to Monolith consolidation playbook
 
-## SubAgent Task management/workflow
+<TODO>
 
-Each Subagent responds to the following incoming and outgoing labels:
+### Techstack migration playbook
 
-* microsprint-orchestrator
-incoming: @open, @ready-for-plan, @approve-plan, @reject-plan, @approve-make, @reject-make
-outgoing: @define-requirement
-* product-manager
-incoming: @define-requirement
-outgoing: @ready-for-hld
-* architect
-incoming: @ready-for-hld
-outgoing: @ready-for-lld
-* software-engineer
-incoming: @ready-for-lld, @ready-for-dev, @code-review-rejected
-outgoing: @ready-for-code-review
-* code-reviewer
-incoming: @ready-for-code-review
-outgoing: @code-review-done, @code-review-rejected
-* code-validator
-incoming: @ready-for-code-validation, @code-validation-failed
-outgoing: @code-validation-done
-* build-engineer
-incoming: @ready-for-merge
-outgoing: @closed
-* human-engineer
-incoming: @review-plan, @review-make
-outgoing: @approve-plan, @approve-make, @reject-plan, @reject-make
+<TODO>
 
-## SubAgent Knowledge Management
+### Static code analysis violation fix playbook
 
-Subagents have access to a wiki for markdown docs and knowledge management.
-Subagents will create separate commits for code and docs.
+<TODO>
 
-Each Subagent only reads and creates the following files in each microsprint. Other than docs, SubAgents also deal with a few other artifacts like Tasks, Code etc::
-* microsprint-orchestrator:
-incoming: plan-feature-x task
-outgoing: GOAL_foo.md (where foo is the feature id or task id), build-feature-x task
-* product-manager:
-incoming: -
-outgoing: REQUIREMENT_foo.md (where foo is the feature id or task id)
-* architect:
-incoming: REQUIREMENT_foo.md
-outgoing: HLD_foo.md
-* software-engineer:
-incoming: HLD_foo.md, LLD_foo.md, build-feature-x task
-outgoing: LLD_foo.md, Code
-* code-reviewer:
-incoming: git_sha..git_sha, Code,
-outgoing: Comments in build-feature-x task, Future: Comments in github commit
-* code-validator:
-incoming: git_sha
-outgoing: -
-* build-engineer:
-incoming: -
-outgoing: -
-* human-engineer:
-incoming: -
-outgoing: feature-x task for one or more tasks with specifications. Features can be configured to do plan + build, build only, plan only, bugfixes can be build + test only. By default do both plan + build.
-
-
-## SubAgent Nicknames
-
-SubAgents have nicknames from the fictional PiedPiper company. You can change the nicknames after the SubAgents are generated. The SubAgents will respond to both roles and nicknames. In case you need to create multiple SubAgents of the same role, giving them different nicknames helps.
-
-* microsprint-orchestrator: "Pied-Piper"
-* product-manager: "Jared"
-* architect: "Richard"
-* software-engineer: "Gilfoyle"
-* code-reviewer: "Dinesh"
-* code-validator: "Erlich"
-* build-engineer: "Jian Yang"
-* human-engineer: <Your name>
-
+# Pied-Piper Commands
 
 ## Generate and Use SubAgents from Claude Code for SDLC Workflow
 
-Pied-Piper is not directly used by your Coding Agent. It gets out of the way after the SubAgents are created and configured in your coding agents. SubAgents can be generated in the home directory or project directory.
+Pied-Piper generates SubAgents (*.md files) from simple specs that can be used from other Coding CLIs like Claude Code. 
+
+SubAgents can be generated in User home directory or Project directory for each Coding Agent.
 
 **Pied-piper CLI documentation**
 
@@ -244,18 +146,12 @@ Create your custom team with the name pied-piper
 $ pied-piper team create --name "pied-piper"
 ```
 
-To create team for a given playbook, you can use the following command:
-TODO: Implement
-```bash
-$ pied-piper team create --name "pied-piper" --playbook "microservice-to-monolith"
-```
-
 #### show-team
 ```bash
 $ pied-piper team show --name "pied-piper"
 ```
 
-teams/pied-piper/team-config.yml
+File: **~/.pied-piper/pied-piper/config.yml**
 
 ```yml
 name: "pied-piper"
@@ -282,13 +178,12 @@ $ pied-piper subagent create --team-name "pied-piper" --role "architect" --nickn
 ```
 
 #### show-subagent
-TODO: Implement show by nickname
 ```bash
 $ pied-piper subagent show --team-name "pied-piper" --role "architect"
 $ pied-piper subagent show --team-name "pied-piper" --role "architect" --nickname "Richard"
 ```
 
-teams/pied-piper/subagents/architect.yml
+File: **~/.pied-piper/pied-piper/subagents/architect.yml
 ```yml
 name: "architect"
 role: "architect"
@@ -321,31 +216,42 @@ To change subagent after generation, directly update the Subagents in Claude or 
 
 **.claude/subagents/<subagent-name>.yml** file
 
-#### Generate SubAgents into Coding CLI
+#### Generate SubAgents for a Coding CLI
 
-To generate all SubAgents for a team to Claude Code User directory:
+Subagents can be generated in *.md format to target multiple Coding CLIs.
+
+To generate all SubAgents for a team to target Claude Code:
 
 ```bash
 $ pied-piper subagent generate --team-name "pied-piper" --all --target claude-code
 ```
 
-To generate all SubAgents for a team to Claude Code Project directory:
+#### Export SubAgents for a Coding CLI
+
+Subagents can be exported in *.md format to the User directory (~/.claude) or Project directory (/path/to/project/.claude) for a target Coding CLI.
+
+To export all SubAgents for a team to target Claude Code Project directory:
 
 ```bash
-$ pied-piper subagent generate --team-name "pied-piper" --all --target claude-code --target-dir /path/to/project
+$ pied-piper subagent export all --team-name "pied-piper" --target claude-code --project-dir /path/to/project
 ```
 
-To generate or update an individual subagent into Claude Code User directory:
+To export an individual subagent to target Claude Code Project directory:
 
 ```bash
-$ pied-piper subagent generate --team-name "pied-piper" --role "architect" --target claude-code
+$ pied-piper subagent export subagent --team-name "pied-piper" --name "architect" --target claude-code --project-dir /path/to/project
 ```
 
-To generate or update an individual subagent into Claude Code Project directory:
+### How to use SubAgents workflow from Claude Code?
 
-```bash
-$ pied-piper subagent generate --team-name "pied-piper" --role "architect" --target claude-code --target-dir /path/to/project
-```
+Go to Claude Code:
+1. > Onboard to beads task management using "bd quickstart"
+2. > Create a new task with the label that starts your workflow
+3. > Ask microsprint-orchestrator to work on beads open tasks
+
+For more detailed steps, refer to the playbooks:
+1. [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md)
+2. [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION.md)
 
 ### How to use SubAgents from other Coding CLIs for SDLC Workflow?
 
@@ -353,23 +259,6 @@ Follow the same steps as above. While generating the subagents, change --target 
 
 Supported Coding CLIs are:
 * Claude Code
-
-## Building a feature with SubAgents
-
-TODO: Add example of building a feature with SubAgents
-
-# Playbooks
-
-Playbooks are repeatable workflows for different kinds of long-running or continuous-coding tasks in software engineering, that can be executed by a team of Pied-Piper SubAgents:
-1. Migration from library version x to version y - Rails 5 to Rails 8
-2. Migration from language x to language y - Python to Typescript
-4. Ensure Unit Test coverage is > 80%
-5. Ensure Integration and Behavioural Test coverage is > 80%
-6. Consolidate Microservices to Monolith
-7. Change Techstack from x to y
-8. Fix static code analysis violations in the codebase
-
-You can find these playbooks in the [docs/PLAYBOOKS.MD](docs/PLAYBOOKS.MD)
 
 # Release
 
