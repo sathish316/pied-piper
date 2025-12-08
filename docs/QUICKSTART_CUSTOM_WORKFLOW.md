@@ -4,7 +4,7 @@ Get your team of AI SubAgents up and running in minutes in ClaudeCode or your fa
 
 ## Custom Workflow for Unit test coverage
 
-<placeholder: image for custom workflow>
+<img src="assets/pied_piper_unittest_coverage_workflow.png" alt="Unit Test Coverage Playbook"/>
 
 As an example, let's use the following workflow:
 * Roles & Responsibilities

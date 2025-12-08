@@ -4,7 +4,7 @@ Migrate your codebase from TypeScript to Python with a team of AI SubAgents work
 
 ## Custom Workflow for TypeScript to Python Migration
 
-<placeholder: image for custom workflow>
+<img src="../assets/pied_piper_language_migration_workflow.png" alt="Language Migration Playbook"/>
 
 This playbook demonstrates a systematic approach to migrating code from TypeScript to Python:
 * Roles & Responsibilities

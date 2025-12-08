@@ -73,11 +73,9 @@ Playbooks are repeatable workflows for different kinds of long-running or contin
 7. Change Tech Stack from x to y
 8. Fix static code analysis violations in the codebase
 
-You can find these playbooks in the [docs/PLAYBOOKS.MD](docs/PLAYBOOKS.MD)
-
 ### Language migration playbook
 
-<img src="docs/assets/language_migration_playbook.png"/>
+<img src="docs/assets/pied_piper_language_migration_workflow.png" alt="Language Migration Playbook"/>
 
 This is a sample Language migration playbook from Typescript to Python, using a team of Pied-Piper SubAgents.
 
@@ -88,7 +86,7 @@ TODO: LINK
 
 ### Unit test coverage playbook
 
-<img src="docs/assets/unit_test_coverage_playbook.png"/>
+<img src="docs/assets/pied_piper_unittest_coverage_workflow.png" alt="Unit Test Coverage Playbook"/>
 
 This is a sample Unit test coverage improvement playbook, using a team of Pied-Piper SubAgents.
 
