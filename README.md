@@ -97,19 +97,19 @@ Claude Code Demo (Youtube):
 
 https://www.youtube.com/watch?v=tKwj30EFDew
 
+## Microservices to Monolith consolidation playbook
+
+<img src="docs/assets/pied_piper_microservice_to_monolith_refactoring_workflow.png" alt="Microservices to Monolith Consolidation Playbook"/>
+
+This is a sample Microservices to Monolith consolidation playbook, using a team of Pied-Piper SubAgents.
+
+TODO
+
 ## Library version migration playbook
 
 TODO
 
 ## Integration/Behavioural test coverage playbook
-
-TODO
-
-## Microservices to Monolith consolidation playbook
-
-<img src="docs/assets/pied_piper_microservices_to_monolith_workflow.png" alt="Microservices to Monolith Consolidation Playbook"/>
-
-This is a sample Microservices to Monolith consolidation playbook, using a team of Pied-Piper SubAgents.
 
 TODO
 
