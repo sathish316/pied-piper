@@ -73,6 +73,8 @@ Playbooks are repeatable workflows for different kinds of long-running or contin
 7. Change Tech Stack from x to y
 8. Fix static code analysis violations in the codebase
 
+Playbooks are just YML files to create a Team of SubAgents with defined roles, task workflows, wiki workflows, Agent-Agent and Human-Agent co-ordination. Find sample playbook yml files in [playbook](playbook) dir.
+
 ## Language migration playbook
 
 <img src="docs/assets/pied_piper_language_migration_workflow.png" alt="Language Migration Playbook"/>
