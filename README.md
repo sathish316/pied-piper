@@ -107,6 +107,10 @@ TODO
 
 ## Microservices to Monolith consolidation playbook
 
+<img src="docs/assets/pied_piper_microservices_to_monolith_workflow.png" alt="Microservices to Monolith Consolidation Playbook"/>
+
+This is a sample Microservices to Monolith consolidation playbook, using a team of Pied-Piper SubAgents.
+
 TODO
 
 ## Techstack migration playbook
