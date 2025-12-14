@@ -29,6 +29,7 @@ func setupSubagentTest(t *testing.T) (*TeamConfigYamlHandler, string) {
 
 	teamConfigHandler := TeamConfigYamlHandler{
 		ConfigPath: configPath,
+		Config:     &TeamConfig{Name: "pied-piper"}, // Use pied-piper for sample config
 	}
 
 	return &teamConfigHandler, tmpDir
@@ -36,7 +37,7 @@ func setupSubagentTest(t *testing.T) (*TeamConfigYamlHandler, string) {
 
 func setupSubagentSpecTest(t *testing.T, teamConfigDir string) string {
 	t.Helper()
-	subagentSpecConfigPath := filepath.Join(teamConfigDir, "subagents", "software-engineer.yml")
+	subagentSpecConfigPath := filepath.Join(teamConfigDir, "subagents", "software-engineer.md")
 	subagentSpecConfigContent := `
 role: "software-engineer"
 description: ""
@@ -99,11 +100,12 @@ func TestSubagentConfigHandler_Show(t *testing.T) {
 
 	subagent, err := subagentConfigHandler.Show("pied-piper", "software-engineer")
 
-	assert.NoError(t, err)
-	assert.Equal(t, "software-engineer", subagent.Role)
-	assert.Equal(t, "Gilfoyle", subagent.Nickname)
-	assert.NotEmpty(t, subagent.TaskLabels.Incoming)
-	assert.NotEmpty(t, subagent.TaskLabels.Outgoing)
+	if assert.NoError(t, err) {
+		assert.Equal(t, "software-engineer", subagent.Role)
+		assert.Equal(t, "Gilfoyle", subagent.Nickname)
+		assert.NotEmpty(t, subagent.TaskLabels.Incoming)
+		assert.NotEmpty(t, subagent.TaskLabels.Outgoing)
+	}
 }
 
 func TestSubagentConfigHandler_GetSpec(t *testing.T) {
@@ -119,11 +121,12 @@ func TestSubagentConfigHandler_GetSpec(t *testing.T) {
 
 	subagentSpecConfig, err := subagentConfigHandler.GetSpec("pied-piper", "software-engineer")
 
-	assert.NoError(t, err)
-	assert.Equal(t, "software-engineer", subagentSpecConfig.Role)
-	assert.Equal(t, "Gilfoyle", subagentSpecConfig.Nickname)
-	assert.NotEmpty(t, subagentSpecConfig.TaskLabels.Incoming)
-	assert.NotEmpty(t, subagentSpecConfig.TaskLabels.Outgoing)
+	if assert.NoError(t, err) {
+		assert.Equal(t, "software-engineer", subagentSpecConfig.Role)
+		assert.Equal(t, "Gilfoyle", subagentSpecConfig.Nickname)
+		assert.NotEmpty(t, subagentSpecConfig.TaskLabels.Incoming)
+		assert.NotEmpty(t, subagentSpecConfig.TaskLabels.Outgoing)
+	}
 }
 
 func TestSubagentConfigHandler_UpdateSpec(t *testing.T) {
@@ -148,7 +151,7 @@ func TestSubagentConfigHandler_UpdateSpec(t *testing.T) {
 	subagentSpecConfigPath, err := subagentConfigHandler.UpdateSpec("pied-piper", "architect", &architectSpec)
 
 	assert.NoError(t, err)
-	assert.Equal(t, filepath.Join(teamConfig.ConfigPath.Path, "subagents", "architect.yml"), subagentSpecConfigPath)
+	assert.Equal(t, filepath.Join(teamConfig.ConfigPath.Path, "subagents", "architect.md"), subagentSpecConfigPath)
 
 	subagentSpecConfig, err := subagentConfigHandler.GetSpec("pied-piper", "architect")
 	assert.NoError(t, err)

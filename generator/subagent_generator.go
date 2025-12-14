@@ -1,12 +1,13 @@
 package generator
 
 import (
-	"github.com/sathish316/pied-piper/subagent"
-	"github.com/sathish316/pied-piper/config"
-	"os"
-	"text/template"
 	"bytes"
 	"fmt"
+	"os"
+	"text/template"
+
+	"github.com/sathish316/pied-piper/config"
+	"github.com/sathish316/pied-piper/subagent"
 )
 
 type SubAgentGenerator interface {
@@ -31,15 +32,17 @@ func (g *SDLCSubAgentGenerator) GenerateSubagentSpec(role string) (*subagent.Sub
 		return nil, err
 	}
 	subagentSpec := subagent.SubagentSpec{
-		Role: subagentConfig.Role,
-		Nickname: subagentConfig.Nickname,
-		Description: subagentConfig.Description,
-		TaskLabels: subagentConfig.TaskLabels,
-		WikiLabels: subagentConfig.WikiLabels,
+		Role:                             subagentConfig.Role,
+		Nickname:                         subagentConfig.Nickname,
+		Description:                      subagentConfig.Description,
+		TaskLabels:                       subagentConfig.TaskLabels,
+		WikiLabels:                       subagentConfig.WikiLabels,
 		GeneratedTaskWorkflowDescription: "",
 		GeneratedWikiWorkflowDescription: "",
-		RoleDescription: "",
-		Memory: "",
+		RoleDescription:                  "",
+		Memory:                           "",
+		Model:                            subagentConfig.Model,
+		CCRModel:                         subagentConfig.CCRModel,
 	}
 	return &subagentSpec, nil
 }

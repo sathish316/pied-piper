@@ -1,12 +1,13 @@
 package config
 
 import (
+	"bytes"
 	_ "embed"
 	"fmt"
 	"os"
-	"bytes"
-	"gopkg.in/yaml.v3"
 	"path/filepath"
+
+	"gopkg.in/yaml.v3"
 )
 
 const DEFAULT_CONFIG_DIR = ".pied-piper"
@@ -20,12 +21,11 @@ var blankConfigContent []byte
 
 // TeamConfigData represents the structured YAML data for team configuration
 type TeamConfig struct {
-	Name        string              `yaml:"name"`
-	Description string        		`yaml:"description"`
-	SubAgents   []SubagentConfig 	`yaml:"subagents"`
-	ConfigPath	TeamConfigPath		`yaml:"-"`
+	Name        string           `yaml:"name"`
+	Description string           `yaml:"description"`
+	SubAgents   []SubagentConfig `yaml:"subagents"`
+	ConfigPath  TeamConfigPath   `yaml:"-"`
 }
-
 
 func (t *TeamConfig) FindSubagentByRole(role string) (*SubagentConfig, error) {
 	for _, subagent := range t.SubAgents {
@@ -57,7 +57,7 @@ type TeamConfigHandler interface {
 
 type TeamConfigYamlHandler struct {
 	ConfigPath TeamConfigPath
-	Config *TeamConfig
+	Config     *TeamConfig
 }
 
 func (c *TeamConfigYamlHandler) Init() error {
@@ -141,25 +141,25 @@ func (c *TeamConfigYamlHandler) Load() (*TeamConfig, error) {
 }
 
 func (c *TeamConfigYamlHandler) Save() error {
-    // Create a new encoder with custom formatting
-    var buf bytes.Buffer
-    encoder := yaml.NewEncoder(&buf)
-    encoder.SetIndent(2) // Set indentation to 2 spaces
+	// Create a new encoder with custom formatting
+	var buf bytes.Buffer
+	encoder := yaml.NewEncoder(&buf)
+	encoder.SetIndent(2) // Set indentation to 2 spaces
 
-    // Encode the config
-    err := encoder.Encode(c.Config)
-    if err != nil {
-        return fmt.Errorf("error marshalling team config: %w", err)
-    }
-    encoder.Close()
+	// Encode the config
+	err := encoder.Encode(c.Config)
+	if err != nil {
+		return fmt.Errorf("error marshalling team config: %w", err)
+	}
+	encoder.Close()
 
-    // Write to file
-    err = os.WriteFile(c.ConfigPath.GetConfigFilePath(), buf.Bytes(), 0644)
-    if err != nil {
-        return fmt.Errorf("error writing team config file: %w", err)
-    }
+	// Write to file
+	err = os.WriteFile(c.ConfigPath.GetConfigFilePath(), buf.Bytes(), 0644)
+	if err != nil {
+		return fmt.Errorf("error writing team config file: %w", err)
+	}
 
-    return nil
+	return nil
 }
 func (c *TeamConfigYamlHandler) PrettyPrint() (string, error) {
 	config := c.Config

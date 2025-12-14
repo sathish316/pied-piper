@@ -2,7 +2,7 @@
 name: {{.Role}}
 nickname: {{.Nickname}}
 description: {{.Description}}
-model: sonnet
+model: {{if .Model}}{{.Model}}{{else}}sonnet{{end}}
 ---
 {{if .CCRModel}}
 <CCR-SUBAGENT-MODEL>{{.CCRModel}}</CCR-SUBAGENT-MODEL>
