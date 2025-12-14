@@ -23,7 +23,7 @@ type TeamConfig struct {
 	Name        string              `yaml:"name"`
 	Description string        		`yaml:"description"`
 	SubAgents   []SubagentConfig 	`yaml:"subagents"`
-	ConfigPath	TeamConfigPath
+	ConfigPath	TeamConfigPath		`yaml:"-"`
 }
 
 
@@ -138,6 +138,22 @@ func (c *TeamConfigYamlHandler) Load() (*TeamConfig, error) {
 	c.Config = &teamConfig
 	teamConfig.ConfigPath = c.ConfigPath
 	return &teamConfig, nil
+}
+
+func (c *TeamConfigYamlHandler) Save() error {
+	// Marshal the config to YAML
+	yamlData, err := yaml.Marshal(c.Config)
+	if err != nil {
+		return fmt.Errorf("error marshalling team config: %w", err)
+	}
+
+	// Write to file
+	err = os.WriteFile(c.ConfigPath.GetConfigFilePath(), yamlData, 0644)
+	if err != nil {
+		return fmt.Errorf("error writing team config file: %w", err)
+	}
+
+	return nil
 }
 
 func (c *TeamConfigYamlHandler) PrettyPrint() (string, error) {

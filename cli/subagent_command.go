@@ -72,6 +72,74 @@ var subagentShowCmd = &cobra.Command{
 	},
 }
 
+var subagentCreateCmd = &cobra.Command{
+	Use:   "create",
+	Short: "Create a new subagent in a team",
+	Long:  `Create a new subagent in a team with placeholders for required fields`,
+	Run: func(cmd *cobra.Command, args []string) {
+		teamName, _ := cmd.Flags().GetString("team")
+		role, _ := cmd.Flags().GetString("role")
+		nickname, _ := cmd.Flags().GetString("nickname")
+
+		fmt.Printf("Creating subagent '%s' for team '%s'...\n", role, teamName)
+
+		// Load team config
+		teamConfig, err := getTeamConfig(teamName)
+		if err != nil {
+			fmt.Println("Error getting team config: ", err)
+			return
+		}
+
+		// Check if subagent already exists
+		_, err = teamConfig.FindSubagentByRole(role)
+		if err == nil {
+			fmt.Printf("Error: Subagent with role '%s' already exists in team '%s'\n", role, teamName)
+			return
+		}
+
+		// Create new subagent with empty placeholders
+		newSubagent := config.SubagentConfig{
+			Role:        role,
+			Description: "",
+			Nickname:    nickname,
+			TaskLabels: config.TaskLabelsConfig{
+				Incoming:                []string{},
+				Outgoing:                []string{},
+				TaskWorkflowDescription: "",
+			},
+			WikiLabels: config.WikiLabelsConfig{
+				Incoming:                []string{},
+				Outgoing:                []string{},
+				WikiWorkflowDescription: "",
+			},
+		}
+
+		// Add to team config
+		teamConfig.SubAgents = append(teamConfig.SubAgents, newSubagent)
+
+		// Save updated config
+		configPath := config.TeamConfigPath{
+			Path: filepath.Join(os.Getenv("HOME"), config.DEFAULT_CONFIG_DIR, teamName),
+			File: config.DEFAULT_CONFIG_FILE,
+		}
+		configHandler := config.TeamConfigYamlHandler{
+			ConfigPath: configPath,
+			Config:     teamConfig,
+		}
+		err = configHandler.Save()
+		if err != nil {
+			fmt.Println("Error saving team config: ", err)
+			return
+		}
+
+		nicknameDisplay := "none"
+		if nickname != "" {
+			nicknameDisplay = nickname
+		}
+		fmt.Printf("\nSubagent '%s' (Nickname: %s) created successfully!\n", role, nicknameDisplay)
+	},
+}
+
 var subagentGenerateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generate subagent for a team and Coding Agent (Claude Code, Rovodev, Cursor, etc.)",
@@ -227,6 +295,11 @@ func init() {
 	subagentShowCmd.Flags().StringP("team", "t", "pied-piper", "Team name")
 	subagentShowCmd.Flags().StringP("name", "s", "", "Subagent name")
 	subagentShowCmd.MarkFlagRequired("name")
+	// Create config - flags, default, required
+	subagentCreateCmd.Flags().StringP("team", "t", "pied-piper", "Team name")
+	subagentCreateCmd.Flags().StringP("role", "r", "", "Subagent role (unique identifier)")
+	subagentCreateCmd.Flags().StringP("nickname", "n", "", "Subagent nickname (optional)")
+	subagentCreateCmd.MarkFlagRequired("role")
 	// Generate config - flags, default, required
 	subagentGenerateCmd.Flags().StringP("team", "t", "pied-piper", "Team name")
 	subagentGenerateCmd.Flags().StringP("name", "s", "", "Subagent name")
@@ -244,6 +317,7 @@ func init() {
 	// Add sub-commands
 	subagentCmd.AddCommand(subagentListCmd)
 	subagentCmd.AddCommand(subagentShowCmd)
+	subagentCmd.AddCommand(subagentCreateCmd)
 	subagentCmd.AddCommand(subagentGenerateCmd)
 	subagentCmd.AddCommand(subagentGenerateAllCmd)
 	subagentCmd.AddCommand(subagentGenerateMetapromptCmd)
