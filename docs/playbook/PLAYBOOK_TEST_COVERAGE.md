@@ -75,7 +75,7 @@ pied-piper subagent show --team "test-titans" --name "unittest-programmer"
 ### 3. Edit your team's workflow
 
 ```bash
-vim ~/.pied-piper/test-titans/team-config.yml
+vim ~/.pied-piper/test-titans/config.yml
 ``` 
 
 Following is a trimmed down version of Pied-Piper team workflow. For full config, go to [playbook/testcoverage/test-titans.yml](../../playbook/testcoverage/test-titans.yml) and copy-paste it into your team config file.
@@ -144,7 +144,7 @@ pied-piper subagent export --team "test-titans" --name "unittest-programmer" --t
 
 **Edit team config:**
 ```bash
-vim ~/.pied-piper/teams/test-titans/team-config.yml
+vim ~/.pied-piper/teams/test-titans/config.yml
 ```
 
 **Regenerate SubAgent:**
@@ -157,7 +157,20 @@ pied-piper subagent generate --team "test-titans" --name "unittest-programmer" -
 pied-piper subagent export --team "test-titans" --name "unittest-programmer" --target claude-code
 ```
 
-### 5. Modify SubAgent's role description from Claude Code or your editor
+### 5. Enrich Subagent Description using Metaprompt
+
+Metaprompts are used to enrich the prompt of Subagent using AI tools like Cursor or Claude Code or by directly calling LLM APIs.
+
+In order to make sure the Subagent honors the workflow, Enrich the prompt of Subagent using AI tools like Cursor or Claude Code or LLM APIs by following the steps below:
+
+5.1 Generate or show metaprompt (applicable to all subagents):
+```bash
+pied-piper subagent metaprompt
+```
+
+5.2 Go to cursor or claudecode and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.subagents/unittest-programmer.yml**
+
+### 6. Modify SubAgent's role description from Claude Code or your editor
 
 Once the SubAgent is generated and exported to Coding CLI, you can generate detailed workflow description and modify its behaviour using AI.
 
@@ -185,7 +198,7 @@ pied-piper subagent metaprompt
 
 Go to cursor and use the prompt to update each Subagent file in **/path/to/project/.subagents/unittest-programmer.yml**
 
-### 6. Start assigning work to your team of SubAgents
+### 7. Start assigning work to your team of SubAgents
 
 If this is the first time you are using SubAgents and beads, run the following prompts in Claude-code:
 > Run bash command "bd quickstart" to onboard to beads task management system

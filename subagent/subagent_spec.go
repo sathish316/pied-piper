@@ -12,6 +12,8 @@ type SubagentSpec struct {
 	GeneratedWikiWorkflowDescription string
 	RoleDescription string
 	Memory string
+	Model string
+	CCRModel string
 }
 
 // Convert SubagentSpec to SubagentConfig - Keeping 2 structs to avoid circular dependencies
@@ -26,5 +28,7 @@ func (s *SubagentSpec) ToConfig() *config.SubagentSpecConfig {
 		GeneratedWikiWorkflowDescription: "",
 		RoleDescription: s.RoleDescription,
 		Memory: s.Memory,
+		Model: s.Model,
+		CCRModel: s.CCRModel,
 	}
 }

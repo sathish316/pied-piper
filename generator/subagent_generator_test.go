@@ -80,7 +80,7 @@ func TestSubAgentGenerator_GenerateSubagentSpecYamlFileForCodingTemplate_UsesTem
 		TargetDir: filepath.Join(tmpDir, config.CLAUDE_CONFIG_DIR, config.CLAUDE_AGENTS_DIR),
 	}
 
-	subagentSpecConfigPath, err := generator.GenerateSubagentYamlForCodingAgent(subagentConfig, &targetConfig)
+	subagentSpecConfigPath, err := generator.GenerateSubagentSpecFileForCodingAgent(subagentConfig, &targetConfig)
 
 	assert.NoError(t, err)
 	// cat yaml content into memory and assert on the content

@@ -64,7 +64,7 @@ func (g *SDLCSubAgentGenerator) GenerateSubagentYaml(subagentSpec *subagent.Suba
 	return subagentYmlFilePath, nil
 }
 
-func (g *SDLCSubAgentGenerator) GenerateSubagentYamlForCodingAgent(subagentConfig *config.SubagentConfig, codingAgentConfig *config.CodingAgentConfig) (string, error) {
+func (g *SDLCSubAgentGenerator) GenerateSubagentSpecFileForCodingAgent(subagentConfig *config.SubagentConfig, codingAgentConfig *config.CodingAgentConfig) (string, error) {
 	fmt.Printf("Generating subagent yaml (%s) for coding agent: %s\n", subagentConfig.Role, codingAgentConfig.Target)
 	// Get pied-piper config dir
 	subagentConfigHandler := config.SubagentConfigYamlHandler{
@@ -81,11 +81,11 @@ func (g *SDLCSubAgentGenerator) GenerateSubagentYamlForCodingAgent(subagentConfi
 		return "", err
 	}
 	//TODO: use codingAgent or LLM to generate other parts of the subagent yaml
-	subagentYmlFilePath, err := subagentConfigHandler.UpdateSpecMD(g.TeamConfig.Name, subagentSpec.Role, []byte(subagentMD))
+	subagentMDFilePath, err := subagentConfigHandler.UpdateSpecMD(g.TeamConfig.Name, subagentSpec.Role, []byte(subagentMD))
 	if err != nil {
 		return "", err
 	}
-	return subagentYmlFilePath, nil
+	return subagentMDFilePath, nil
 }
 
 func (g *SDLCSubAgentGenerator) generateSubagentMDSpec(subagentSpec *subagent.SubagentSpec, codingAgentConfig *config.CodingAgentConfig) (string, error) {

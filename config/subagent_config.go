@@ -25,6 +25,8 @@ type SubagentConfig struct {
 	Nickname    string           `yaml:"nickname"`
 	TaskLabels  TaskLabelsConfig `yaml:"task_labels"`
 	WikiLabels  WikiLabelsConfig `yaml:"wiki_labels"`
+	Model       string           `yaml:"model"`
+	CCRModel    string           `yaml:"ccr_model"`
 }
 
 type SubagentSpecConfig struct {
@@ -37,6 +39,8 @@ type SubagentSpecConfig struct {
 	GeneratedWikiWorkflowDescription string           `yaml:"generated_wiki_workflow_description"`
 	RoleDescription     string           `yaml:"role_description"`
 	Memory              string           `yaml:"memory"`
+	Model               string           `yaml:"model"`
+	CCRModel            string           `yaml:"ccr_model"`
 }
 
 func (s *SubagentConfig) ToString() string {

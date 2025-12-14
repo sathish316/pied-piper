@@ -4,6 +4,10 @@ nickname: {{.Nickname}}
 description: {{.Description}}
 model: sonnet
 ---
+{{if .CCRModel}}
+<CCR-SUBAGENT-MODEL>{{.CCRModel}}</CCR-SUBAGENT-MODEL>
+{{end}}
+
 You are a {{.Role}} in a team of SubAgents.
 You are identified as either {{.Role}} or {{.Nickname}}.
 Your high level roles and responsibilities are:

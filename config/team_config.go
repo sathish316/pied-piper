@@ -4,7 +4,7 @@ import (
 	_ "embed"
 	"fmt"
 	"os"
-
+	"bytes"
 	"gopkg.in/yaml.v3"
 	"path/filepath"
 )
@@ -141,21 +141,26 @@ func (c *TeamConfigYamlHandler) Load() (*TeamConfig, error) {
 }
 
 func (c *TeamConfigYamlHandler) Save() error {
-	// Marshal the config to YAML
-	yamlData, err := yaml.Marshal(c.Config)
-	if err != nil {
-		return fmt.Errorf("error marshalling team config: %w", err)
-	}
+    // Create a new encoder with custom formatting
+    var buf bytes.Buffer
+    encoder := yaml.NewEncoder(&buf)
+    encoder.SetIndent(2) // Set indentation to 2 spaces
 
-	// Write to file
-	err = os.WriteFile(c.ConfigPath.GetConfigFilePath(), yamlData, 0644)
-	if err != nil {
-		return fmt.Errorf("error writing team config file: %w", err)
-	}
+    // Encode the config
+    err := encoder.Encode(c.Config)
+    if err != nil {
+        return fmt.Errorf("error marshalling team config: %w", err)
+    }
+    encoder.Close()
 
-	return nil
+    // Write to file
+    err = os.WriteFile(c.ConfigPath.GetConfigFilePath(), buf.Bytes(), 0644)
+    if err != nil {
+        return fmt.Errorf("error writing team config file: %w", err)
+    }
+
+    return nil
 }
-
 func (c *TeamConfigYamlHandler) PrettyPrint() (string, error) {
 	config := c.Config
 	output, err := yaml.Marshal(config)

@@ -90,7 +90,7 @@ pied-piper subagent show --team "migration-masters" --name "python-programmer"
 ### 3. Edit your team's workflow
 
 ```bash
-vim ~/.pied-piper/migration-masters/team-config.yml
+vim ~/.pied-piper/migration-masters/config.yml
 ``` 
 
 Following is a trimmed down version of Pied-Piper team workflow. For full config, go to [playbook/language_migration/migration_masters_ts_to_py.yml](../../playbook/language_migration/migration_masters_ts_to_py.yml) and copy-paste it into your team config file.
@@ -164,16 +164,18 @@ pied-piper export all --team "migration-masters" --target claude-code --project-
 pied-piper export subagent --team "migration-masters" --name "python-programmer" --target claude-code --project-dir /path/to/lang_migration_workspace
 ```
 
-### 5. Enrich Subagent Description inside Claude Code
+### 5. Enrich Subagent Description using Metaprompt
 
-In order to make sure the Subagent honors the workflow, Enrich the prompt of Subagent using AI tools like Cursor or Claude Code or by directly calling LLM APIs.
+Metaprompts are used to enrich the prompt of Subagent using AI tools like Cursor or Claude Code or by directly calling LLM APIs.
 
-Generate metaprompt for each Subagent:
+In order to make sure the Subagent honors the workflow, Enrich the prompt of Subagent using AI tools like Cursor or Claude Code or LLM APIs by following the steps below:
+
+5.1 Generate or show metaprompt (applicable to all subagents):
 ```bash
 pied-piper subagent metaprompt
 ```
 
-Go to cursor or claudecode and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.subagents/python-programmer.yml**
+5.2 Go to cursor or claudecode and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.subagents/python-programmer.yml**
 
 ### (Optional) 6. Modify Workflow and Regenerate Subagents
 
@@ -181,7 +183,7 @@ If you need to change the team workflow, Modify and Regenerate the Subagents
 
 **Edit team config:**
 ```bash
-vim ~/.pied-piper/teams/migration-masters/team-config.yml
+vim ~/.pied-piper/teams/migration-masters/config.yml
 ```
 
 **Regenerate SubAgent:**
