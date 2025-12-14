@@ -78,38 +78,12 @@ pied-piper subagent show --team "test-titans" --name "unittest-programmer"
 vim ~/.pied-piper/test-titans/team-config.yml
 ``` 
 
+Following is a trimmed down version of Pied-Piper team workflow. For full config, go to [playbook/testcoverage/test-titans.yml](../../playbook/testcoverage/test-titans.yml) and copy-paste it into your team config file.
+
 ```yml
 name: "test-titans"
 subagents:
-  - role: "unittest-planner"
-    description: |
-        Start a unittest plan, end the unittest cycle. Unittest-planner breaks down the goal into smaller tasks, one per file or one per 5 public functions. Keep the goal short in less than 10 lines and 50 words.
-    nickname: "Peter"
-    task_labels:
-      incoming:
-      - "#unittest"
-      - "#unittest-approved"
-      outgoing:
-      - "#unittest-plan-complete"
-      - "#closed"
-      task_workflow_description: |
-        1. Unittest-planner receives beads tasks with #unittest label.
-        It breaks down the goal into smaller tasks, one per file or one per 5 public functions.
-        After the plan is complete, it comments the plan on beads task and updates the label of the task to #unittest-plan-complete.
-        If the task is ready for implementation, update the label of the task to #unittest-ready-for-dev.
-        If there are multiple complex testing tasks needed, create beads tasks that are linked to the original task with #unittest-ready-for-dev label.
-        Tasks with $unittest-ready-for-dev label will be picked up by unittest-programmer.
-        2. Unittest-planner receives beads tasks with #unittest-approved label.
-        It's job is to close the beads task. It updates the label of the task to #closed.
-        It takes the summary of the tests from unittest-summarizer and updates the beads task with the summary.
-    wiki_labels:
-      incoming: []
-      outgoing:
-      - "UT_GOAL_<TASK_ID>.md"
-      wiki_workflow_description: |
-        Wikis are created as local markdown files in "wiki" directory.
-        1. Unittest-planner receives beads tasks with #unittest label.
-        Once it has finalized a test plan, it creates a local wiki file called "UT_GOAL_<TASK_ID>.md" with the plan
+...
   - role: "unittest-programmer"
     description: |
         Unittest-programmer writes the unit tests for the files or packages. Unittest-programmer writes only 1 happy path test case and one or more edge cases per public function. Unittest-programmer also does not modify/remove your code to make the tests pass.
@@ -133,51 +107,7 @@ subagents:
         Wikis are created as local markdown files in "wiki" directory.
         Unittest-programmer does not generate any wiki or markdown docs.
         1. Before starting on a task with #unittest-ready-for-dev label, Unittest-programmer reads the local wiki file "UT_GOAL_<TASK_ID>.md" to understand the goal of the test task and then proceeds to write the test.
-  - role: "unittest-reviewer"
-    description: |
-        Unittest-reviewer reviews the unit tests for the files or packages. If it finds issues, it rejects the test. If the test fails, it fixes the test. If both the code and tests are good, it approves the test.
-    nickname: "Richard"
-    task_labels:
-      incoming:
-      - "#unittest-ready-for-review"
-      outgoing:
-      - "#unittest-approved"
-      - "#unittest-rejected"
-      task_workflow_description: |
-        Unittest-reviewer follows a boomerang workflow pattern with Unittest-programmer. They can exchange tasks for a maximum of 3 times.
-        This follows a Maker-Checker pattern where Unittest-programmer is the maker and Unittest-reviewer is the checker. Once all tests are written and the beads task is closed, Human reviewer is the final Checker.
-        1. Unittest-reviewer receives beads tasks with #unittest-ready-for-review label. It reviews the unit tests for the files or packages. 
-            a. If it finds issues, it rejects the test. It updates review comments in the beads task as comments. It rejects the test by updating the label of the task to #unittest-rejected.
-            b. If both the code and tests are good, it approves the test. It approves the test by updating the label of the task to #unittest-approved.
-    wiki_labels:
-      incoming:
-      - "UT_GOAL_<TASK_ID>.md"
-      outgoing: []
-      wiki_workflow_description: |
-        Wikis are created as local markdown files in "wiki" directory.
-        Unittest-reviewer does not generate any wiki or markdown docs.
-        1. Before starting on a task with #unittest-ready-for-review label, Unittest-reviewer reads the local wiki file "UT_GOAL_<TASK_ID>.md" to understand the goal of the test task and then proceeds to review the test.
-  - role: "unittest-summarizer"
-    nickname: "Sam"
-    description: "Generate a crisp summary of tests implemented, concisely. Keep the summary short in less than 10 lines and 500 words"
-    task_labels:
-      incoming:
-      - "#unittest-approved"
-      outgoing:
-      - "closed"
-      task_workflow_description: |
-        1. Unittest-summarizer receives beads tasks with #unittest-approved label.
-        It generates a summary of the tests implemented, concisely in a local wiki doc.
-        Once the summary is generated, it updates the label of the task to #closed and hands-off control to unittest-orchestrator.
-    wiki_labels:
-      incoming: []
-      outgoing:
-      - "UT_SUMMARY_<TASK_ID>.md"
-      wiki_workflow_description: |
-        Wikis are created as local markdown files in "wiki" directory.
-        unittest-summarizer looks at all comments in the beads task to generate the summary of tests implemented.
-        The summary is concise and short in less than 10 lines and 500 words.
-        Unittest-summarizer creates a local wiki file called "UT_SUMMARY_<TASK_ID>.md" with the summary of the tests implemented.
+...
 ```
 
 List all SubAgents to verify the team config is correct.
