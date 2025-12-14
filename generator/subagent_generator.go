@@ -42,7 +42,7 @@ func (g *SDLCSubAgentGenerator) GenerateSubagentSpec(role string) (*subagent.Sub
 		RoleDescription:                  "",
 		Memory:                           "",
 		Model:                            subagentConfig.Model,
-		CCRModel:                         subagentConfig.CCRModel,
+		RouterModel:                      subagentConfig.RouterModel,
 	}
 	return &subagentSpec, nil
 }

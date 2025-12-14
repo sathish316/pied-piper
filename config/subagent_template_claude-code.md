@@ -4,8 +4,8 @@ nickname: {{.Nickname}}
 description: {{.Description}}
 model: {{if .Model}}{{.Model}}{{else}}sonnet{{end}}
 ---
-{{if .CCRModel}}
-<CCR-SUBAGENT-MODEL>{{.CCRModel}}</CCR-SUBAGENT-MODEL>
+{{if .RouterModel}}
+<CCR-SUBAGENT-MODEL>{{.RouterModel}}</CCR-SUBAGENT-MODEL>
 {{end}}
 
 You are a {{.Role}} in a team of SubAgents.
