@@ -1,26 +1,30 @@
 # Pied Piper - Dream Team of Planner/Coder/Reviewer using Ensemble of the best Coding Models
 
-Create a dream team of Planner/Coder/Reviewer using an ensemble of the best Coding Models GPT-5.1 or 5.2 Codex, Claude Opus 4.5, Gemini Pro 3.0:
+Create a dream team of Planner/Coder/Reviewer using an ensemble of the best Coding Models GPT-5.1 or 5.2 Codex, Claude Opus 4.5, Gemini Pro 3.0 or 2.5:
 * dream-team-planner: Plan to build X
 * dream-team-coder: Build X
 * dream-team-code-reviewer: Review code for X with the plan
 * dream-team-performance-and-security-reviewer: Review code for X for performance and security issues
 
-Use the Ensemble of the best Coding Models to build the feature X:
+Use an Ensemble of the best Coding Models to build the feature X:
 * GPT Codex 5.1 for Planning
 * Claude Opus 4.5 for Coding
-* Gemini Pro 3.0 for Code, Performance, Security Reviews
+* Gemini Pro 3.0 or 2.5 for Code, Performance, Security Reviews
+
+Once you have defined the roles & responsibilities, task workflow, documentation workflow for this team, Pied-Piper helps you deploy the team as Subagents in your favourite Coding CLIs like Claude Code.
 
 ## Custom Workflow for Dream Team of Planner/Coder/Reviewers using an Ensemble of the best Coding Models
 
 <placeholder-for-image>
 
-This playbook demonstrates a systematic approach to creating a dream team of Planner/Coder/Reviewers to build any major/minor feature X using an Ensemble of the best Coding Models:
+This playbook demonstrates a systematic approach to create a dream team of Planner/Coder/Reviewers to build a major/minor feature X using an Ensemble of the best Coding Models:
+
 * Roles & Responsibilities
     * dream-team-planner: Plan to build X
     * dream-team-coder: Build X
     * dream-team-code-reviewer: Review code for X with the plan
     * dream-team-performance-and-security-reviewer: Review code for X for performance and security issues
+
 * Task management workflow
     * dream-team-planner
         * Incoming: #dream-team-feature
@@ -38,7 +42,8 @@ This playbook demonstrates a systematic approach to creating a dream team of Pla
 ## Prerequisites to make Claude Code work with OpenRouter
 
 Claude Code can only use the following models as of now - Sonnet, Opus, Haiku.
-To make Claude Code work with the best of OpenAI GPT-5.2 Codex and Gemini Pro 3.0, we will be using OpenRouter and make Claude Code use OpenRouter by using Claude-code-router: https://github.com/musistudio/claude-code-router
+
+To make Claude Code work with the best of OpenAI GPT-5.2 Codex and Gemini Pro 3.0, we will be using OpenRouter as the backend and make Claude Code use OpenRouter by using Claude-code-router: https://github.com/musistudio/claude-code-router. Read claude-code-router docs to understand the next set of steps better: 
 
 1. Install Claude-code-router
 
@@ -53,7 +58,7 @@ export OPENROUTER_API_KEY=<your-openrouter-api-key>
 
 3. Configure Claude Code Router (CCR) with OpenRouter models:
 
-Refer claude-code-router docs to add multiple OpenRouter models to Claude-Code. Sample config for using GPT-5.1 Codex or GPT-5.2, Opus 4.5, Gemini Pro 3.0 all from within Claude-Code is below:
+Refer claude-code-router docs to add multiple OpenRouter models to Claude-Code. Sample config for using GPT-5.1 Codex or GPT-5.2, Opus 4.5, Gemini Pro 3.0 or 2.5 all from within Claude-Code is below:
 
 File: ~/.config/claude-code-router/config.json
 ```json
@@ -77,20 +82,24 @@ File: ~/.config/claude-code-router/config.json
         "anthropic/claude-sonnet-4.5",
         "google/gemini-3-pro",
         "google/gemini-3-pro-preview"
-      ]
+        "google/gemini-2.5-pro"
+      ],
+      "transformer": {
+        "use": ["openrouter"]
+      }
     }
   ],
   "Router": {
     "default": "openrouter,anthropic/claude-opus-4.5",
     "think": "openrouter,openai/gpt-5.2",
-    "longContext": "openrouter,google/gemini-3-pro-preview",
+    "longContext": "openrouter,google/gemini-3-pro-preview" // or "openrouter,google/gemini-2.5-pro",
     "longContextThreshold": 60000,
   },
 }
 ```
 
 CCR allows using a different OpenRouter model per Subagent by specifying the following in Subagent.md file:
-https://github.com/musistudio/claude-code-router?tab=readme-ov-file#subagent-routing
+https://github.com/musistudio/claude-code-router?tab=readme-ov-file#subagent-routing. We will be using this feature to use a different OpenRouter model per Subagent.
 
 ```md
 <CCR-SUBAGENT-MODEL>openrouter,openai/gpt-5.2</CCR-SUBAGENT-MODEL>
@@ -185,16 +194,16 @@ pied-piper subagent list --team dream-team
 
 ### 4. Select a different RouterModel per subagent
 
-Let's use different models per subagent to finetune their behaviour:
+Let's use different models per subagent to specialize their behaviour:
 * dream-team-planner: GPT-5.1 Codex or GPT-5.2 Codex
 * dream-team-coder: Claude Opus 4.5
 * dream-team-code-reviewer: Gemini Pro 3.0 or Gemini Pro 2.5
 * dream-team-performance-and-security-reviewer: Gemini Pro 3.0 or Gemini Pro 2.5
 * dream-team-orchestrator: Claude Haiku 4.5
 
-Note: There are some integration issues between Gemini 3.0 Pro Preview and the tools used here. Due to this, rest of the doc will use Gemini 2.5 Pro wherever Gemini Pro 3.0 will be a better fit.
+Note: There are some integration issues between Gemini 3.0 Pro Preview and the tools used here. Due to this, rest of the doc will use Gemini 2.5 Pro wherever Gemini Pro 3.0 will be a better fit. There is an open issue to fix this.
 
-Change the config in ~/.pied-piper/dream-team/config.yml file to use the different models.
+Change the config in ~/.pied-piper/dream-team/config.yml file to use different models per subagent.
 ```yml
 subagents:
   - name: dream-team-planner
@@ -242,7 +251,8 @@ In order to make sure the Subagent honors the workflow, Enrich the prompt of Sub
 pied-piper subagent metaprompt
 ```
 
-Go to cursor or claudecode and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.subagents/python-programmer.yml**
+Go to cursor or Claude Code and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.subagents/python-programmer.yml**
+Ensure you change the <ROLE-FILE> file (using @ or #) and <ROLE-NAME> placeholder in metaprompt.
 
 ### (Optional) 7. Modify Workflow and Regenerate Subagents
 
@@ -292,7 +302,7 @@ projec-dir> bd init
 If this is the first time you are using SubAgents and beads, run the following prompts in Claude-code:
 > In this project, we use beads for task management. Run bash command "bd quickstart" to onboard to beads task management system
 
-Ask Claude-code to build feature X using the Dream team subagents
+Ask Claude-code to build feature X using the Dream team subagents with the following prompt:
 > Use the dream-team subagents to implement Feature X
 
 Watch the Pied-Piper Dream Team implement Feature X either semi-autonomously or autonomously, keeping you (human-reviewer) in the loop.

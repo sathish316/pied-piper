@@ -7,6 +7,14 @@ Create a dream team of Planner/Coder/Reviewer using Claude Models:
 * dream-team-performance-and-security-reviewer: Review code for X for performance and security issues
 * dream-team-orchestrator: Orchestrate the dream team to build X
 
+Use the best Claude Coding Model for each role:
+* Opus 4.5 for Planning
+* Sonnet 4.5 for Coding and Code reviews
+* Opus 4.5 for Performance and Security reviews
+* Haiku 4.5 for Orchestration
+
+Once you have defined the roles & responsibilities, task workflow, documentation workflow for this team, Pied-Piper helps you deploy the team as Subagents in your favourite Coding CLIs like Claude Code.
+
 ## Custom Workflow for Dream Team of Planner/Coder/Reviewers using Claude Models
 
 <placeholder-for-image>
@@ -127,14 +135,14 @@ pied-piper subagent list --team dream-team
 
 ### 4. Select a different Model per subagent
 
-Let's use different models per subagent to finetune their behaviour:
+Let's use different models per subagent to specialize their behaviour:
 * dream-team-planner: opus
 * dream-team-coder: sonnet
 * dream-team-code-reviewer: sonnet
-* dream-team-performance-and-security-reviewer: sonnet
+* dream-team-performance-and-security-reviewer: opus
 * dream-team-orchestrator: haiku
 
-Change the config in ~/.pied-piper/dream-team/config.yml file to use the different models.
+Change the config in ~/.pied-piper/dream-team/config.yml file to use different models per subagent.
 ```yml
 subagents:
   - name: dream-team-planner
@@ -184,7 +192,8 @@ In order to make sure the Subagent honors the workflow, Enrich the prompt of Sub
 pied-piper subagent metaprompt
 ```
 
-Go to cursor or claudecode and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.claude/agents/dream-team-code-reviewer.md**
+Go to cursor or Claude Code and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.claude/agents/dream-team-code-reviewer.md**
+Ensure you change the <ROLE-FILE> file (using @ or #) and <ROLE-NAME> placeholder in metaprompt.
 
 ### (Optional) 7. Modify Workflow and Regenerate Subagents
 
@@ -234,7 +243,7 @@ projec-dir> bd init
 If this is the first time you are using SubAgents and beads, run the following prompts in Claude-code:
 > In this project, we use beads for task management. Run bash command "bd quickstart" to onboard to beads task management system
 
-Ask Claude-code to build feature X using the Dream team subagents
+Ask Claude-code to build feature X using the Dream team subagents with the following prompt:
 > Use the dream-team subagents to implement Feature X
 
 Watch the Pied-Piper Dream Team implement Feature X either semi-autonomously or autonomously, keeping you (human-reviewer) in the loop.

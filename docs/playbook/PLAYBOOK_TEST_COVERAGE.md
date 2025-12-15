@@ -168,14 +168,14 @@ In order to make sure the Subagent honors the workflow, Enrich the prompt of Sub
 pied-piper subagent metaprompt
 ```
 
-5.2 Go to cursor or claudecode and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.subagents/unittest-programmer.yml**
+5.2 Go to cursor or claudecode and use the above metaprompt to update each Subagent file Ex: **/path/to/project/.subagents/unittest-programmer.md**
 
 ### 6. Modify SubAgent's role description from Claude Code or your editor
 
 Once the SubAgent is generated and exported to Coding CLI, you can generate detailed workflow description and modify its behaviour using AI.
 
 ```bash
-vim /path/to/project/.subagents/unittest-programmer.yml
+vim /path/to/project/.subagents/unittest-programmer.md
 ```
 
 Modify the description to suit your project's needs.
@@ -196,7 +196,7 @@ Generate metaprompt for each Subagent:
 pied-piper subagent metaprompt
 ```
 
-Go to cursor and use the prompt to update each Subagent file in **/path/to/project/.subagents/unittest-programmer.yml**
+Go to cursor and use the prompt to update each Subagent file in **/path/to/project/.subagents/unittest-programmer.md**
 
 ### 7. Start assigning work to your team of SubAgents
 
