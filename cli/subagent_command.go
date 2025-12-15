@@ -299,6 +299,7 @@ func init() {
 	subagentCreateCmd.Flags().StringP("team", "t", "pied-piper", "Team name")
 	subagentCreateCmd.Flags().StringP("role", "r", "", "Subagent role (unique identifier)")
 	subagentCreateCmd.Flags().StringP("nickname", "n", "", "Subagent nickname (optional)")
+	subagentCreateCmd.MarkFlagRequired("team")
 	subagentCreateCmd.MarkFlagRequired("role")
 	// Generate config - flags, default, required
 	subagentGenerateCmd.Flags().StringP("team", "t", "pied-piper", "Team name")
