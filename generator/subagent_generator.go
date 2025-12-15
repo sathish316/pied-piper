@@ -68,7 +68,7 @@ func (g *SDLCSubAgentGenerator) GenerateSubagentYaml(subagentSpec *subagent.Suba
 }
 
 func (g *SDLCSubAgentGenerator) GenerateSubagentSpecFileForCodingAgent(subagentConfig *config.SubagentConfig, codingAgentConfig *config.CodingAgentConfig) (string, error) {
-	fmt.Printf("Generating subagent yaml (%s) for coding agent: %s\n", subagentConfig.Role, codingAgentConfig.Target)
+	fmt.Printf("Generating subagent spec (%s) for coding agent: %s\n", subagentConfig.Role, codingAgentConfig.Target)
 	// Get pied-piper config dir
 	subagentConfigHandler := config.SubagentConfigYamlHandler{
 		Config: g.TeamConfig,
