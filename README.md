@@ -4,6 +4,8 @@ Pied Piper is a team of AI SubAgents that can autonomously or semi-autonomously 
 
 These SubAgents run on Coding Agents (like Claude Code), Docker, Cloud Desktop etc, so they can work even while you're AFK or sleeping or on vacation.
 
+View Pied-Piper Subagents in action here: https://www.youtube.com/playlist?list=PLKWJ03cHcPr3OWiSBDghzh62AErndC5pm
+
 # Getting started
 
 1. Install Pied-Piper
