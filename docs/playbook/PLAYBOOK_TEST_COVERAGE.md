@@ -4,8 +4,19 @@ Get your team of AI SubAgents up and running in minutes in ClaudeCode or your fa
 
 ## Custom Workflow for Unit test coverage
 
+### Workflow
+
 <img src="../assets/pied_piper_unittest_coverage_workflow.png" alt="Unit Test Coverage Playbook"/>
 
+### Demo Video
+
+<p align="center">
+  <a href="https://youtu.be/6Amq_qBzsCE">
+    <img src="https://img.youtube.com/vi/6Amq_qBzsCE/0.jpg" />
+  </a>
+</p>
+
+### Playbook
 As an example, let's use the following workflow:
 * Roles & Responsibilities
     * unittest-planner: The goal is to write unit tests for a file or a package. Unittest-planner breaks down the goal into smaller tasks, one per file.

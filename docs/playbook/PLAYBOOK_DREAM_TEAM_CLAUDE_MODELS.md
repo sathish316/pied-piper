@@ -15,9 +15,23 @@ Use the best Claude Coding Model for each role:
 
 Once you have defined the roles & responsibilities, task workflow, documentation workflow for this team, Pied-Piper helps you deploy the team as Subagents in your favourite Coding CLIs like Claude Code.
 
+Inspirations for DreamTeam workflow in Pied-Piper are listed in [PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md](PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md). This playbook uses only Claude Code for a similar workflow so that you can achieve a similar setup using only Claude Pro or API keys.
+
 ## Custom Workflow for Dream Team of Planner/Coder/Reviewers using Claude Models
 
-<placeholder-for-image>
+### SDLC Workflow
+
+<img src="../assets/DreamTeamClaudeModelsWorkflow.png" alt="Dream Team Ensemble SDLC Workflow" width="800" height="600">
+
+### Demo video
+
+<p align="center">
+  <a href="https://youtu.be/q5PPrvrfaUs">
+    <img src="https://img.youtube.com/vi/q5PPrvrfaUs/0.jpg" />
+  </a>
+</p>
+
+### Playbook
 
 This playbook demonstrates a systematic approach to creating a dream team of Planner/Coder/Reviewers to build any major/minor feature X using Claude Models:
 * Roles & Responsibilities

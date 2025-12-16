@@ -13,9 +13,26 @@ Use an Ensemble of the best Coding Models to build the feature X:
 
 Once you have defined the roles & responsibilities, task workflow, documentation workflow for this team, Pied-Piper helps you deploy the team as Subagents in your favourite Coding CLIs like Claude Code.
 
+DreamTeam workflow in Pied-Piper is inspired by several AI developments that happened in Nov/Dec'25:
+1. This LinkedIn post about using an Ensemble of the best Coding Models as a Dream Team: https://www.linkedin.com/feed/update/urn:li:activity:7405521740790992896/
+2. LLM Council by @karpathy : https://github.com/karpathy/llm-council
+3. Variant of LLM council and Ensemble models by @satyanadella - https://www.youtube.com/watch?v=SEZADIErqyw
+
 ## Custom Workflow for Dream Team of Planner/Coder/Reviewers using an Ensemble of the best Coding Models
 
-<placeholder-for-image>
+### SDLC Workflow
+
+<img src="../assets/DreamTeamEnsembleModelsWorkflow.png" alt="Dream Team Ensemble Models SDLC Workflow" width="800" height="600">
+
+### Demo video
+
+<p align="center">
+  <a href="https://youtu.be/9UjUvm7FK6Y">
+    <img src="https://img.youtube.com/vi/9UjUvm7FK6Y/0.jpg" />
+  </a>
+</p>
+
+### Playbook
 
 This playbook demonstrates a systematic approach to create a dream team of Planner/Coder/Reviewers to build a major/minor feature X using an Ensemble of the best Coding Models:
 
@@ -105,7 +122,7 @@ https://github.com/musistudio/claude-code-router?tab=readme-ov-file#subagent-rou
 <CCR-SUBAGENT-MODEL>openrouter,openai/gpt-5.2</CCR-SUBAGENT-MODEL>
 ```
 
-## Pied-Piper Installation
+## Installation
 
 ```bash
 go install github.com/sathish316/pied-piper
