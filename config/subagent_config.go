@@ -2,21 +2,22 @@ package config
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v3"
 	"os"
 	"path/filepath"
+
+	"gopkg.in/yaml.v3"
 )
 
 type TaskLabelsConfig struct {
-	Incoming []string `yaml:"incoming"`
-	Outgoing []string `yaml:"outgoing"`
-	TaskWorkflowDescription string `yaml:"task_workflow_description"`
+	Incoming                []string `yaml:"incoming"`
+	Outgoing                []string `yaml:"outgoing"`
+	TaskWorkflowDescription string   `yaml:"task_workflow_description"`
 }
 
 type WikiLabelsConfig struct {
-	Incoming []string `yaml:"incoming"`
-	Outgoing []string `yaml:"outgoing"`
-	WikiWorkflowDescription string `yaml:"wiki_workflow_description"`
+	Incoming                []string `yaml:"incoming"`
+	Outgoing                []string `yaml:"outgoing"`
+	WikiWorkflowDescription string   `yaml:"wiki_workflow_description"`
 }
 
 type SubagentConfig struct {
@@ -25,18 +26,22 @@ type SubagentConfig struct {
 	Nickname    string           `yaml:"nickname"`
 	TaskLabels  TaskLabelsConfig `yaml:"task_labels"`
 	WikiLabels  WikiLabelsConfig `yaml:"wiki_labels"`
+	Model       string           `yaml:"model"`
+	RouterModel string           `yaml:"router_model"`
 }
 
 type SubagentSpecConfig struct {
-	Role                string           `yaml:"role"`
-	Description         string           `yaml:"description"`
-	Nickname            string           `yaml:"nickname"`
-	TaskLabels          TaskLabelsConfig `yaml:"task_labels"`
-	WikiLabels          WikiLabelsConfig `yaml:"wiki_labels"`
+	Role                             string           `yaml:"role"`
+	Description                      string           `yaml:"description"`
+	Nickname                         string           `yaml:"nickname"`
+	TaskLabels                       TaskLabelsConfig `yaml:"task_labels"`
+	WikiLabels                       WikiLabelsConfig `yaml:"wiki_labels"`
 	GeneratedTaskWorkflowDescription string           `yaml:"generated_task_workflow_description"`
 	GeneratedWikiWorkflowDescription string           `yaml:"generated_wiki_workflow_description"`
-	RoleDescription     string           `yaml:"role_description"`
-	Memory              string           `yaml:"memory"`
+	RoleDescription                  string           `yaml:"role_description"`
+	Memory                           string           `yaml:"memory"`
+	Model                            string           `yaml:"model"`
+	RouterModel                      string           `yaml:"router_model"`
 }
 
 func (s *SubagentConfig) ToString() string {

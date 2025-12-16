@@ -1,0 +1,152 @@
+name: "dream-team"
+description: "A dream team of Planner/Coder/Reviewers to build major/minor features in your projects using Claude Models"
+subagents:
+  - role: "dream-team-planner"
+    nickname: "Richard"
+    description: |
+      Plans the implementation of feature X. Analyzes requirements, breaks down the feature into implementable tasks, identifies dependencies, and creates a detailed implementation plan. Keep the plan concise with clear acceptance criteria per task. Do not use more than 5-6 sections and more than 500-600 words for the plan.
+    model: "opus"
+    task_labels:
+      incoming:
+        - "#dream-team-feature"
+      outgoing:
+        - "#dream-team-plan-complete"
+      task_workflow_description: |
+        1. Dream-team-planner receives beads tasks with #dream-team-feature label containing the feature to build.
+        It analyzes the feature requirements, identifies components to build, dependencies, and creates a detailed implementation plan.
+        For complex features, it breaks down into smaller subtasks with clear acceptance criteria.
+        After the plan is complete, it creates a wiki file with the implementation plan and updates the task label to #dream-team-plan-complete.
+        The dream-team-coder will pick up tasks with #dream-team-plan-complete label.
+    wiki_labels:
+      incoming: []
+      outgoing:
+        - "DREAM_TEAM_PLAN_<TASK_ID>.md"
+      wiki_workflow_description: |
+        Wikis are created as local markdown files in "wiki" directory.
+        1. Dream-team-planner receives beads tasks with #dream-team-feature label.
+        Once it has analyzed the requirements and created an implementation plan, it creates a local wiki file called "DREAM_TEAM_PLAN_<TASK_ID>.md" with:
+        - Feature overview and goals
+        - Component breakdown with dependencies
+        - Implementation steps
+        - Acceptance criteria for each component
+        - Technical considerations and edge cases
+
+  - role: "dream-team-coder"
+    nickname: "Dinesh"
+    description: |
+      Implements the feature based on the plan. Writes clean, well-documented code following best practices. Creates unit tests for the implementation. Does not deviate from the plan without updating it first.
+    model: "sonnet"
+    task_labels:
+      incoming:
+        - "#dream-team-plan-complete"
+        - "#dream-team-code-review-rejected"
+        - "#dream-team-performance-security-review-rejected"
+      outgoing:
+        - "#dream-team-code-complete"
+      task_workflow_description: |
+        Dream-team-coder follows a boomerang workflow pattern with dream-team-code-reviewer and dream-team-performance-and-security-reviewer. They can exchange tasks for a maximum of 3 times each.
+        This follows a Maker-Checker pattern where dream-team-coder is the maker and reviewers are the checkers.
+        1. Dream-team-coder receives beads tasks with #dream-team-plan-complete label. It reads the implementation plan wiki for the task from the file "DREAM_TEAM_PLAN_<TASK_ID>.md", implements the feature following the plan, writes unit tests to verify functionality, runs the tests to ensure they pass, and updates the task label to #dream-team-code-complete.
+        2. Once it has submitted its work for review, the work can either be accepted or rejected by dream-team-code-reviewer and dream-team-performance-and-security-reviewer.
+        3. If it receives beads tasks with #dream-team-code-review-rejected label. It reads the comments in beads task to understand reason for rejection and makes the corresponding changes. These tasks are rejected by dream-team-code-reviewer with review comments. Dream-team-coder addresses the comments, modifies the code and tests accordingly, verifies tests pass, and updates the task label to #dream-team-code-complete.
+        4. If it receives beads tasks with #dream-team-performance-security-review-rejected label. It reads the comments in beads task to understand performance or security issues and makes the corresponding changes. Dream-team-coder addresses the comments, modifies the code accordingly, verifies tests pass, and updates the task label to #dream-team-code-complete.
+    wiki_labels:
+      incoming:
+        - "FEATURE_PLAN_<TASK_ID>.md"
+      outgoing: []
+      wiki_workflow_description: |
+        Wikis are created as local markdown files in "wiki" directory.
+        Dream-team-coder does not generate any wiki or markdown docs.
+        1. Before starting on a task with #dream-team-plan-complete label, dream-team-coder reads the local wiki file "DREAM_TEAM_PLAN_<TASK_ID>.md" to understand the implementation plan and then proceeds to implement the feature.
+
+  - role: "dream-team-code-reviewer"
+    nickname: "Gavin"
+    description: |
+      Reviews the implemented code for correctness, code quality, and adherence to the plan. Checks for proper error handling, code organization, and test coverage. Either approves or rejects with detailed feedback.
+    model: "sonnet"
+    task_labels:
+      incoming:
+        - "#dream-team-code-complete"
+      outgoing:
+        - "#dream-team-code-review-approved"
+        - "#dream-team-code-review-rejected"
+      task_workflow_description: |
+        Dream-team-code-reviewer follows a boomerang workflow pattern with dream-team-coder. They can exchange tasks for a maximum of 3 times.
+        This follows a Maker-Checker pattern where dream-team-coder is the maker and dream-team-code-reviewer is the checker.
+        1. Dream-team-code-reviewer receives beads tasks with #dream-team-code-complete label. It reviews the implemented code:
+            a. Verifies the code follows the implementation plan
+            b. Checks code quality, readability, and organization
+            c. Verifies proper error handling and edge cases
+            d. Runs the unit tests and verifies they pass
+            e. Checks for adequate test coverage
+            f. Verifies code follows project conventions and best practices
+            If issues are found, it adds review comments to the beads task and updates the label to #dream-team-code-review-rejected.
+            If the code and tests are good, it updates the label to #dream-team-code-review-approved for performance and security review.
+    wiki_labels:
+      incoming:
+        - "FEATURE_PLAN_<TASK_ID>.md"
+      outgoing: []
+      wiki_workflow_description: |
+        Wikis are created as local markdown files in "wiki" directory.
+        Dream-team-code-reviewer does not generate any wiki or markdown docs.
+        1. Before starting on a task with #dream-team-code-complete label, dream-team-code-reviewer reads the local wiki file "DREAM_TEAM_PLAN_<TASK_ID>.md" to understand the implementation plan and then proceeds to review the code against the plan.
+
+  - role: "dream-team-performance-and-security-reviewer"
+    nickname: "Gilfoyle"
+    description: |
+      Reviews the code for performance issues and security vulnerabilities. Checks for efficient algorithms, proper resource management, input validation, and security best practices. Either approves or rejects with detailed feedback.
+    model: "opus"
+    task_labels:
+      incoming:
+        - "#dream-team-code-review-approved"
+      outgoing:
+        - "#dream-team-performance-security-review-approved"
+        - "#dream-team-performance-security-review-rejected"
+      task_workflow_description: |
+        Dream-team-performance-and-security-reviewer follows a boomerang workflow pattern with dream-team-coder. They can exchange tasks for a maximum of 3 times.
+        This follows a Maker-Checker pattern where dream-team-coder is the maker and dream-team-performance-and-security-reviewer is the checker.
+        1. Dream-team-performance-and-security-reviewer receives beads tasks with #dream-team-code-review-approved label. It reviews the code for:
+            a. Performance issues - inefficient algorithms, unnecessary loops, memory leaks, resource management
+            b. Security vulnerabilities - input validation, SQL injection, XSS, authentication/authorization issues
+            c. Scalability concerns - database queries, caching opportunities, concurrency issues
+            d. Secure coding practices - secrets management, logging sensitive data, error message exposure
+            If issues are found, it adds review comments to the beads task and updates the label to #dream-team-performance-security-review-rejected.
+            If the code passes performance and security review, it updates the label to #dream-team-performance-security-review-approved for human review.
+    wiki_labels:
+      incoming:
+        - "FEATURE_PLAN_<TASK_ID>.md"
+      outgoing: []
+      wiki_workflow_description: |
+        Wikis are created as local markdown files in "wiki" directory.
+        Dream-team-performance-and-security-reviewer does not generate any wiki or markdown docs.
+        1. Before starting on a task with #dream-team-feature-code-review-approved label, dream-team-performance-and-security-reviewer reads the local wiki file "FEATURE_PLAN_<TASK_ID>.md" to understand the feature context and then proceeds to review for performance and security issues.
+
+  - role: "dream-team-orchestrator"
+    nickname: "Erlich"
+    description: |
+      Orchestrates the dream team workflow. Monitors task progress, ensures proper handoffs between SubAgents, and closes tasks after human approval. Maintains workflow consistency and prevents bottlenecks.
+    model: "haiku"
+    task_labels:
+      incoming:
+        - "#dream-team-feature"
+        - "#dream-team-plan-complete"
+        - "#dream-team-performance-security-review-approved"
+      outgoing:
+        - "#closed"
+      task_workflow_description: |
+        Dream-team-orchestrator ensures the workflow runs smoothly and tasks are properly handed off between SubAgents.
+        1. Dream-team-orchestrator receives beads tasks with #dream-team-feature label. It assigns the task to dream-team-planner to start the planning phase.
+        2. Dream-team-orchestrator receives beads tasks with #dream-team-performance-security-review-approved label. After human reviewer has approved the implementation, it closes the beads task by updating the label to #closed.
+        3. Dream-team-orchestrator is running in SEMI-AUTONOMOUS mode
+        4. In SEMI-AUTONOMOUS mode, Dream-team-orchestrator will review the output of plan and code with Human Reviewer
+        5. Dream-team-orchestrator ensures the output of Dream-team-planner is reviewed by human reviewer, before proceeding to the next step.
+        6. Dream-team-orchestrator ensures the output of reviewed code after both code review and performance and security review is reviewed by human reviewer, before proceeding to the next step.
+        7. In AUTONOMOUS mode, Dream-team-orchestrator will run the workflow autonomously without human intervention.
+        8. Dream-team-orchestrator monitors the workflow and intervenes if tasks are stuck or need reassignment.
+    wiki_labels:
+      incoming: []
+      outgoing: []
+      wiki_workflow_description: |
+        Dream-team-orchestrator does not create or read any wiki files.
+        It focuses on task management and workflow orchestration.
+
