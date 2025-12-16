@@ -171,12 +171,12 @@ var subagentGenerateCmd = &cobra.Command{
 		subagentGenerator := &generator.SDLCSubAgentGenerator{
 			TeamConfig: teamConfig,
 		}
-		subagentYamlFilePath, err := subagentGenerator.GenerateSubagentYamlForCodingAgent(subagentConfig, codingAgentTarget)
+		subagentSpecFilePath, err := subagentGenerator.GenerateSubagentSpecFileForCodingAgent(subagentConfig, codingAgentTarget)
 		if err != nil {
 			fmt.Printf("Error generating Subagent for %s: %s\n", codingAgentTarget.ToString(), err)
 			return
 		}
-		fmt.Printf("Subagent yaml file generated at %s\n", subagentYamlFilePath)
+		fmt.Printf("Subagent spec file generated at %s\n", subagentSpecFilePath)
 	},
 }
 
@@ -206,12 +206,12 @@ var subagentGenerateAllCmd = &cobra.Command{
 			subagentGenerator := &generator.SDLCSubAgentGenerator{
 				TeamConfig: teamConfig,
 			}
-			subagentYamlFilePath, err := subagentGenerator.GenerateSubagentYamlForCodingAgent(&subagentConfig, codingAgentTarget)
+			subagentSpecFilePath, err := subagentGenerator.GenerateSubagentSpecFileForCodingAgent(&subagentConfig, codingAgentTarget)
 			if err != nil {
 				fmt.Printf("Error generating Subagent for %s: %s\n", codingAgentTarget.ToString(), err)
 				return
 			}
-			fmt.Printf("Subagent yaml file generated at %s\n", subagentYamlFilePath)
+			fmt.Printf("Subagent spec file generated at %s\n", subagentSpecFilePath)
 		}
 	},
 }

@@ -4,6 +4,8 @@ Pied Piper is a team of AI SubAgents that can autonomously or semi-autonomously 
 
 These SubAgents run on Coding Agents (like Claude Code), Docker, Cloud Desktop etc, so they can work even while you're AFK or sleeping or on vacation.
 
+View Pied-Piper Subagents in action here: https://www.youtube.com/playlist?list=PLKWJ03cHcPr3OWiSBDghzh62AErndC5pm
+
 # Getting started
 
 1. Install Pied-Piper
@@ -75,29 +77,82 @@ Playbooks are repeatable workflows for different kinds of long-running or contin
 
 Playbooks are just YML files to create a Team of SubAgents with defined roles, task workflows, wiki workflows, Agent-Agent and Human-Agent co-ordination. Find sample playbook yml files in [playbook](playbook) dir.
 
+## Dream Team of Planner/Coder/Reviewers using an Ensemble of the best Coding Models
+
+<img src="docs/assets/DreamTeamEnsembleModelsWorkflow.png" alt="Dream Team Ensemble Models SDLC Workflow" width="800" height="600">
+
+Create a Dream Team of SubAgents using an Ensemble of the best Coding Models:
+* Planner using GPT-5.1 Codex or GPT-5.2 Codex
+* Coder using Claude Opus 4.5
+* Reviewers using Gemini Pro 3.0 or 2.5
+* Orchestrator using Claude Haiku 4.5
+
+Go to [PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md](docs/playbook/PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md) for detailed steps to use this Dream team as Claude Code SubAgents in your projects.
+
+Claude Code Demo (Youtube):
+
+<p align="center">
+  <a href="https://youtu.be/59DaMXBbtlQ">
+    <img src="https://img.youtube.com/vi/59DaMXBbtlQ/0.jpg" />
+  </a>
+</p>
+
+Note: This playbook requires a Coding CLI that supports multiple Models. If you're using Claude Code, you can use [Claude-Code-Router](https://github.com/musistudio/claude-code-router) to use this playbook.
+
+## Dream Team of Planner/Coder/Reviewers using Claude Models
+
+<img src="docs/assets/DreamTeamClaudeModelsWorkflow.png" alt="Dream Team Claude Models SDLC Workflow" width="800" height="600">
+
+Create a Dream Team of SubAgents using the best suitable Claude Model for each role:
+* Planner using Opus 4.5
+* Coder using Sonnet 4.5
+* Reviewers using Sonnet 4.5 or Opus 4.5
+* Orchestrator using Haiku 4.5
+
+Go to [PLAYBOOK_DREAM_TEAM_CLAUDE_MODELS.md](docs/playbook/PLAYBOOK_DREAM_TEAM_CLAUDE_MODELS.md) for detailed steps to use this Dream team as Claude Code SubAgents in your projects.
+
+Claude Code Demo (Youtube):
+
+<p align="center">
+  <a href="https://youtu.be/q5PPrvrfaUs">
+    <img src="https://img.youtube.com/vi/q5PPrvrfaUs/0.jpg" />
+  </a>
+</p>
+
+
 ## Language migration playbook
 
 <img src="docs/assets/pied_piper_language_migration_workflow.png" alt="Language Migration Playbook"/>
 
-This is a sample Language migration playbook from Typescript to Python, using a team of Pied-Piper SubAgents.
+Sample Language migration playbook from Typescript to Python, using a team of Pied-Piper SubAgents.
 
 Go to [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION.md) for detailed steps to run the language migration playbook using Pied-Piper.
 
 Claude Code Demo (Youtube):
 
-https://www.youtube.com/watch?v=FnLVNE9kpUw
+<p align="center">
+  <a href="https://youtu.be/oR_TfCcjpNY">
+    <img src="https://img.youtube.com/vi/oR_TfCcjpNY/0.jpg" />
+  </a>
+</p>
+
 
 ## Unit test coverage playbook
 
 <img src="docs/assets/pied_piper_unittest_coverage_workflow.png" alt="Unit Test Coverage Playbook"/>
 
-This is a sample Unit test coverage improvement playbook, using a team of Pied-Piper SubAgents.
+Sample Unit test coverage improvement playbook, using a team of Pied-Piper SubAgents.
 
 Go to [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md) for detailed steps to run the unit test coverage improvement playbook using Pied-Piper.
 
 Claude Code Demo (Youtube):
 
-https://www.youtube.com/watch?v=tKwj30EFDew
+<p align="center">
+  <a href="https://youtu.be/6Amq_qBzsCE">
+    <img src="https://img.youtube.com/vi/6Amq_qBzsCE/0.jpg" />
+  </a>
+</p>
+
 
 ## Microservices to Monolith consolidation playbook
 

@@ -36,6 +36,7 @@ func setup(t *testing.T) (*TeamConfigYamlHandler, string) {
 
 	teamConfigHandler := TeamConfigYamlHandler{
 		ConfigPath: configPath,
+		Config:     &TeamConfig{Name: "pied-piper"}, // Use pied-piper for sample config
 	}
 	return &teamConfigHandler, tmpDir
 }
