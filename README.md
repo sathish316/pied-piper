@@ -347,5 +347,5 @@ TODO: Release to homebrew
 
 # LICENSE
 
-TODO: Add LICENSE
+This project is licensed under the O'Sassy License - see the [LICENSE.md](LICENSE.md) file and https://osaasy.dev/ for details. It's similar to the MIT license, but without the commercial rights.
 
