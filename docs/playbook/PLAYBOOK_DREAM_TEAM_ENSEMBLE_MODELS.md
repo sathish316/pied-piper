@@ -11,7 +11,6 @@ Once you have defined the roles & responsibilities, task workflow, documentation
 DreamTeam workflow in Pied-Piper is inspired by several AI developments that happened in Nov/Dec'25:
 1. This LinkedIn post about using an Ensemble of the best Coding Models as a Dream Team: https://www.linkedin.com/feed/update/urn:li:activity:7405521740790992896/
 2. LLM Council by @karpathy : https://github.com/karpathy/llm-council
-3. Variant of LLM council and Ensemble models by @satyanadella - https://www.youtube.com/watch?v=SEZADIErqyw
 
 This playbook requires [Claude-Code-Router](https://github.com/musistudio/claude-code-router) and an [OpenRouter](https://openrouter.ai/) subscription.
 
