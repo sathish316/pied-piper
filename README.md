@@ -1,5 +1,7 @@
 # Overview
 
+<img src="docs/assets/nanoattempt1_projectlogo.jpg" width=600 height=400/>
+
 Pied Piper is a team of AI SubAgents that can autonomously or semi-autonomously work on long-running coding tasks with full End-to-end tracking and human-in-the-loop approvals. 
 
 These SubAgents run on Coding Agents (like Claude Code CLI), Docker, Cloud Desktop etc, so they can work even while you're AFK or sleeping or on vacation.
