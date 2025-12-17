@@ -11,19 +11,19 @@ View Pied-Piper Subagents in action here: https://www.youtube.com/playlist?list=
 # Getting started
 
 1. Install Pied-Piper
-2. Create or configure a team
-3. Generate SubAgents for your Coding Agent
-4. Start assigning tasks to your SubAgents from Coding Agent (Claude Code)
+2. Create a team
+3. Configure or Customize your team's workflow
+4. Generate SubAgents for your Coding Agent - Claude Code CLI etc
+5. Start assigning tasks to your SubAgents from Coding Agent
 
-Go to [QUICKSTART.md](docs/QUICKSTART.md) or [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md) to run a custom SDLC worfklow for Test coverage improvement using Pied-Piper.
-
-Go to [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION.md) to run a custom SDLC worfklow for Language Migration from TypeScript to Python using Pied-Piper.
-
-Go to [PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md](docs/playbook/PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md) to use an ensemble of the best Coding Models for a generic Plan/Code/Review/Security-Review/Performance-Review Workflow.
-
-Go to [Pied-Piper Commands section](https://github.com/sathish316/pied-piper?tab=readme-ov-file#pied-piper-commands) for docs on how to use Pied-Piper.
-
-For an overview of Pied-Piper SDLC Workflow features like Subagents, Roles, Task workflows, Wiki workflows etc, go to [PIEDPIPER_SDLC_WORKFLOW_CONCEPTS.md](docs/PIEDPIPER_SDLC_WORKFLOW_CONCEPTS.md)
+Links to Getting started docs
+* Quickstart guides
+    * Go to [QUICKSTART.md](docs/QUICKSTART.md) or [PLAYBOOK_TEST_COVERAGE.md](docs/playbook/PLAYBOOK_TEST_COVERAGE.md) to run a custom SDLC worfklow for Test coverage improvement.
+* Playbooks for repeatable SDLC workflows
+    * [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION.md) - Custom worfklow for TypeScript to Python migration
+    * [PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md](docs/playbook/PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md) to use an ensemble of the best Coding Models for a generic Plan/Code/Review SDLC Workflow
+* [Pied-Piper CLI Commands reference](https://github.com/sathish316/pied-piper?tab=readme-ov-file#pied-piper-commands)
+* [Pied-Piper Concepts](docs/PIEDPIPER_SDLC_WORKFLOW_CONCEPTS.md): Overview of features like Subagents, Roles, Task workflows, Wiki workflows
 
 # Development
 
@@ -103,7 +103,7 @@ Claude Code Demo (Youtube):
 
 Note: This playbook requires a Coding CLI that supports multiple Models. If you're using Claude Code, you can use [Claude-Code-Router](https://github.com/musistudio/claude-code-router) to use this playbook.
 
-## Dream Team of Planner/Coder/Reviewers using Claude Models
+## Team of Planner/Coder/Reviewers using Claude Models
 
 <img src="docs/assets/DreamTeamClaudeModelsWorkflow.png" alt="Dream Team Claude Models SDLC Workflow" width="800" height="600">
 
