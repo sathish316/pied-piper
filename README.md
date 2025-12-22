@@ -25,7 +25,7 @@ Links to Getting started docs
     * [PLAYBOOK_LANGUAGE_MIGRATION.md](docs/playbook/PLAYBOOK_LANGUAGE_MIGRATION.md) - Custom worfklow for TypeScript to Python migration
     * [PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md](docs/playbook/PLAYBOOK_DREAM_TEAM_ENSEMBLE_MODELS.md) to use an ensemble of the best Coding Models for a generic Plan/Code/Review SDLC Workflow
 * [Pied-Piper CLI Commands reference](https://github.com/sathish316/pied-piper?tab=readme-ov-file#pied-piper-commands)
-* [Pied-Piper Concepts](docs/PIEDPIPER_SDLC_WORKFLOW_CONCEPTS.md): Overview of features like Subagents, Roles, Task workflows, Wiki workflows
+* [Pied-Piper Concepts](docs/PIEDPIPER_SUBAGENTS_AND_WORKFLOW_CONCEPTS.md): Overview of features like Subagents, Roles, Task workflows, Wiki workflows
 
 # Development
 
