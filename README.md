@@ -349,5 +349,4 @@ TODO: Release to homebrew
 
 # LICENSE
 
-This project is licensed under the O'Saasy License - see the [LICENSE.md](LICENSE.md) file and https://osaasy.dev/ for details. It's similar to the MIT license, but without the commercial rights.
-
+Pied-Piper is open-sourced under the [MIT LICENSE](LICENSE.md)
