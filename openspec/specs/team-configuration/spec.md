@@ -5,13 +5,21 @@ Define how Pied Piper initializes, loads, displays, and interprets the YAML conf
 
 ## Requirements
 
-### Requirement: Default team configuration initialization
-The system SHALL initialize an embedded default team configuration at `$HOME/.pied-piper/config.yml` and ensure a sibling `subagents` directory exists.
+### Requirement: Named team configuration initialization
+The system SHALL initialize each named team under `$HOME/.pied-piper/<team-name>/` with a configuration file, a `subagents` directory, and a `templates` directory.
 
 #### Scenario: Create the default configuration
 - **WHEN** the user runs `pied-piper team create`
-- **THEN** the system SHALL create `$HOME/.pied-piper/config.yml` from the embedded sample configuration
-- **AND** the system SHALL create `$HOME/.pied-piper/subagents`
+- **THEN** the system SHALL create `$HOME/.pied-piper/pied-piper/config.yml` from the embedded default-team configuration
+- **AND** the system SHALL create the team's `subagents` and `templates` directories
+
+#### Scenario: Create a custom team
+- **WHEN** the user runs `pied-piper team create --name test-titans`
+- **THEN** the system SHALL initialize `$HOME/.pied-piper/test-titans/config.yml` from a blank team template
+
+#### Scenario: Initialize coding-agent templates
+- **WHEN** a team is initialized
+- **THEN** the system SHALL create subagent templates for Claude Code and Rovo Dev in the team's `templates` directory
 
 ### Requirement: Configured team model
 The system SHALL load team name, description, subagent roles, nicknames, task-label routing, and wiki-label routing from YAML.
@@ -37,7 +45,7 @@ The default team SHALL configure microsprint orchestrator, product manager, arch
 The system SHALL serialize the loaded team configuration as YAML for display.
 
 #### Scenario: Show the active team
-- **WHEN** the user runs `pied-piper team show` and the configuration loads successfully
+- **WHEN** the user runs `pied-piper team show --name <team-name>` and the named configuration loads successfully
 - **THEN** the system SHALL print the active configuration in YAML form
 
 ### Requirement: Role lookup
