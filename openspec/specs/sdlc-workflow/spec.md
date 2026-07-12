@@ -1,57 +1,76 @@
 # SDLC Workflow Specification
 
 ## Purpose
-Define how Pied Piper coordinates role-based AI subagents through planning, implementation, validation, and delivery while retaining human oversight.
+Define how Pied Piper coordinates configurable role-based AI subagents through planning, implementation, layered review, and delivery while retaining optional human oversight.
 
 ## Requirements
 
 ### Requirement: Role-based SDLC team
-The system SHALL define distinct subagent roles for microsprint orchestration, product management, architecture, software engineering, code review, code validation, and build engineering, with a human engineer acting as reviewer.
+The system SHALL allow a workflow to assign distinct planning, making, checking, and orchestration responsibilities to configurable subagent roles.
 
 #### Scenario: Assign work by responsibility
-- **WHEN** a microsprint advances through requirements, design, implementation, review, validation, and delivery
+- **WHEN** a microsprint advances through planning, implementation, correctness review, performance and security review, and delivery
 - **THEN** the system SHALL route each stage to the role responsible for that stage
 
+#### Scenario: Use custom roles
+- **WHEN** a team defines roles or labels different from the bundled examples
+- **THEN** the workflow SHALL use the roles and routing declared in that team's configuration
+
 ### Requirement: Microsprint issue decomposition
-The system SHALL represent a feature as a human-created feature issue plus planning and build issues coordinated within a microsprint.
+The system SHALL use tasks and task labels to represent feature, planning, implementation, review, and closure state within a microsprint.
 
 #### Scenario: Start work on a feature
-- **WHEN** a human engineer creates a feature issue with the `@open` label
-- **THEN** the microsprint orchestrator SHALL coordinate a planning issue marked `@ready-for-plan` and a build issue marked `@ready-for-dev`
+- **WHEN** a human or planner creates a feature task with the team's feature label
+- **THEN** the configured planner and orchestrator roles SHALL coordinate its planning and implementation work
 
 ### Requirement: Automatic workflow progression
-The system SHALL support automatic progression through planning, making, and shipping using the configured task labels.
+The system SHALL support progression through planning, making, checking, and shipping using the team's configured incoming and outgoing task labels.
 
 #### Scenario: Complete the automatic happy path
 - **WHEN** a feature is processed without rejection or validation failure
-- **THEN** its work SHALL progress from requirement definition through high-level and low-level design, code review, code validation, merge readiness, and closure
+- **THEN** its work SHALL progress from planning through implementation, correctness review, performance and security review, approval, and closure
 
 #### Scenario: Return rejected code for correction
-- **WHEN** code review emits `@code-review-rejected`
-- **THEN** the software engineer SHALL receive the work for correction before another code review
+- **WHEN** a correctness reviewer rejects an implementation
+- **THEN** the configured coder SHALL receive the task and review feedback before resubmitting it
 
-#### Scenario: Retry failed validation
-- **WHEN** validation emits `@code-validation-failed`
-- **THEN** the work SHALL return to code validation until it succeeds
+#### Scenario: Return performance or security findings
+- **WHEN** the performance and security reviewer rejects an implementation
+- **THEN** the configured coder SHALL address the findings and return the work through review
 
 ### Requirement: Human approval workflow
-The system SHALL support a human-approval mode in which a human engineer can approve or reject planned and implemented work.
+The system SHALL support a semi-autonomous mode with human review of plans and reviewed code, as well as an autonomous mode without those human approval pauses.
 
 #### Scenario: Reject a plan
 - **WHEN** the human engineer rejects a plan under review
-- **THEN** the work SHALL return to requirement definition, high-level design, or low-level design as directed
+- **THEN** the work SHALL return to the planning role for revision
 
 #### Scenario: Reject an implementation
 - **WHEN** the human engineer rejects implemented work under review
 - **THEN** the work SHALL return to development
 
+#### Scenario: Run autonomously
+- **WHEN** the workflow is configured for autonomous mode
+- **THEN** the orchestrator SHALL progress work without waiting for human plan or implementation approval
+
 ### Requirement: Role-specific knowledge artifacts
-The system SHALL associate each SDLC role with the task, code, review, or wiki artifacts it consumes and produces.
+The system SHALL associate each role with configured incoming and outgoing local Markdown artifacts that provide durable context for long-running tasks.
 
 #### Scenario: Produce planning artifacts
-- **WHEN** a feature advances through product and architecture planning
-- **THEN** the product manager SHALL produce a requirement artifact and the architect SHALL consume it to produce a high-level design artifact
+- **WHEN** a planner completes a feature plan
+- **THEN** it SHALL write the configured plan artifact containing the feature overview, component breakdown, dependencies, and acceptance criteria
 
 #### Scenario: Produce implementation artifacts
-- **WHEN** the software engineer receives design artifacts and a build task
-- **THEN** the software engineer SHALL produce low-level design and code artifacts for review and validation
+- **WHEN** a coder or reviewer starts work that declares an incoming plan artifact
+- **THEN** that role SHALL read the configured artifact before implementing or reviewing the feature
+
+### Requirement: Maker-checker review loop
+The system SHALL support maker-checker and boomerang workflow patterns in which review roles can return work to the implementing role with feedback.
+
+#### Scenario: Approve maker output
+- **WHEN** a checker finds the implementation correct and compliant with its review responsibility
+- **THEN** it SHALL emit the configured approval label for the next workflow stage
+
+#### Scenario: Reject maker output
+- **WHEN** a checker identifies issues
+- **THEN** it SHALL record feedback, emit the configured rejection label, and route the task back to the maker
